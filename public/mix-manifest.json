@@ -1,0 +1,23 @@
+{
+    "/js/vendors/lte-core.js": "/js/vendors/lte-core.js?id=324c0962b6dee0797e7b3657595500ba",
+    "/js/guest.js": "/js/guest.js?id=d89d4afa75ca73598ff21b43e2b926ce",
+    "/js/app.js": "/js/app.js?id=1e63a053f6aafd85544f174e3facddc0",
+    "/js/manifest.js": "/js/manifest.js?id=b6abc38162b05702b0094287d9d97fc8",
+    "/js/vendors/layout.js": "/js/vendors/layout.js?id=fb29451f2907709053a382a5a5553e51",
+    "/js/vendors/insert.js": "/js/vendors/insert.js?id=17120034197f4b52f2e5ec6159325cd7",
+    "/js/vendors/insert-category-attrs.js": "/js/vendors/insert-category-attrs.js?id=ada15cd567a9b016e8522f214ad9ccaa",
+    "/js/vendors/purchaser-edit.js": "/js/vendors/purchaser-edit.js?id=8e24a7997af38dd66456e503e3772f31",
+    "/js/vendors/purchaser-attrs.js": "/js/vendors/purchaser-attrs.js?id=5a4a6b25d196532cb18c29fa66580c65",
+    "/js/vendors/request-edit.js": "/js/vendors/request-edit.js?id=44cdc82ccbfe76d116e6044100c61d5f",
+    "/js/vendors/invoice-edit.js": "/js/vendors/invoice-edit.js?id=fead4f415a8e71740a4aae91973f5dfc",
+    "/js/vendors/modal.js": "/js/vendors/modal.js?id=5f64f8ebf16fff9c846c20001f104428",
+    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=5f401c34e5877a5a67454dd8df76bcf7",
+    "/js/vendors/report-table.js": "/js/vendors/report-table.js?id=878af7f2b8f6bb13b3c6e2e735806fde",
+    "/js/vendors/tab.js": "/js/vendors/tab.js?id=d03dc195c7677f91f9e545cc4908bd9c",
+    "/js/vendors/input-alter.js": "/js/vendors/input-alter.js?id=97ee184d10a982976c1a3a2af7a157de",
+    "/js/vendors/purchaser-single-attribute.js": "/js/vendors/purchaser-single-attribute.js?id=8cf0a13217db83f662c0ad3f22e6b9ae",
+    "/css/vendors/lte-core.css": "/css/vendors/lte-core.css?id=99015110c852b99afa8f9ced499120c5",
+    "/css/app.css": "/css/app.css?id=e32e316469b8bbde9fe37e06f430d50a",
+    "/css/guest.css": "/css/guest.css?id=8262e4eb074f28acbd1bfd58b9f68702",
+    "/js/vendor.js": "/js/vendor.js?id=6161b33854189e7f1d86fb5e4f184109"
+}

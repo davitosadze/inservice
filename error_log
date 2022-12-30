@@ -1,0 +1,10 @@
+[04-Jun-2022 11:53:33 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 11:54:27 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 11:54:43 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 11:54:54 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 12:20:02 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 12:20:05 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 12:20:10 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 12:20:12 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 12:31:12 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
+[04-Jun-2022 12:52:13 UTC] PHP Parse error:  syntax error, unexpected token ")" in /var/www/invoice.inservice.ge/public_html/vendor/symfony/console/SignalRegistry/SignalRegistry.php on line 37
