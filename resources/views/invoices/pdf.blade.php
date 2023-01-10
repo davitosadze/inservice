@@ -221,6 +221,29 @@
             text-align: center;
         }
 
+        .notices-container {
+            display: flex;
+
+        }
+
+        .notices-container>.first {
+            float: left;
+            width: 45%;
+        }
+
+        .notices-container>.second {
+            float: right;
+            width: 45%;
+            text-align: right;
+
+        }
+
+        .notices-container>.second img {
+            align-self: flex-end;
+        }
+
+
+
         @page {
             margin: 0cm 0cm;
         }
@@ -422,32 +445,41 @@
         <div>NOTICE:</div>
         <div class="notice">Trust The quality of the professionals</div>
       </div> --}}
-        <div id="notices">
-            <div>
-                <h2 class="name">INSERVICE LLC</h2>
-                <div>Tel. : +995 322 242 12 12</div>
-                <div><a href="http://support.inservice.ge">Site : support.inservice.ge</a></div>
-                <div><a href="mailto:service@inservice.ge">Mail : service@inservice.ge</a></div>
-                <div>Georgia, Tbilisi, Chashnagiri st. 8 a</div>
+
+        <div class="notices-container">
+            <div class="first">
+                <div id="notices">
+                    <div>
+                        <h2 class="name">INSERVICE LLC</h2>
+                        <div>Tel. : +995 322 242 12 12</div>
+                        <div><a href="http://support.inservice.ge">Site : support.inservice.ge</a></div>
+                        <div><a href="mailto:service@inservice.ge">Mail : service@inservice.ge</a></div>
+                        <div>Georgia, Tbilisi, Chashnagiri st. 8 a</div>
+                    </div>
+                    <br />
+                    <div class="notice">Trust The quality of the professionals</div>
+                </div>
             </div>
-            <br />
-            <div class="notice">Trust The quality of the professionals</div>
+            <div class="second">
+                <div class="sign">
+                    <div style="">
+                        <img style="border-bottom: 1px solid #000; width:33%;  max-width: 55%;"
+                            src="{{ $user->getFirstMediaUrl('credential') }}">
+                    </div>
+
+                    <div style="margin-top:10px;">
+                        {{ $user->name }}</div>
+                </div>
+            </div>
         </div>
+
+
+
+
     </main>
     <div>
-        <table style="width:100%; padding: 0; color: #5c5449;">
-            <thead>
-                <tr>
-                    <td valign="center" style="width:33.33%  padding: 0; vertical-align: middle;"></td>
-                    <td valign="center"
-                        style="width:33.33%; padding: 0; vertical-align: middle; border-bottom: 1px solid #000; text-align: center;">
-                        <img style="max-width: 55%;" src="{{ $user->getFirstMediaUrl('credential') }}">
-                    </td>
-                    <td valign="center" style="width:33.33%; padding: 0; vertical-align: middle; text-align: right;">
-                        {{ $user->name }}</td>
-                </tr>
-            </thead>
-        </table>
+
+
     </div>
 </body>
 

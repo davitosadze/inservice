@@ -69,10 +69,10 @@ class InvoiceController extends Controller
         $model = Invoice::with(['purchaser', 'category_attributes.category', 'user'])->firstOrNew(['id' => $id])->toArray();
         $user = User::find($model["user"]["id"]);
 
-        $name = $model['uuid'] . '.pdf';
+        $name = "ინვოისი " . $model['uuid'] . '.pdf';
 
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('invoices.pdf', ['model' => $model, 'user' => $user]);
-        return $pdf->stream($name);
+        return $pdf->download($name);
     }
 
     /**

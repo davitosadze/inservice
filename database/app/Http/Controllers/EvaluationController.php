@@ -29,8 +29,8 @@ class EvaluationController extends Controller
         $additional = [];
         $setting = [
             'columns' => [
-                ['field' => "num", 'headerName' => '№', "valueGetter" => 'data.uuid', "flex" => 0.7, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'], 
-                ['field' => "title", "valueGetter" => 'data.title', 'headerName' => 'დასახელება', 'minWidth' => 350, 'tooltipField' => 'title', 'editable' => true], 
+                ['field' => "num", 'headerName' => '№', "valueGetter" => 'data.uuid', "flex" => 0.7, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'],
+                ['field' => "title", "valueGetter" => 'data.title', 'headerName' => 'დასახელება', 'minWidth' => 350, 'tooltipField' => 'title', 'editable' => true],
                 ['field' => "purchaser_name", 'headerName' => 'კლიენტის სახ.', "valueGetter" => 'data.purchaser.name'],
                 ['field' => "purchaser_subj_name", 'headerName' => 'ობიექტის სახ.', "valueGetter" => 'data.purchaser.subj_name'],
                 ['field' => "purchaser_address", 'headerName' => 'ობიექტის მისამართი.', "valueGetter" => 'data.purchaser.subj_address'],
@@ -38,30 +38,36 @@ class EvaluationController extends Controller
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
             ],
             'url' => [
-                'request' => 
-                    ['index' => route('api.evaluations.index'), 'edit' => route('evaluations.edit', ['evaluation' => "new"]) ,'destroy' => route('api.evaluations.destroy', ['evaluation' => '__delete__'])],
+                'request' =>
+                ['index' => route('api.evaluations.index'), 'edit' => route('evaluations.edit', ['evaluation' => "new"]), 'destroy' => route('api.evaluations.destroy', ['evaluation' => '__delete__'])],
                 'nested' => [
-                    'excel' => route('evaluations.excel', ['id' => '__id__']
+                    'excel' => route(
+                        'evaluations.excel',
+                        ['id' => '__id__']
                     ),
-                    'pdf' => route('evaluations.pdf', ['id' => '__id__']
+                    'pdf' => route(
+                        'evaluations.pdf',
+                        ['id' => '__id__']
                     )
                 ]
             ],
             'is_table_advanced' => true
         ];
-        
+
         return view('requests.index', ['additional' => $additional, 'setting' => $setting]);
     }
 
-    public function excel ($id) {
+    public function excel($id)
+    {
         $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
         return Excel::download(new ReservingExport($model), 'users.xlsx');
     }
 
-    public function pdf ($id) {
+    public function pdf($id)
+    {
 
         $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        $name = $model['uuid']. '.pdf';
+        $name = $model['uuid'] . '.pdf';
 
         $pdf = PDF::setOptions(["isPhpEnabled" => true, 'isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif', 'name' => $name]);
         $pdf->loadView('requests.pdf', ['model' => $model, 'pdf' => $pdf]);
@@ -125,11 +131,13 @@ class EvaluationController extends Controller
         ];
         $setting = [
             'url' => [
-                'request' => 
-                    ['index' => route('api.evaluations.index'), 'edit' => route('evaluations.edit', ['evaluation' => "new"])],
+                'request' =>
+                ['index' => route('api.evaluations.index'), 'edit' => route('evaluations.edit', ['evaluation' => "new"])],
                 'nested' => [
                     'edit' => route('purchasers.edit', ['purchaser' => "new"]),
-                    'destroy' => route('api.requests.destroy_attribute', ['id' => '__id__']
+                    'destroy' => route(
+                        'api.requests.destroy_attribute',
+                        ['id' => '__id__']
                     )
                 ]
             ]

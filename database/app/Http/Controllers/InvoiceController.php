@@ -29,8 +29,8 @@ class InvoiceController extends Controller
         $additional = [];
         $setting = [
             'columns' => [
-                ['field' => "title", 'headerName' => '№', "valueGetter" => 'data.uuid', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'], 
-                ['field' => "title", 'headerName' => 'დასახელება'], 
+                ['field' => "title", 'headerName' => '№', "valueGetter" => 'data.uuid', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'],
+                ['field' => "title", 'headerName' => 'დასახელება'],
                 ['field' => "purchaser_name", 'headerName' => 'კლიენტის სახ.', "valueGetter" => 'data.purchaser.name'],
                 ['field' => "purchaser_subj_name", 'headerName' => 'ობიექტის სახ.', "valueGetter" => 'data.purchaser.subj_name'],
                 ['field' => "purchaser_address", 'headerName' => 'ობიექტის მისამართი.', "valueGetter" => 'data.purchaser.subj_address'],
@@ -38,12 +38,16 @@ class InvoiceController extends Controller
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
             ],
             'url' => [
-                'request' => 
-                    ['index' => route('api.invoices.index'), 'edit' => route('invoices.edit', ['invoice' => "new"]), 'destroy' => route('api.invoices.destroy', ['invoice' => '__delete__'])],
-                    'nested' => [
-                    'excel' => route('invoices.excel', ['id' => '__id__']
+                'request' =>
+                ['index' => route('api.invoices.index'), 'edit' => route('invoices.edit', ['invoice' => "new"]), 'destroy' => route('api.invoices.destroy', ['invoice' => '__delete__'])],
+                'nested' => [
+                    'excel' => route(
+                        'invoices.excel',
+                        ['id' => '__id__']
                     ),
-                    'pdf' => route('invoices.pdf', ['id' => '__id__']
+                    'pdf' => route(
+                        'invoices.pdf',
+                        ['id' => '__id__']
                     )
                 ]
             ],
@@ -52,15 +56,17 @@ class InvoiceController extends Controller
         return view('invoices.index', ['additional' => $additional, 'setting' => $setting]);
     }
 
-    public function excel ($id) {
+    public function excel($id)
+    {
         $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
         return Excel::download(new InvoiceExport($model), 'users.xlsx');
     }
 
-    public function pdf ($id) {
+    public function pdf($id)
+    {
 
         $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        $name = $model['uuid']. '.pdf';
+        $name = $model['uuid'] . '.pdf';
 
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('invoices.pdf', ['model' => $model]);
         return $pdf->stream($name);
@@ -123,11 +129,13 @@ class InvoiceController extends Controller
         ];
         $setting = [
             'url' => [
-                'request' => 
-                    ['index' => route('api.invoices.index'), 'edit' => route('invoices.edit', ['invoice' => "new"])],
+                'request' =>
+                ['index' => route('api.invoices.index'), 'edit' => route('invoices.edit', ['invoice' => "new"])],
                 'nested' => [
                     'edit' => route('purchasers.edit', ['purchaser' => "new"]),
-                    'destroy' => route('api.invoices.destroy_attribute', ['id' => '__id__']
+                    'destroy' => route(
+                        'api.invoices.destroy_attribute',
+                        ['id' => '__id__']
                     )
                 ]
             ]

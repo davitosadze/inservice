@@ -263,10 +263,10 @@ class ReportController extends Controller
         //
 
         $model = Report::with(['items'])->firstOrNew(['id' => $id]);
-        $name = $model->uuid . '.pdf';
+        $name = "დეფექტური " . $model->uuid . '.pdf';
 
         $pdf = PDF::setOptions(["isPhpEnabled" => true, 'isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('reports.show', compact('model'));
-        return $pdf->stream($name);
+        return $pdf->download($name);
 
         // return view('reports.show');
     }
