@@ -11,12 +11,14 @@
         </div>
         <!-- /.content-header -->
     </x-slot>
-    
+
     <!-- Main content -->
     <section class="content">
         <div id="renderer">
             {!! Form::model($model, ['route' => ['api.evaluations.store'], 'id' => 'render']) !!}
-            <layout :user='@json(auth()->user())' url="{{request()->url()}}"  :model='@json($model)' :additional='@json($additional)' :setting='@json($setting)' name="request-edit"></layout>
+            <layout :user='@json(auth()->user())' url="{{ request()->url() }}"
+                :model='@json($model)' :additional='@json($additional)'
+                :setting='@json($setting)' name="request-edit"></layout>
             {!! Form::close() !!}
         </div>
     </section>
