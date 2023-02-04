@@ -17,13 +17,15 @@
     <section class="content">
         <div id="renderer">
             <div class="card-tools mt-2">
-                <div class="input-group input-group-sm" style="width: 150px;">          
-                    <button href="{{request()->url()}}/new/edit" id="create" class="btn btn-sm btn-outline-success">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                    <button href="{{ request()->url() }}/new/edit" id="create"
+                        class="btn btn-sm btn-outline-success">
                         <i class="fas fa-shield-alt"></i> დამატება
-                    </button>          
+                    </button>
                 </div>
             </div>
-            <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)' :setting='@json($setting)' name="alter-table"></layout>
+            <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)'
+                :setting='@json($setting)' name="alter-table"></layout>
         </div>
     </section>
 

@@ -18,12 +18,36 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Welcome</h3>
+                <h3 class="card-title">Statistics</h3>
                 <div class="card-tools"></div>
             </div>
             <!-- /.card-body -->
             <div id="renderer" style="padding: 1em;">
-                Welcome
+                <table class="table ">
+                    <tr>
+                        <th>სახელი</th>
+                        <th>იმეილი</th>
+                        <th>განფასებები</th>
+                        {{-- <th>ინვოისები</th> --}}
+
+                    </tr>
+                    @foreach ($users as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->evaluations()->count() }}</td>
+                            {{-- <td>{{ $user->evaluations()->count() }}</td> --}}
+
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <th>სახელი</th>
+                        <th>იმეილი</th>
+                        <th>განფასებები</th>
+                        {{-- <th>ინვოისები</th> --}}
+                    </tr>
+                </table>
+
             </div>
         </div>
         <!-- /.card -->

@@ -50,7 +50,8 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
     ];
 
-    public function setPasswordAttribute ($value) {
+    public function setPasswordAttribute($value)
+    {
         $this->attributes['password'] = Hash::make($value);
     }
 
@@ -68,5 +69,11 @@ class User extends Authenticatable implements HasMedia
     public function reports()
     {
         return $this->hasMany(UserInvoice::class, "user_id");
+    }
+
+
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class, "user_id");
     }
 }

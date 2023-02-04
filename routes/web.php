@@ -15,6 +15,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\SpecialAttributeController;
 use App\Http\Controllers\CategoryAttributeController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ use App\Http\Controllers\CategoryAttributeController;
 
 Route::middleware(['auth', 'has_permission'])->group(function () {
 
-    Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+    Route::get("/dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get("/profile", [UserController::class, 'profile'])->name('profile');
 
@@ -56,9 +57,9 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("invoices", InvoiceController::class);
     Route::get("invoices/pdf/{id}", [InvoiceController::class, 'pdf'])->name('invoices.pdf');
     Route::get("invoices/excel/{id}", [InvoiceController::class, 'excel'])->name('invoices.excel');
-    
+
     Route::resource("categories", CategoryController::class);
     Route::resource("categories.category-attributes", CategoryAttributeController::class);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

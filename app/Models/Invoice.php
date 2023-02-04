@@ -40,31 +40,34 @@ class Invoice extends Model
         'category_attributes'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function purchaser() {
+    public function purchaser()
+    {
         return $this->belongsTo(Purchaser::class);
     }
 
-    public function getPurchaserAttribute() {
+    public function getPurchaserAttribute()
+    {
         return $this->purchaser()->first() ?? null;
     }
 
     public function category_attributes()
     {
         return $this->morphToMany(CategoryAttribute::class, "attributable")->withPivot('id')
-        ->withPivot('id')
-        ->withPivot('title')
-        ->withPivot('qty')
-        ->withPivot('price')
-        ->withPivot('service_price')
-        ->withPivot('is_special')
-        ->withPivot('calc')
-        ->withPivot('evaluation_price')
-        ->withPivot('evaluation_calc')
-        ->withPivot('evaluation_service_price')->orderBy('sort');
+            ->withPivot('id')
+            ->withPivot('title')
+            ->withPivot('qty')
+            ->withPivot('price')
+            ->withPivot('service_price')
+            ->withPivot('is_special')
+            ->withPivot('calc')
+            ->withPivot('evaluation_price')
+            ->withPivot('evaluation_calc')
+            ->withPivot('evaluation_service_price')->orderBy('sort');
     }
 
     public function getCategoryAttributesAttribute()
@@ -72,7 +75,8 @@ class Invoice extends Model
         return [];
     }
 
-    public function getSpecialAttribute () {
+    public function getSpecialAttribute()
+    {
         return isset($this->purchaser) && isset($this->purchaser->specialAttributes) ? $this->purchaser->specialAttributes : [];
     }
 }
