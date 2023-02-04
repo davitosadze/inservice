@@ -28,6 +28,7 @@
                         <th>სახელი</th>
                         <th>იმეილი</th>
                         <th>განფასებები</th>
+                        <th>დეფექტურები</th>
                         {{-- <th>ინვოისები</th> --}}
 
                     </tr>
@@ -36,6 +37,8 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->evaluations()->count() }}</td>
+                            <td>{{ $user->reports()->count() }}</td>
+
                             {{-- <td>{{ $user->evaluations()->count() }}</td> --}}
 
                         </tr>
@@ -44,6 +47,7 @@
                         <th>სახელი</th>
                         <th>იმეილი</th>
                         <th>განფასებები</th>
+                        <th>დეფექტურები</th>
                         {{-- <th>ინვოისები</th> --}}
                     </tr>
                 </table>

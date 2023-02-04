@@ -54,6 +54,7 @@ class InvoiceController extends Controller
             ],
             'is_table_advanced' => true
         ];
+
         return view('invoices.index', ['additional' => $additional, 'setting' => $setting]);
     }
 
