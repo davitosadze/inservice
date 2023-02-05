@@ -221,6 +221,13 @@
             text-align: center;
         }
 
+        #invoice .title {
+            float: left;
+            font-size: 1.1em;
+            text-align: left;
+            color: #777777;
+        }
+
         @page {
             margin: 0cm 0cm;
         }
@@ -375,10 +382,19 @@
 
             <div id="invoice">
                 <h1>განფასება: {{ $model['uuid'] }}</h1>
+                <div class="title">
+                    <span style="font-weight: 700;">დასახელება:</span>
+                    <br />
+                    {{ $model['title'] }}
+                </div>
+
                 <div class="date">
                     <span style="font-weight: 700;">შეკვეთის თარიღი:</span>
                     {{ date_format(date_create($model['created_at']), 'Y-m-d') }}
                     <br />
+                    @if ($model['parent'])
+                        <div class="notice">მშობელი: {{ $model['parent']['title'] }}</div>
+                    @endif
                     <span style="font-weight: 700; color: green;">(ინვოისი ძალაშია 7 დღე)
                 </div>
                 {{-- <div ><span style="font-weight: 700;">ინვოისი აქტიურია ერთი კვირის განმავლობაში</span></div> --}}
@@ -459,7 +475,6 @@
 </body>
 
 </html>
-
 
 {{-- 
 

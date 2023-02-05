@@ -21,7 +21,8 @@ class Evaluation extends Model
         "p5",
         "uuid",
         "title",
-        "single"
+        "single",
+        "parent_uuid"
     ];
 
     protected $attributes = [
@@ -72,6 +73,11 @@ class Evaluation extends Model
     public function getCategoryAttributesAttribute()
     {
         return [];
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Evaluation::class, 'parent_uuid', 'uuid');
     }
 
     public function getSpecialAttribute()

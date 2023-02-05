@@ -63,14 +63,17 @@ class EvaluationController extends Controller
         return Excel::download(new ReservingExport($model), 'users.xlsx');
     }
 
-    public function pdf($id)
+    public function pdf(Request $request, $id)
     {
 
-        $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
+        $model = Evaluation::with(['purchaser', 'category_attributes.category', 'parent'])->firstOrNew(['id' => $id])->toArray();
         $name = "განფასება " . $model['uuid'] . '.pdf';
 
         $pdf = PDF::setOptions(["isPhpEnabled" => true, 'isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif', 'name' => $name]);
         $pdf->loadView('requests.pdf', ['model' => $model, 'pdf' => $pdf]);
+        if ($request->open) {
+            return $pdf->stream($name);
+        }
         return $pdf->download($name);
     }
 
@@ -116,7 +119,7 @@ class EvaluationController extends Controller
     {
         //
 
-        $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id]);
+        $model = Evaluation::with(['purchaser', 'category_attributes.category', 'parent'])->firstOrNew(['id' => $id]);
         $this->authorize('view', $model);
 
         if (!$model['id'] && $id != 'new') {

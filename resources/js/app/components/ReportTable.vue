@@ -45,13 +45,21 @@ function alterRenderer(params) {
     return eGui;
 }
 
-function actionCellRenderer2(params) {
+function actionCellRendererDownload(params) {
     let eGui = document.createElement("div");
 
-    // <i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="excel" class="fas fa-file-excel"></i>
+    eGui.innerHTML = `
+    <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-download"></i>
+
+		`;
+    return eGui;
+}
+
+function actionCellRendererOpen(params) {
+    let eGui = document.createElement("div");
 
     eGui.innerHTML = `
-			<i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-pdf"></i>
+        <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-pdf"></i>
 		`;
     return eGui;
 }
@@ -89,14 +97,25 @@ export default {
     setup(props) {
         let is_table_advanced = [
             {
-                headerName: "ნახვა",
+                headerName: "გადმოწერა",
                 headerClass: "text-center",
                 maxWidth: 117,
                 filter: false,
                 cellStyle: { textAlign: "center" },
-                cellRenderer: actionCellRenderer2,
+                cellRenderer: actionCellRendererDownload,
                 editable: false,
                 colId: "gadawera",
+            },
+
+            {
+                headerName: "გახსნა",
+                headerClass: "text-center",
+                maxWidth: 117,
+                filter: false,
+                cellStyle: { textAlign: "center" },
+                cellRenderer: actionCellRendererOpen,
+                editable: false,
+                colId: "gaxsna",
             },
             {
                 headerName: "ქმედება",
@@ -259,6 +278,18 @@ export default {
                             "new",
                             params.data.id
                         ),
+                        "_blank"
+                    );
+                }
+            } else if (params.column.colId === "gaxsna") {
+                let action = params.event.target.dataset.action;
+
+                if (action == "pdf") {
+                    window.open(
+                        this.setting.url.request.show.replace(
+                            "new",
+                            params.data.id
+                        ) + "?open=1",
                         "_blank"
                     );
                 }

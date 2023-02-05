@@ -108,6 +108,13 @@
             color: #777777;
         }
 
+        #invoice .title {
+            float: left;
+            font-size: 1.1em;
+            text-align: left;
+            color: #777777;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -383,10 +390,22 @@
 
             <div id="invoice">
                 <h1>ინვოისი: {{ $model['uuid'] }}</h1>
+
+                <div class="title">
+                    <span style="font-weight: 700;">დასახელება:</span>
+                    <br />
+                    {{ $model['title'] }}
+                </div>
+
                 <div class="date">
                     <span style="font-weight: 700;">შეკვეთის თარიღი:</span>
                     {{ date_format(date_create($model['created_at']), 'Y-m-d') }}
                     <br />
+
+                    @if ($model['parent'])
+                        <div class="notice">მშობელი: {{ $model['parent']['title'] }}</div>
+                    @endif
+
                     <span style="font-weight: 700; color: green;">(ინვოისი ძალაშია 7 დღე)
                 </div>
                 {{-- <div ><span style="font-weight: 700;">ინვოისი აქტიურია ერთი კვირის განმავლობაში</span></div> --}}
@@ -426,6 +445,8 @@
 
 
             </tbody>
+
+
             <tfoot>
 
                 <tr>
@@ -458,6 +479,7 @@
                     </div>
                     <br />
                     <div class="notice">Trust The quality of the professionals</div>
+
                 </div>
             </div>
             <div class="second">

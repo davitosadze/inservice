@@ -10,6 +10,8 @@ use App\Http\Controllers\API\InvoiceController;
 use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
+use App\Http\Controllers\API\StatisticController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +27,9 @@ use App\Http\Controllers\API\CategoryAttributeController;
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("users", UserController::class);
-    
+
+    Route::get("statistics", [StatisticController::class, 'statistics']);
+
     Route::apiResource("purchasers", PurchaserController::class);
     Route::apiResource("purchasers.special-attributes", SpecialAttributeController::class);
 

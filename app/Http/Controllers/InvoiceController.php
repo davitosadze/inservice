@@ -64,15 +64,19 @@ class InvoiceController extends Controller
         return Excel::download(new InvoiceExport($model), 'users.xlsx');
     }
 
-    public function pdf($id)
+    public function pdf(Request $request, $id)
     {
 
-        $model = Invoice::with(['purchaser', 'category_attributes.category', 'user'])->firstOrNew(['id' => $id])->toArray();
+        $model = Invoice::with(['purchaser', 'category_attributes.category', 'user', 'parent'])->firstOrNew(['id' => $id])->toArray();
         $user = User::find($model["user"]["id"]);
 
         $name = "ინვოისი " . $model['uuid'] . '.pdf';
 
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('invoices.pdf', ['model' => $model, 'user' => $user]);
+
+        if ($request->open) {
+            return $pdf->stream($name);
+        }
         return $pdf->download($name);
     }
 
@@ -118,7 +122,7 @@ class InvoiceController extends Controller
     {
         //
 
-        $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id]);
+        $model = Invoice::with(['purchaser', 'category_attributes.category', 'parent'])->firstOrNew(['id' => $id]);
         $this->authorize('view', $model);
 
         if (!$model['id'] && $id != 'new') {

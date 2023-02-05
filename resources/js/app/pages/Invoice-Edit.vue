@@ -114,14 +114,16 @@
                                 align-items: flex-end;
                                 display: flex;
                                 flex-direction: column;
+                                text-align: right;
                             "
                         >
                             <div>
                                 <b>Invoice {{ model.uuid }}</b
                                 ><br />
                             </div>
-                            <!-- <div><b>Order ID:</b> 4F3S8J <br></div>
-                  <div><b>Payment Due:</b> 2/22/2017 <br></div> -->
+                            <div v-if="model.parent">
+                                <b>მშობელი:</b> {{ model.parent.title }}
+                            </div>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -795,6 +797,7 @@ export default {
             delete session.id;
             session.special = [];
             session.purchaser = {};
+            session.parent_uuid = model.uuid;
             session.category_attributes.map((i) => {
                 delete i.pivot.id;
                 delete i.pivot.attributable_id;

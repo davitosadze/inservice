@@ -258,7 +258,7 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         //
 
@@ -266,8 +266,11 @@ class ReportController extends Controller
         $name = "დეფექტური " . $model->uuid . '.pdf';
 
         $pdf = PDF::setOptions(["isPhpEnabled" => true, 'isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('reports.show', compact('model'));
-        return $pdf->download($name);
 
+        if ($request->open) {
+            return $pdf->stream($name);
+        }
+        return $pdf->download($name);
         // return view('reports.show');
     }
 
