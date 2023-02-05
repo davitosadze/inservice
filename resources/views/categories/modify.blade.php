@@ -1,7 +1,8 @@
 <x-app-layout>
+    @section('title', 'კატეგორიები')
 
-    <?php 
-        // $action = (!$model->id) ? ['api.categories.store'] : ['api.categories.update', ['category' => $model->id]];
+    <?php
+    // $action = (!$model->id) ? ['api.categories.store'] : ['api.categories.update', ['category' => $model->id]];
     ?>
 
     <x-slot name="header">
@@ -16,19 +17,21 @@
         </div>
         <!-- /.content-header -->
     </x-slot>
-    
+
     <!-- Main content -->
     <section class="content">
-      
-        
-          
+
+
+
         <div id="renderer">
             {!! Form::model($model, ['route' => ['api.categories.store'], 'id' => 'render']) !!}
-            <layout :user='@json(auth()->user())' url="{{request()->url()}}" :model='@json($model)' :additional='@json($additional)' :setting='@json($setting)' name="insert"></layout>
+            <layout :user='@json(auth()->user())' url="{{ request()->url() }}"
+                :model='@json($model)' :additional='@json($additional)'
+                :setting='@json($setting)' name="insert"></layout>
             {!! Form::close() !!}
         </div>
-       
-        
+
+
     </section>
 
 </x-app-layout>

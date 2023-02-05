@@ -1,3 +1,4 @@
+@section('title', 'ინვოისები')
 <x-app-layout>
     <x-slot name="header">
         <div class="content-header">
@@ -11,12 +12,14 @@
         </div>
         <!-- /.content-header -->
     </x-slot>
-    
+
     <!-- Main content -->
     <section class="content">
         <div id="renderer">
             {!! Form::model($model, ['route' => ['api.invoices.store'], 'id' => 'render']) !!}
-            <layout :user='@json(auth()->user())' url="{{request()->url()}}"  :model='@json($model)' :additional='@json($additional)' :setting='@json($setting)' name="invoice-edit"></layout>
+            <layout :user='@json(auth()->user())' url="{{ request()->url() }}"
+                :model='@json($model)' :additional='@json($additional)'
+                :setting='@json($setting)' name="invoice-edit"></layout>
             {!! Form::close() !!}
         </div>
     </section>

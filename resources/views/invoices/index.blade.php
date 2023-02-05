@@ -1,5 +1,5 @@
+@section('title', 'ინვოისები')
 <x-app-layout>
-
     <x-slot name="header">
         <div class="content-header">
             <div class="container-fluid">

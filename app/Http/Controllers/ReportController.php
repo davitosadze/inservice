@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Image;
 
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -112,7 +113,12 @@ class ReportController extends Controller
         $file = $request->file('image');
         $name = uniqid() . '_' . trim($file->getClientOriginalName());
 
-        $this->InterImage($file->getPathName(), $path . '/' . $name, 70);
+        $img = Image::make($file->path());
+        $img->resize(600, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($path . '/' . $name);
+
+        // $this->InterImage($file->getPathName(), $path . '/' . $name, 70);
         return ['name' => $name];
     }
 

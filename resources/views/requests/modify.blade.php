@@ -1,3 +1,4 @@
+@section('title', 'განფასებები')
 <x-app-layout>
     <x-slot name="header">
         <div class="content-header">
