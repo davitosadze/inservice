@@ -122,7 +122,7 @@
                                 ><br />
                             </div>
                             <div v-if="model.parent">
-                                <b>მშობელი:</b> {{ model.parent.title }}
+                                <b>დაკოპირებულია:</b> {{ model.parent.uuid }}
                             </div>
                         </div>
                         <!-- /.col -->
