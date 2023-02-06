@@ -29,7 +29,7 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { GChart } from "vue-google-charts";
 
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export default {
     data() {
@@ -69,6 +69,13 @@ export default {
         let statistics = [];
         const date = ref();
 
+        onMounted(() => {
+            const endDate = new Date();
+            const startDate = new Date(
+                new Date().setDate(endDate.getDate() - 60)
+            );
+            date.value = [startDate, endDate];
+        });
         return {
             date,
             statistics,
@@ -90,6 +97,10 @@ export default {
                 },
             },
         };
+    },
+    mounted() {
+        console.log(this.date);
+        this.handleDate(this.date);
     },
 };
 </script>
