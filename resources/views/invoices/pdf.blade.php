@@ -403,7 +403,7 @@
                     <br />
 
                     @if ($model['parent'])
-                        <div class="notice">მშობელი: {{ $model['parent']['title'] }}</div>
+                        <div class="notice">დაკოპირებულია: {{ $model['parent']['uuid'] }}</div>
                     @endif
 
                     <span style="font-weight: 700; color: green;">(ინვოისი ძალაშია 7 დღე)
