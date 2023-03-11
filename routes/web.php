@@ -15,6 +15,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\SpecialAttributeController;
 use App\Http\Controllers\CategoryAttributeController;
+use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DashboardController;
 
 /*
@@ -38,6 +39,8 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("users", UserController::class);
     Route::post("users/uploads", [UserController::class, 'upload']);
     Route::get("users/uploads2/{report_item}", [UserController::class, 'upload2']);
+
+    Route::resource("clients", ClientsController::class);
 
     Route::resource("roles", RoleController::class);
     Route::resource("permissions", PermissionController::class);

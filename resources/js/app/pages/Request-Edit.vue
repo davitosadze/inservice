@@ -389,7 +389,6 @@ import Util from "Util";
 import draggable from "../vendors/vuedraggable/src/vuedraggable";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
-
 export default {
     props: ["user", "setting", "model", "additional"],
     components: {

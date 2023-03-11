@@ -1,4 +1,17 @@
 <template>
+    <div v-if="this.setting.model == 'invoices'">
+        <hr />
+        <Datepicker
+            :value="date"
+            v-model="dates"
+            @update:modelValue="handleDate"
+            range
+            :enable-time-picker="false"
+            :partial-range="false"
+        />
+        <hr />
+    </div>
+
     <ag-grid-vue
         style="width: 100%; height: 77vh"
         class="ag-theme-alpine"
@@ -17,13 +30,16 @@
 </template>
 
 <script>
+import { addDays, isDate, subDays } from "date-fns";
 import Util from "Util";
+import Datepicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import { ref } from "vue";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 import { AgGridVue } from "ag-grid-vue3";
-
 function actionCellRenderer(params) {
     let eGui = document.createElement("div");
 
@@ -87,12 +103,16 @@ app.component("Inter", {
 export default {
     props: ["user", "additional", "name", "setting"],
     name: "alter-table",
-    components: { AgGridVue },
+    components: { AgGridVue, Datepicker },
+
     data: () => {
         return {
             rowData: null,
             gridApi: null,
             columnApi: null,
+            date: null,
+            dates: [subDays(new Date(), 10), new Date()],
+            isDatepickerDisabled: true,
         };
     },
     setup(props) {
@@ -198,6 +218,22 @@ export default {
     },
     mounted() {},
     methods: {
+        handleDate(modelData) {
+            console.log(this.setting);
+
+            const start_date = modelData[0];
+            const end_date = modelData[1];
+
+            this.$http
+                .get(this.setting.url.request.index, {
+                    params: { start_date: start_date, end_date: end_date },
+                })
+                .then((response) => response.data)
+                .then((response) => this.gridApi.setRowData(response))
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
         removeRequest(id, setting, callback) {
             let token = document
                 .querySelector('meta[name="csrf-token"')

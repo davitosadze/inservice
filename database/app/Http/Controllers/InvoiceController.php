@@ -11,6 +11,7 @@ use App\Models\Purchaser;
 
 use App\Exports\InvoiceExport;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller
@@ -22,7 +23,6 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
 
         $this->authorize('viewAny', Invoice::class);
 

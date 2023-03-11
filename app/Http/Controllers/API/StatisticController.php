@@ -16,9 +16,6 @@ class StatisticController extends Controller
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
 
-        // $invoices_summary = 0;
-        // $evaluations_summary = 0;
-
         $users = User::whereNotIn('email', ['user@gmail.com', 'g.zurabashvili@yahoo.com', 'giorgi@inservice.ge'])->get();
         $stats = array();
         foreach ($users as $user) {

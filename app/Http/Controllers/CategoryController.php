@@ -29,16 +29,16 @@ class CategoryController extends Controller
 
         $additional = [];
         $setting = [
-            'columns' => [ ['field' => "name", 'headerName' => 'დასახელება'], ['field' => "description", 'headerName' => 'აღწერა'], ['headerName' => 'ერთეული', 'field' => "type"] ],
+            'columns' => [['field' => "name", 'headerName' => 'დასახელება'], ['field' => "description", 'headerName' => 'აღწერა'], ['headerName' => 'ერთეული', 'field' => "type"]],
             'model' => ['target' => 'Category'],
             'url' => [
-                'request' => 
-                    [
-                        'index' => route('api.categories.index'), 
-                        'edit' => route('categories.edit', ['category' => "new"]), 'destroy' => route('api.categories.destroy', ['category' => "__delete__"])
-                    ],
-                'neseted' => 
-                    ['attributes' => route('api.category-attributes.index', ['category' => '{category}'])]
+                'request' =>
+                [
+                    'index' => route('api.categories.index'),
+                    'edit' => route('categories.edit', ['category' => "new"]), 'destroy' => route('api.categories.destroy', ['category' => "__delete__"])
+                ],
+                'neseted' =>
+                ['attributes' => route('api.category-attributes.index', ['category' => '{category}'])]
             ]
         ];
 
@@ -92,8 +92,8 @@ class CategoryController extends Controller
         $saveOrUpdate = $request->id ? 'განახლდა' : 'დაემატა';
 
         $message = [
-          'flashType'    => 'success',
-          'flashMessage' => 'მუნიციპალიტეტი '. $saveOrUpdate .' წარმატებით'
+            'flashType'    => 'success',
+            'flashMessage' => 'მუნიციპალიტეტი ' . $saveOrUpdate . ' წარმატებით'
         ];
 
         return redirect()->route('categories.index')->withInput()->withErrors([])->with($message);
@@ -126,14 +126,14 @@ class CategoryController extends Controller
 
         $additional = [];
         $setting = [
-            'columns' => [ ['field' => "name"], ['field' => "description"], ['field' => "type"] ],
+            'columns' => [['field' => "name"], ['field' => "description"], ['field' => "type"]],
             'url' => [
-                'request' => 
+                'request' =>
                 [
                     'index' => route('api.categories.index')
                 ],
-                'nested' => 
-                    ['attributes' => route('categories.category-attributes.index', ['category' => '__category__'])]
+                'nested' =>
+                ['attributes' => route('categories.category-attributes.index', ['category' => '__category__'])]
             ]
         ];
 

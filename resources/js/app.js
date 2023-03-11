@@ -5,19 +5,22 @@ import vSelect from "vue-select";
 import VueToast from "vue-toast-notification";
 
 import RequestAttribute from "./app/components/RequestAttribute";
-
+import RequestExpense from "./app/components/RequestExpense";
 import { UploadMedia, UpdateMedia } from "./app/vendors/vue-media-upload";
 
 window.app = createApp({});
 app.use(VueAxios, axios);
 app.use(VueToast);
+
 window.createApp = createApp;
 
 app.component("v-select", vSelect);
 app.component("update-media", UpdateMedia);
+
 // app.component('upload-media' , UploadMedia);
 
 /// Layout
+
 app.component(
     "layout",
     defineAsyncComponent(() =>
@@ -65,6 +68,15 @@ app.component(
     defineAsyncComponent(() =>
         import(
             /*webpackChunkName: 'request-edit'  */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/pages/Request-Edit"
+        )
+    )
+);
+
+app.component(
+    "client-edit",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'client-edit'  */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/pages/Client-Edit"
         )
     )
 );
@@ -128,6 +140,7 @@ app.component(
 );
 
 app.component("request-single-attribute", RequestAttribute);
+app.component("request-single-expense", RequestExpense);
 app.component(
     "purchaser-single-attribute",
     defineAsyncComponent(() =>

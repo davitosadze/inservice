@@ -1,0 +1,282 @@
+<template>
+    <div class="card card-primary card-outline card-tabs">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კლიენტის სახელი :</label
+                            >
+                            <input
+                                type="text"
+                                v-model="model.client_name"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2"
+                                >საიდენტიფიკაციო კოდი :</label
+                            >
+                            <input
+                                v-model="model.identification_code"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >იურიდიული მისამართი :</label
+                            >
+                            <input
+                                v-model="model.legal_address"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >მომსახურების შიდა სახელი :</label
+                            >
+                            <input
+                                v-model="model.service_name"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კონტრაქტის მომსახურების ტიპი :</label
+                            >
+                            <input
+                                v-model="model.contract_service_type"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კონტრაქტის დაწყების თარიღი :</label
+                            >
+                            <input
+                                v-model="model.contract_start_date"
+                                type="date"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კონტრაქტის დასრულების თარიღი :</label
+                            >
+                            <input
+                                v-model="model.contract_end_date"
+                                type="date"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კონტრაქტის პერიოდი / დღე :</label
+                            >
+                            <input
+                                v-model="model.contract_period"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >ნაჩენი დღეების რ-ბა :</label
+                            >
+                            <input
+                                v-model="model.service_name"
+                                type="text"
+                                class="form-control"
+                                id="number_of_remaining_days"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კონტრაქტის სტატუსი :</label
+                            >
+                            <input
+                                disabled
+                                v-model="model.contract_status"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კლიენტის მაიდენთიფიცირებელი კოდი :</label
+                            >
+                            <input
+                                v-model="model.client_identification_code"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >საკონტაქტო პირი :</label
+                            >
+                            <input
+                                v-model="model.contact_name"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >საკონტაქტო პირის ნომერი :</label
+                            >
+                            <input
+                                v-model="model.contact_number"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                    <div>
+                        <button
+                            @click="exit"
+                            type="button"
+                            class="btn btn-danger btn-block"
+                            style="margin-right: 5px"
+                        >
+                            <i class="far fa-window-close"></i> გასვლა
+                        </button>
+
+                        <button
+                            @click="send"
+                            type=""
+                            class="btn btn-success btn-block"
+                        >
+                            <i class="far fa-paper-plane"></i> გაგზავნა
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import Util from "Util";
+export default {
+    props: ["user", "url", "model", "additional", "setting"],
+    mounted() {},
+    computed: {
+        attrsLink() {
+            return this.setting.url.request.attrs.replace("new", this.model.id);
+        },
+    },
+    methods: {
+        redirect(link) {
+            return (location.href = link);
+        },
+
+        exit() {
+            return (location.href = this.setting.url.request.index.replace(
+                "api/",
+                ""
+            ));
+        },
+
+        send(e) {
+            e.preventDefault();
+
+            let action = document
+                .querySelector("form#render")
+                .getAttribute("action");
+            let token = document
+                .querySelector('meta[name="csrf-token"')
+                .getAttribute("content");
+
+            this.$http
+                .post(action, this.model, {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token,
+                })
+                .then(async (response) => {
+                    Util.useSwall(response).then((result) => {
+                        if (
+                            this.model.id == null &&
+                            response.data.success == true
+                        ) {
+                            window.location.replace(
+                                window.location.href.replace(
+                                    "null",
+                                    response.data.result.id
+                                )
+                            );
+                        } else if (result.value) {
+                            window.location.replace(
+                                this.setting.url.request.index.replace(
+                                    "api/",
+                                    ""
+                                )
+                            );
+                        }
+
+                        if (!response.data.success) {
+                            response.data.errs.map((item) =>
+                                this.$toast.error(item, {
+                                    position: "top-right",
+                                    duration: 7000,
+                                })
+                            );
+                        }
+                    });
+                })
+                .catch((e) => {
+                    Util.useSwall().then((result) => {
+                        this.$toast.error(e.response.statusText, {
+                            position: "top-right",
+                            duration: 7000,
+                        });
+                    });
+                });
+
+            return false;
+        },
+    },
+};
+</script>

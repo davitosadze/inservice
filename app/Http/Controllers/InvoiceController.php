@@ -38,6 +38,7 @@ class InvoiceController extends Controller
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
             ],
+            'model' => "invoices",
             'url' => [
                 'request' =>
                 ['index' => route('api.invoices.index'), 'edit' => route('invoices.edit', ['invoice' => "new"]), 'destroy' => route('api.invoices.destroy', ['invoice' => '__delete__'])],

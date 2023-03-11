@@ -31,6 +31,7 @@
         "@vuelidate/core": "^2.0.0-alpha.40",
         "@vuelidate/validators": "^2.0.0-alpha.28",
         "@vuepic/vue-datepicker": "^3.6.7",
+        "@yazan.alnughnugh/file-upload": "^1.0.10",
         "ag-grid-community": "^27.1.0",
         "ag-grid-vue3": "^27.1.0",
         "axios": "^0.26.1",
@@ -44,6 +45,7 @@
         "vue-media-upload": "^1.1.4",
         "vue-select": "^4.0.0-beta.3",
         "vue-toast-notification": "3.0",
+        "vue-upload-component": "^3.1.8",
         "vuedraggable": "^4.1.0"
     }
 }

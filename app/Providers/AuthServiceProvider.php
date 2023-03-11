@@ -27,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Invoice' => 'App\Policies\InvoicePolicy',
         'App\Models\Report' => 'App\Policies\ReportPolicy',
         'App\Models\Category' => 'App\Policies\CategoryPolicy',
+        'App\Models\Client' => 'App\Policies\ClientPolicy',
+
     ];
 
     /**
@@ -39,7 +41,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
-        
+
         Gate::after(function ($user, $ability) {
             return $user->hasRole('director') ? true : false;
         });

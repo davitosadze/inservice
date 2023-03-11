@@ -5,22 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 use Illuminate\Support\Facades\DB;
-
-
 use Illuminate\Support\Arr;
-
-use Illuminate\Support\Str;
 use App\Models\CategoryAttribute;
-
 use App\Models\Invoice;
 use App\Models\Purchaser;
 use App\Models\Attribute;
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
-
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
 class InvoiceController extends Controller
@@ -30,14 +22,28 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        return response(Invoice::with(['purchaser', 'category_attributes.category', 'user'])->orderBy('id', 'desc')->where('type', 'invoice')->get()->toArray());
+        $start_date = Carbon::now()->subDays(10);
+        $end_date = Carbon::now();
+
+        if ($request->start_date) {
+            $start_date = $request->start_date;
+            $end_date = $request->end_date;
+        }
+        $invoices = Invoice::with(['purchaser', 'category_attributes.category', 'user'])
+            ->orderBy('id', 'desc')
+            ->where('type', 'invoice')
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->get()
+            ->toArray();
+
+        return response($invoices);
     }
 
-    public function getUid ($invoice) {
-        return $invoice->year.'.'.$invoice->month.'.'.sprintf("%02d", $invoice->inovices_length).'.'.sprintf("%02d", auth()->user()->id);
+    public function getUid($invoice)
+    {
+        return $invoice->year . '.' . $invoice->month . '.' . sprintf("%02d", $invoice->inovices_length) . '.' . sprintf("%02d", auth()->user()->id);
     }
 
     /**
@@ -50,7 +56,7 @@ class InvoiceController extends Controller
     {
         //
 
-        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false,'errs' => [], 'result' => [], 'statusText' => "" ];
+        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
         $response = $request->id ? Gate::inspect('update', Invoice::find($request->id)) : Gate::inspect('create', Invoice::class);
 
@@ -66,7 +72,7 @@ class InvoiceController extends Controller
             if ($validator->fails()) {
                 $result['errs'] = $validator->errors()->all();
                 $result['statusText'] = 'შეცდომა, მონაცემების განახლებისას';
-                
+
                 return response()->json($result);
             };
 
@@ -92,7 +98,7 @@ class InvoiceController extends Controller
                     $user_invoices = $model->user->dates()->firstOrNew(['year' => date('y'), 'month' => date('m'), 'type' => 'invoice']);
 
                     if (!$user_invoices) {
-                        $user_invoices->fill(['year'=> date('y'), 'month' => date('m'), "inovices_length" => 1]);
+                        $user_invoices->fill(['year' => date('y'), 'month' => date('m'), "inovices_length" => 1]);
                     } else {
                         $user_invoices->inovices_length = $user_invoices->inovices_length + 1;
                     }
@@ -112,28 +118,32 @@ class InvoiceController extends Controller
                 $model->save();
 
                 $model->category_attributes()->sync(collect($request->category_attributes)
-                    ->filter(function ($value, $key) { return $value['category_id'] !== null /* array_key_exists('isSpecial', $value) */ ;})->mapWithKeys(function ($item, $key) {
+                    ->filter(function ($value, $key) {
+                        return $value['category_id'] !== null /* array_key_exists('isSpecial', $value) */;
+                    })->mapWithKeys(function ($item, $key) {
                         return [$item['id'] => $item['pivot']];
                     })->toArray());
-                    
+
                 $arr = array('attributable_id' => null, 'category_attribute_id' => null, 'attributable_type' => null, 'id' => null, 'title' => null, 'qty' => null, 'price' => null, 'service_price' => null, 'is_special' => null, 'calc' => null, 'evaluation_price' => null, 'evaluation_calc' => null, 'evaluation_service_price' => null, 'sort' => null, 'inter' => true, 'isInter' => true);
 
                 //&& !empty($value['name'])
                 collect($request->category_attributes)
-                    ->filter(function ($value, $key) { return $value['category_id'] == null;})
-                        ->each(function ($attribute) use ($model, $arr) {
+                    ->filter(function ($value, $key) {
+                        return $value['category_id'] == null;
+                    })
+                    ->each(function ($attribute) use ($model, $arr) {
 
-                            $filter = isset($attribute['id']) ? ['id' => $attribute['id']] : ['uuid' => $attribute['uuid']];
-                            $newAttribute = CategoryAttribute::firstOrNew($filter);
-                            $newAttribute->fill($attribute);
-                            $newAttribute->save();
+                        $filter = isset($attribute['id']) ? ['id' => $attribute['id']] : ['uuid' => $attribute['uuid']];
+                        $newAttribute = CategoryAttribute::firstOrNew($filter);
+                        $newAttribute->fill($attribute);
+                        $newAttribute->save();
 
-                            $pivot = $attribute['pivot'];
-                            unset($pivot['null']);
-                            $attributables = array_intersect_key($pivot, $arr);
+                        $pivot = $attribute['pivot'];
+                        unset($pivot['null']);
+                        $attributables = array_intersect_key($pivot, $arr);
 
-                            $model->category_attributes()->attach($newAttribute->id, $attributables);
-                });
+                        $model->category_attributes()->attach($newAttribute->id, $attributables);
+                    });
 
                 $model->fresh();
 
@@ -144,17 +154,14 @@ class InvoiceController extends Controller
                 $result = Arr::prepend($result, 'მონაცემები განახლდა წარმატებით', 'statusText');
 
                 DB::commit();
-               
-
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 $result = Arr::prepend($result, 'შეცდომა, მონაცემების განახლებისას', 'statusText');
-                $result = Arr::prepend($result, Arr::prepend($result['errs'], 'გაურკვეველი შეცდომა! '. $e->getMessage()), 'errs');
+                $result = Arr::prepend($result, Arr::prepend($result['errs'], 'გაურკვეველი შეცდომა! ' . $e->getMessage()), 'errs');
 
                 DB::rollBack();
             }
 
             return response()->json($result, Response::HTTP_CREATED);
-
         } else {
             $result['errs'][0] = $response->message();
             return response()->json($result);
@@ -188,9 +195,9 @@ class InvoiceController extends Controller
     {
         //
 
-        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false,'errs' => [], 'result' => [], 'statusText' => "" ];
+        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
-        $response = 
+        $response =
             $request->filled('invoice') ? Gate::inspect('delete', Invoice::find($request->invoice)) : Gate::inspect('create', Invoice::class);
 
         if ($response->allowed()) {
@@ -202,17 +209,15 @@ class InvoiceController extends Controller
                 $destroy = $destroy->delete();
 
                 if ($destroy) {
-                   $result['success'] = true;
-                   $result['result'] = $id;
-                   $result['status'] = Response::HTTP_CREATED;
+                    $result['success'] = true;
+                    $result['result'] = $id;
+                    $result['status'] = Response::HTTP_CREATED;
                 }
-
-            } catch(Exception $e) {
-                $result['errs'][0] = 'გაურკვეველი შეცდომა! '. $e->getMessage();
+            } catch (Exception $e) {
+                $result['errs'][0] = 'გაურკვეველი შეცდომა! ' . $e->getMessage();
             }
 
             return response()->json($result, Response::HTTP_CREATED);
-
         } else {
             $result['errs'][0] = $response->message();
             return response()->json($result);
@@ -233,7 +238,7 @@ class InvoiceController extends Controller
 
         if ($response->allowed()) {
 
-            $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false,'errs' => [], 'result' => [], 'statusText' => "" ];
+            $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
             try {
 
@@ -243,21 +248,19 @@ class InvoiceController extends Controller
                     $result['errs'][0] = 'არ გაქვთ უფლება';
                     return response()->json($result);
                 }
-                
+
                 $destroy = $destroy->delete();
 
                 if ($destroy) {
-                   $result['success'] = true;
-                   $result['result'] = $id;
-                   $result['status'] = Response::HTTP_CREATED;
+                    $result['success'] = true;
+                    $result['result'] = $id;
+                    $result['status'] = Response::HTTP_CREATED;
                 }
-
-            } catch(Exception $e) {
-                $result['errs'][0] = 'გაურკვეველი შეცდომა! '. $e->getMessage();
+            } catch (Exception $e) {
+                $result['errs'][0] = 'გაურკვეველი შეცდომა! ' . $e->getMessage();
             }
 
             return response()->json($result, Response::HTTP_CREATED);
-
         } else {
             $result['errs'][0] = $response->message();
             return response()->json($result);
