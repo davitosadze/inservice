@@ -8,24 +8,6 @@
                     <div style="">
                         <div class="form-group row">
                             <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >უნიკალური კოდი :</label
-                            >
-
-                            <div class="col-sm-9">
-                                <input
-                                    v-model="model.unique_id"
-                                    type="text"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
-                                />
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label
                                 for="staticEmail"
                                 class="col-sm-3 col-form-label"
                                 ><b>დასახელება :</b></label
