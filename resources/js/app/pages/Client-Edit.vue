@@ -94,7 +94,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >კონტრაქტის დაწყების თარიღი :</label
+                                >გარანტიის დაწყების თარიღი :</label
                             >
 
                             <div class="col-sm-9">
@@ -112,7 +112,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >კონტრაქტის დასრულების თარიღი :</label
+                                >გარანტიის დასრულების თარიღი :</label
                             >
 
                             <div class="col-sm-9">
@@ -130,7 +130,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >კონტრაქტის პერიოდი / დღე :</label
+                                >გარანტიის პერიოდი / დღე :</label
                             >
 
                             <div class="col-sm-9">
@@ -142,7 +142,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >ნაჩენი დღეების რ-ბა :</label
+                                >გარანტიის ნარჩენი დღეები :</label
                             >
 
                             <div class="col-sm-9">
@@ -154,7 +154,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >კონტრაქტის სტატუსი :</label
+                                >გარანტიის სტატუსი :</label
                             >
 
                             <div class="col-sm-9">
@@ -215,122 +215,133 @@
                             </div>
                         </div>
 
-                        <div v-if="this.model.id" class="step2">
-                            <hr />
-                            <div class="row">
-                                <div class="col-12">
-                                    <p class="lead">ანგარიში</p>
+                        <div v-if="can('კლიენტის სრულად ნახვა')">
+                            <div v-if="this.model.id" class="step2">
+                                <hr />
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="lead">ანგარიში</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <label
-                                    class="col-sm-4 col-form-label"
-                                    for="formGroupExampleInput"
-                                    >კონტრაქტის ჯამური ღირებულება:</label
-                                >
+                                <div class="form-group row">
+                                    <label
+                                        class="col-sm-4 col-form-label"
+                                        for="formGroupExampleInput"
+                                        >კონტრაქტის ჯამური ღირებულება:</label
+                                    >
 
-                                <div class="col-sm-4">
+                                    <div class="col-sm-4">
+                                        <input
+                                            v-model="model.total"
+                                            type="text"
+                                            class="form-control"
+                                            id="formGroupExampleInput"
+                                            placeholder=""
+                                        />
+                                    </div>
+                                </div>
+
+                                <div v-if="model.id" class="upload">
+                                    <upload-component
+                                        :input_id="`totalFiles${this.model.id}`"
+                                        upload_type="client_total_files"
+                                        :model="this.model"
+                                        :files="this.model.total_files"
+                                    ></upload-component>
+                                </div>
+                                <div v-else>
                                     <input
-                                        v-model="model.total"
-                                        type="text"
-                                        class="form-control"
-                                        id="formGroupExampleInput"
-                                        placeholder=""
+                                        type="file"
+                                        @change="onChange"
+                                        multiple
                                     />
                                 </div>
-                            </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-12 table-responsive">
+                                        <p class="lead">
+                                            შეთანხმებული დოკუმენტების თანხა
+                                        </p>
 
-                            <div v-if="model.id" class="upload">
-                                <upload-component
-                                    :input_id="`totalFiles${this.model.id}`"
-                                    upload_type="client_total_files"
-                                    :model="this.model"
-                                    :files="this.model.total_files"
-                                ></upload-component>
-                            </div>
-                            <div v-else>
-                                <input
-                                    type="file"
-                                    @change="onChange"
-                                    multiple
-                                />
-                            </div>
-                            <hr />
-                            <div class="row">
-                                <div class="col-12 table-responsive">
-                                    <p class="lead">
-                                        შეთანხმებული დოკუმენტების თანხა
-                                    </p>
-
-                                    <table
-                                        class="table table-striped"
-                                        style="background: #edebe4; color: #fff"
-                                    >
-                                        <thead>
-                                            <tr>
-                                                <th rowspan="2">თანხა</th>
-                                                <th
-                                                    v-if="this.model.id"
-                                                    rowspan="2"
-                                                >
-                                                    ფაილები
-                                                </th>
-                                                <th rowspan="2">ქმედება</th>
-                                            </tr>
-                                        </thead>
-                                        <draggable
-                                            v-model="expenses"
-                                            tag="tbody"
-                                            item-key="id"
-                                            :disabled="step"
+                                        <table
+                                            class="table table-striped"
+                                            style="
+                                                background: #edebe4;
+                                                color: #fff;
+                                            "
                                         >
-                                            <template #item="{ element }">
-                                                <request-single-expense
-                                                    @action_focus="try_focus"
-                                                    @action_blur="try_blur"
-                                                    @action_remove="remove"
-                                                    :keys="keys"
-                                                    :item="element"
-                                                />
-                                            </template>
-                                        </draggable>
-                                        <tr class="calculator"></tr>
-                                    </table>
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="2">თანხა</th>
+                                                    <th
+                                                        v-if="this.model.id"
+                                                        rowspan="2"
+                                                    >
+                                                        ფაილები
+                                                    </th>
+                                                    <th rowspan="2">ქმედება</th>
+                                                </tr>
+                                            </thead>
+                                            <draggable
+                                                v-model="expenses"
+                                                tag="tbody"
+                                                item-key="id"
+                                                :disabled="step"
+                                            >
+                                                <template #item="{ element }">
+                                                    <request-single-expense
+                                                        @action_focus="
+                                                            try_focus
+                                                        "
+                                                        @action_blur="try_blur"
+                                                        @action_remove="remove"
+                                                        :keys="keys"
+                                                        :item="element"
+                                                    />
+                                                </template>
+                                            </draggable>
+                                            <tr class="calculator"></tr>
+                                        </table>
 
-                                    <button
-                                        type="button"
-                                        @click="findSpecialAtribute('new')"
-                                        class="btn btn-sm btn-outline-warning"
-                                    >
-                                        <i class="fas fa-shield-alt"></i> ახალი
-                                    </button>
+                                        <button
+                                            type="button"
+                                            @click="findSpecialAtribute('new')"
+                                            class="btn btn-sm btn-outline-warning"
+                                        >
+                                            <i class="fas fa-shield-alt"></i>
+                                            ახალი
+                                        </button>
+                                    </div>
+                                    <!-- /.col -->
                                 </div>
-                                <!-- /.col -->
-                            </div>
 
-                            <hr />
+                                <hr />
 
-                            <div class="form-group row">
-                                <label
-                                    class="col-sm-4 col-form-label"
-                                    for="formGroupExampleInput"
-                                    >ნარჩენი ასათვისებელი თანხა:</label
-                                >
+                                <div class="form-group row">
+                                    <label
+                                        class="col-sm-4 col-form-label"
+                                        for="formGroupExampleInput"
+                                        >ნარჩენი ასათვისებელი თანხა:</label
+                                    >
 
-                                <span id="result">{{ totalQty }}</span>
-                            </div>
+                                    <span id="result">{{ totalQty }}</span>
+                                </div>
 
-                            <div v-if="model.id" class="upload">
-                                <upload-component
-                                    :input_id="`additionalFiles${this.model.id}`"
-                                    upload_type="client_additional_files"
-                                    :model="this.model"
-                                    :files="this.model.additional_files"
-                                ></upload-component>
+                                <div v-if="model.id" class="upload">
+                                    <upload-component
+                                        :input_id="`additionalFiles${this.model.id}`"
+                                        upload_type="client_additional_files"
+                                        :model="this.model"
+                                        :files="this.model.additional_files"
+                                    ></upload-component>
+                                </div>
                             </div>
                         </div>
-                        <div class="row no-print">
+                        <div
+                            v-if="can('კლიენტის რედაქტირება')"
+                            class="row no-print"
+                        >
                             <div class="col-12">
                                 <button
                                     :disabled="v$.model.$invalid"

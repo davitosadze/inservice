@@ -7,10 +7,12 @@ import VueToast from "vue-toast-notification";
 import RequestAttribute from "./app/components/RequestAttribute";
 import RequestExpense from "./app/components/RequestExpense";
 import { UploadMedia, UpdateMedia } from "./app/vendors/vue-media-upload";
+import LaravelPermissionToVueJS from "laravel-permission-to-vuejs";
 
 window.app = createApp({});
 app.use(VueAxios, axios);
 app.use(VueToast);
+app.use(LaravelPermissionToVueJS);
 
 window.createApp = createApp;
 

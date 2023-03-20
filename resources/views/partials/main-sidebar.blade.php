@@ -69,6 +69,16 @@
                             </li>
                         @endif
                     </ul>
+
+                    @if (Auth::user()->can('კლიენტის ნახვა'))
+                <li class="nav-item">
+                    <a href="{{ route('clients.index') }}"
+                        class="nav-link {{ request()->routeIs('clients.*') ? ' active' : '' }}">
+                        <i class="fab nav-icon fa-elementor"></i>
+                        <p>კლიენტები</p>
+                    </a>
+                </li>
+                @endif
                 </li>
 
                 @if (Auth::user()->can('isInter'))
@@ -100,15 +110,7 @@
                                     <p>მომხმარებლები</p>
                                 </a>
                             </li>
-                            {{-- @if (Auth::user()->can('კლიენტების ნახვა')) --}}
-                            {{-- <li class="nav-item">
-                                <a href="{{ route('clients.index') }}"
-                                    class="nav-link {{ request()->routeIs('clients.*') ? ' active' : '' }}">
-                                    <i class="fab nav-icon fa-elementor"></i>
-                                    <p>კლიენტები</p>
-                                </a>
-                            </li> --}}
-                            {{-- @endif --}}
+
                         </ul>
                     </li>
 

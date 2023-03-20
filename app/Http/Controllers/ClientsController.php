@@ -26,8 +26,6 @@ class ClientsController extends Controller
                     'index' => route('api.clients.index'),
                     'edit' => route('clients.edit', ['client' => "new"]), 'destroy' => route('api.clients.destroy', ['client' => "__delete__"])
                 ],
-                // 'neseted' =>
-                // ['attributes' => route('api.category-attributes.index', ['category' => '{category}'])]
             ]
         ];
 
