@@ -8,6 +8,24 @@
                     <div style="">
                         <div class="form-group row">
                             <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >უნიკალური კოდი :</label
+                            >
+
+                            <div class="col-sm-9">
+                                <input
+                                    v-model="model.unique_id"
+                                    type="text"
+                                    class="form-control"
+                                    id="formGroupExampleInput"
+                                    placeholder=""
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
                                 for="staticEmail"
                                 class="col-sm-3 col-form-label"
                                 ><b>დასახელება :</b></label
@@ -94,7 +112,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >გარანტიის დაწყების თარიღი :</label
+                                >კონტრაქტის დაწყების თარიღი :</label
                             >
 
                             <div class="col-sm-9">
@@ -112,7 +130,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >გარანტიის დასრულების თარიღი :</label
+                                >კონტრაქტის დასრულების თარიღი :</label
                             >
 
                             <div class="col-sm-9">
@@ -130,7 +148,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >გარანტიის პერიოდი / დღე :</label
+                                >კონტრაქტის პერიოდი / დღე :</label
                             >
 
                             <div class="col-sm-9">
@@ -142,7 +160,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >გარანტიის ნარჩენი დღეები :</label
+                                >კონტრაქტის ნარჩენი დღეები :</label
                             >
 
                             <div class="col-sm-9">
@@ -154,11 +172,83 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >გარანტიის სტატუსი :</label
+                                >კონტრაქტის სტატუსი :</label
                             >
 
                             <div class="col-sm-9">
                                 {{ contractStatus }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >გარანტიის დაწყების თარიღი :</label
+                            >
+
+                            <div class="col-sm-9">
+                                <input
+                                    v-model="model.guarantee_start_date"
+                                    type="date"
+                                    class="form-control"
+                                    id="formGroupExampleInput"
+                                    placeholder=""
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >გარანტიის დასრულების თარიღი :</label
+                            >
+
+                            <div class="col-sm-9">
+                                <input
+                                    v-model="model.guarantee_end_date"
+                                    type="date"
+                                    class="form-control"
+                                    id="formGroupExampleInput"
+                                    placeholder=""
+                                />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >გარანტიის პერიოდი / დღე :</label
+                            >
+
+                            <div class="col-sm-9">
+                                <span>{{ guaranteePeriod }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >გარანტიის ნარჩენი დღეები :</label
+                            >
+
+                            <div class="col-sm-9">
+                                <span>{{ daysLeftGuarantee }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >გარანტიის სტატუსი :</label
+                            >
+
+                            <div class="col-sm-9">
+                                {{ guaranteeStatus }}
                             </div>
                         </div>
 
@@ -417,6 +507,14 @@ export default {
             const diffInDays = Math.round(diffInTime / oneDay);
             return diffInDays ? diffInDays : 0;
         },
+        guaranteePeriod() {
+            const date1 = new Date(this.model.guarantee_start_date);
+            const date2 = new Date(this.model.guarantee_end_date);
+            const oneDay = 1000 * 60 * 60 * 24;
+            const diffInTime = date2.getTime() - date1.getTime();
+            const diffInDays = Math.round(diffInTime / oneDay);
+            return diffInDays ? diffInDays : 0;
+        },
         contractStatus() {
             const date1 = new Date();
             const date2 = new Date(this.model.contract_end_date);
@@ -426,9 +524,27 @@ export default {
             }
             return "მიმდინარე";
         },
+
+        guaranteeStatus() {
+            const date1 = new Date();
+            const date2 = new Date(this.model.guarantee_end_date);
+
+            if (date1 > date2) {
+                return "დასრულებული";
+            }
+            return "მიმდინარე";
+        },
         daysLeft() {
             const date1 = new Date();
             const date2 = new Date(this.model.contract_end_date);
+            const oneDay = 1000 * 60 * 60 * 24;
+            const diffInTime = date2.getTime() - date1.getTime();
+            const diffInDays = Math.round(diffInTime / oneDay);
+            return diffInDays ? diffInDays : 0;
+        },
+        daysLeftGuarantee() {
+            const date1 = new Date();
+            const date2 = new Date(this.model.guarantee_end_date);
             const oneDay = 1000 * 60 * 60 * 24;
             const diffInTime = date2.getTime() - date1.getTime();
             const diffInDays = Math.round(diffInTime / oneDay);

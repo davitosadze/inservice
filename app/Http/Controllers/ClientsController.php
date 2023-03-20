@@ -18,7 +18,7 @@ class ClientsController extends Controller
 
         $additional = [];
         $setting = [
-            'columns' => [['field' => "client_name", 'headerName' => 'კლიენტის სახელი'], ['field' => "identification_code", 'headerName' => 'კლიენტის მაიდენთიფიცირებელი კოდი'], ['headerName' => 'მომსახურების შიდა სახელი', 'field' => "service_name"], ['headerName' => 'კონტრაქტის მომსახურების ტიპი', 'field' => "contract_service_type"], ['headerName' => 'კონტრაქტის სტატუსი', 'field' => "contract_status"]],
+            'columns' => [['field' => "client_identification_code", 'headerName' => 'კლიენტის მაიდენთიფიცირებელი კოდი'], ['field' => "client_name", 'headerName' => 'კლიენტის სახელი'],  ['headerName' => 'მომსახურების შიდა სახელი', 'field' => "service_name"], ['headerName' => 'კონტრაქტის მომსახურების ტიპი', 'field' => "contract_service_type"], ['headerName' => 'კონტრაქტის სტატუსი', 'field' => "contract_status"]],
             'model' => ['target' => 'Client'],
             'url' => [
                 'request' =>

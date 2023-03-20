@@ -24,7 +24,10 @@ class Client extends Model implements HasMedia
         "contract_status",
         "contact_name",
         "contact_number",
-        "total"
+        "total",
+        "guarantee_start_date",
+        "guarantee_end_date",
+        "unique_id",
     ];
 
     protected $attributes = [
@@ -40,6 +43,9 @@ class Client extends Model implements HasMedia
         "contact_name" => "",
         "contact_number" => "",
         "total" => "",
+        "guarantee_start_date" => "",
+        "guarantee_end_date" => "",
+        "unique_id" => ""
     ];
 
 
