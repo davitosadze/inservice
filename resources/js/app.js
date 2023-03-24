@@ -82,6 +82,16 @@ app.component(
         )
     )
 );
+
+app.component(
+    "client-view",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'client-view'  */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/pages/Client-View"
+        )
+    )
+);
+
 app.component(
     "dashboard",
     defineAsyncComponent(() =>

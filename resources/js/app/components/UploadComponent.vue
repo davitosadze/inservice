@@ -23,7 +23,7 @@
                         >
                     </div>
 
-                    <div class="col-sm">
+                    <div v-if="!this.viewonly" class="col-sm">
                         <a
                             :class="{
                                 'dropdown-item': true,
@@ -44,7 +44,7 @@
                             >რედაქტირება</a
                         >
                     </div>
-                    <div class="col-sm">
+                    <div v-if="!this.viewonly" class="col-sm">
                         <a
                             :class="{
                                 'dropdown-item': true,
@@ -61,7 +61,7 @@
                     </div>
                 </div>
             </div>
-            <div class="example-btn">
+            <div v-if="!this.viewonly" class="example-btn">
                 <file-upload
                     :input-id="this.input_id"
                     :data="{
@@ -79,6 +79,7 @@
                     ref="upload"
                 >
                     <i class="fa fa-plus"></i>
+
                     ფაილების ატვირთვა
                 </file-upload>
             </div>
@@ -163,7 +164,14 @@ import useVuelidate from "@vuelidate/core";
 import Util from "Util";
 
 export default {
-    props: ["input_id", "model_id", "model", "files", "upload_type"],
+    props: [
+        "input_id",
+        "viewonly",
+        "model_id",
+        "model",
+        "files",
+        "upload_type",
+    ],
     components: {
         FileUpload,
     },

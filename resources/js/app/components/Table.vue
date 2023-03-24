@@ -11,7 +11,6 @@
         />
         <hr />
     </div>
-
     <ag-grid-vue
         style="width: 100%; height: 77vh"
         class="ag-theme-alpine"
@@ -40,6 +39,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 import { AgGridVue } from "ag-grid-vue3";
+
 function actionCellRenderer(params) {
     let eGui = document.createElement("div");
 
@@ -53,11 +53,27 @@ function actionCellRenderer(params) {
 
 function alterRenderer(params) {
     let eGui = document.createElement("div");
-
     eGui.innerHTML = `
 			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="edit" class="fas fa-edit"></i>
 			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
 		`;
+    return eGui;
+}
+
+function alterRendererClients(params) {
+    let eGui = document.createElement("div");
+    if ($can("კლიენტის რედაქტირება")) {
+        eGui.innerHTML = `
+			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
+			<i id="gela" style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="edit" class="fas fa-edit"></i>
+			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
+		`;
+    } else {
+        eGui.innerHTML = `
+			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
+			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
+		`;
+    }
     return eGui;
 }
 
@@ -78,6 +94,10 @@ function actionCellRendererOpen(params) {
         <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-pdf"></i>
 		`;
     return eGui;
+}
+
+function $can(permissionName) {
+    return Laravel.jsPermissions.permissions.indexOf(permissionName) !== -1;
 }
 
 app.component("Inter", {
@@ -104,11 +124,11 @@ export default {
     props: ["user", "additional", "name", "setting"],
     name: "alter-table",
     components: { AgGridVue, Datepicker },
-
     data: () => {
         return {
             rowData: null,
             gridApi: null,
+            canEdit: false,
             columnApi: null,
             date: null,
             dates: [subDays(new Date(), 10), new Date()],
@@ -116,53 +136,70 @@ export default {
         };
     },
     setup(props) {
-        let is_table_advanced = props.setting.is_table_advanced
-            ? [
-                  {
-                      headerName: "გადმოწერა",
-                      headerClass: "text-center",
-                      maxWidth: 117,
-                      filter: false,
-                      cellStyle: { textAlign: "center" },
-                      cellRenderer: actionCellRendererDownload,
-                      editable: false,
-                      colId: "gadawera",
-                  },
+        let is_table_advanced = [];
+        if (props.setting.model?.target != "Client") {
+            is_table_advanced = props.setting.is_table_advanced
+                ? [
+                      {
+                          headerName: "გადმოწერა",
+                          headerClass: "text-center",
+                          maxWidth: 117,
+                          filter: false,
+                          cellStyle: { textAlign: "center" },
+                          cellRenderer: actionCellRendererDownload,
+                          editable: false,
+                          colId: "gadawera",
+                      },
 
-                  {
-                      headerName: "გახსნა",
-                      headerClass: "text-center",
-                      maxWidth: 117,
-                      filter: false,
-                      cellStyle: { textAlign: "center" },
-                      cellRenderer: actionCellRendererOpen,
-                      editable: false,
-                      colId: "gaxsna",
-                  },
+                      {
+                          headerName: "გახსნა",
+                          headerClass: "text-center",
+                          maxWidth: 117,
+                          filter: false,
+                          cellStyle: { textAlign: "center" },
+                          cellRenderer: actionCellRendererOpen,
+                          editable: false,
+                          colId: "gaxsna",
+                      },
 
-                  {
-                      headerName: "ქმედება",
-                      headerClass: "text-center",
-                      maxWidth: 100,
-                      filter: false,
-                      cellStyle: { textAlign: "center" },
-                      cellRenderer: actionCellRenderer,
-                      editable: false,
-                      colId: "action",
-                  },
-              ]
-            : [
-                  {
-                      headerName: "ქმედება",
-                      headerClass: "text-center",
-                      maxWidth: 100,
-                      filter: false,
-                      cellStyle: { textAlign: "center" },
-                      cellRenderer: alterRenderer,
-                      editable: false,
-                      colId: "action",
-                  },
-              ];
+                      {
+                          headerName: "ქმედება",
+                          headerClass: "text-center",
+                          maxWidth: 100,
+                          filter: false,
+                          cellStyle: { textAlign: "center" },
+                          cellRenderer: actionCellRenderer,
+                          editable: false,
+                          colId: "action",
+                      },
+                  ]
+                : [
+                      {
+                          headerName: "ქმედება",
+                          headerClass: "text-center",
+                          maxWidth: 100,
+                          filter: false,
+                          cellStyle: { textAlign: "center" },
+                          cellRenderer: alterRenderer,
+                          editable: false,
+                          colId: "action",
+                      },
+                  ];
+        } else {
+            is_table_advanced = [
+                {
+                    headerName: "ქმედება",
+                    headerClass: "text-center",
+                    maxWidth: 100,
+                    filter: false,
+                    cellStyle: { textAlign: "center" },
+                    cellRenderer: alterRendererClients,
+                    editable: false,
+
+                    colId: "action",
+                },
+            ];
+        }
 
         return {
             defaultColDef: {
@@ -176,6 +213,7 @@ export default {
             },
             tooltipShowDelay: 1000,
             tooltipHideDelay: 3000,
+            model: "test",
             columnDefs: [...props.setting.columns, ...is_table_advanced],
             columnTypes: {
                 nonEditableColumn: { editable: false },
@@ -219,8 +257,6 @@ export default {
     mounted() {},
     methods: {
         handleDate(modelData) {
-            console.log(this.setting);
-
             const start_date = modelData[0];
             const end_date = modelData[1];
 
@@ -309,6 +345,13 @@ export default {
                 if (action === "edit") {
                     // params.event.target.dataset.action
                     let redirect = this.setting.url.request.edit.replace(
+                        "new",
+                        params.data.id
+                    );
+                    window.location.href = redirect;
+                } else if (action == "view") {
+                    // params.event.target.dataset.action
+                    let redirect = this.setting.url.request.show.replace(
                         "new",
                         params.data.id
                     );

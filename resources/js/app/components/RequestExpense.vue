@@ -1,13 +1,20 @@
 <template>
     <tr>
         <td>
-            <input
-                class="form-control"
-                type="text"
-                v-model="item.amount"
-                @focus="focus"
-                @blur="blur"
-            />
+            <div class="text-center" v-if="this.viewonly">
+                <label class="text-dark col-form-label">{{
+                    item.amount
+                }}</label>
+            </div>
+            <div v-else>
+                <input
+                    class="form-control"
+                    type="text"
+                    v-model="item.amount"
+                    @focus="focus"
+                    @blur="blur"
+                />
+            </div>
         </td>
 
         <td style="text-align: center">
@@ -15,11 +22,12 @@
                 :input_id="`expense${item.id}`"
                 upload_type="expense_files"
                 :model="item"
+                :viewonly="this.viewonly"
                 :files="item.media"
             ></upload-component>
         </td>
 
-        <td style="text-align: center">
+        <td v-if="!this.viewonly" style="text-align: center">
             <i
                 style="cursor: pointer; color: red; font-size: 1.2em"
                 @click="(event) => trigger_remove(event, item)"
@@ -35,7 +43,7 @@ import { watch, computed, getCurrentInstance } from "vue";
 import UploadComponent from "../components/UploadComponent.vue";
 
 export default {
-    props: ["item", "joinInTree", "keys", "model"],
+    props: ["item", "joinInTree", "keys", "viewonly", "model"],
     name: "request-single-attribute",
     components: {
         UploadComponent,

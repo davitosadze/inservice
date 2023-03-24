@@ -368,6 +368,7 @@
                                                         "
                                                         @action_blur="try_blur"
                                                         @action_remove="remove"
+                                                        :viewonly="false"
                                                         :keys="keys"
                                                         :item="element"
                                                     />
@@ -457,6 +458,14 @@ export default {
         this.m = this.attributeInit;
     },
     mounted() {
+        if (!this.can("კლიენტის რედაქტირება")) {
+            console.log(this.setting.url.request);
+            let redirect = this.setting.url.request.show.replace(
+                "new",
+                this.model.id
+            );
+            window.location.href = redirect;
+        }
         this.model.expenses.length ? [] : this.expenses;
         this.v$.model.$touch();
     },

@@ -71,7 +71,14 @@
     <script src="{{ mix('js/guest.js') }}" defer></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/vendors/lte-core.js') }}"></script>
-
+    <script type="text/javascript">
+        window.Laravel = {
+            csrfToken: "{{ csrf_token() }}",
+            jsPermissions: {!! auth()->check()
+                ? auth()->user()->jsPermissions()
+                : null !!}
+        }
+    </script>
     @stack('scripts')
 
 </body>

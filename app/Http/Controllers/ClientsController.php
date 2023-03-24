@@ -24,7 +24,9 @@ class ClientsController extends Controller
                 'request' =>
                 [
                     'index' => route('api.clients.index'),
-                    'edit' => route('clients.edit', ['client' => "new"]), 'destroy' => route('api.clients.destroy', ['client' => "__delete__"])
+                    'show' => route('clients.show', ['client' => "new"]),
+                    'edit' => route('clients.edit', ['client' => "new"]),
+                    'destroy' => route('api.clients.destroy', ['client' => "__delete__"])
                 ],
             ]
         ];
@@ -61,7 +63,25 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = Client::with(['expenses' => function ($query) {
+            $query->with('media');
+        }])->firstOrNew(['id' => $id]);
+        // return $model;
+        $this->authorize('view', $model);
+
+        $additional = [];
+        $setting = [
+
+            'columns' => [['field' => "client_name"]],
+            'url' => [
+                'request' =>
+                [
+                    'index' => route('api.clients.index')
+                ],
+            ]
+        ];
+
+        return view('clients.view', ['model' => $model, 'additional' => $additional, 'setting' => $setting]);
     }
 
     /**
@@ -85,7 +105,9 @@ class ClientsController extends Controller
             'url' => [
                 'request' =>
                 [
-                    'index' => route('api.clients.index')
+                    'index' => route('api.clients.index'),
+                    'show' => route('clients.show', ['client' => "new"]),
+
                 ],
             ]
         ];
