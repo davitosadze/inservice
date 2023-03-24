@@ -85,7 +85,7 @@ class ClientsController extends Controller
             'url' => [
                 'request' =>
                 [
-                    'index' => route('api.categories.index')
+                    'index' => route('api.clients.index')
                 ],
             ]
         ];

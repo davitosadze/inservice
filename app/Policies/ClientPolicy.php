@@ -47,7 +47,7 @@ class ClientPolicy
     public function create(User $user)
     {
         //
-        return ($user->can("კლიენტის შეცვლა") || $user->hasRole('director')) ? Response::allow() : Response::deny('You must be an administrator.');
+        return ($user->can("კლიენტის შექმნა") || $user->hasRole('director')) ? Response::allow() : Response::deny('You must be an administrator.');
     }
 
     /**
