@@ -28,12 +28,13 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 class ReservingExport extends DefaultValueBinder implements WithDrawings, FromView, WithEvents,  WithCustomValueBinder
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     private $res;
 
 
-    public function __construct($res) {
+    public function __construct($res)
+    {
         $this->res = $res;
     }
 
@@ -44,7 +45,7 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
         $drawing->setDescription('This is my logo');
         $drawing->setPath('./Logo-Test.png');
         $drawing->setWidth(150);
-        
+
         $drawing->setCoordinates('A1');
         $drawing->setOffsetX(17);
         $drawing->setOffsetY(17);
@@ -74,13 +75,13 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
     }
 
 
-    
+
     public function registerEvents(): array
     {
-        
+
 
         return [
-            AfterSheet::class    => function(AfterSheet $event) {
+            AfterSheet::class    => function (AfterSheet $event) {
 
                 $styleArray = [
                     'numberformat' => [
@@ -106,19 +107,16 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
 
                 $num = (string) count($this->res['category_attributes']) + 1 + 10;
 
-                $event->sheet->getDelegate()->getStyle('A10:U'.$num)->applyFromArray($styleArray);
-                $event->sheet->getDelegate()->getStyle('A'. $num +2 . ':U'. $num + 11 )->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A10:U' . $num)->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A' . $num + 2 . ':U' . $num + 11)->applyFromArray($styleArray);
 
                 // $event->sheet->getDelegate()->getStyle('A1:'.$delgate->getHighestColumn().''.$delgate->getHighestRow())->applyFromArray($styleArray);
             },
         ];
     }
-    
-    public static function beforeWriting(BeforeWriting $event) 
+
+    public static function beforeWriting(BeforeWriting $event)
     {
         //
     }
-    
-
-    
 }

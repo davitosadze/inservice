@@ -10,11 +10,11 @@
     <div v-if="loading">Loading...</div>
     <div v-else>
         <div class="container mt-5 text-center">
-            <GChart
+            <!-- <GChart
                 type="PieChart"
                 :options="evaluation_options"
                 :data="evaluations"
-            />
+            /> -->
             <GChart
                 type="PieChart"
                 :options="invoice_options"

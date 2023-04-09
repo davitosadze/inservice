@@ -60,7 +60,10 @@ class EvaluationController extends Controller
     public function excel($id)
     {
         $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        return Excel::download(new ReservingExport($model), 'users.xlsx');
+        $name = "app/public/test.xlsx";
+
+
+        return Excel::download(new ReservingExport($model), "Sales Register 2019 Cr.xlsx");
     }
 
     public function pdf(Request $request, $id)
