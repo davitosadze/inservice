@@ -80,10 +80,27 @@ function alterRendererClients(params) {
 function actionCellRendererDownload(params) {
     let eGui = document.createElement("div");
 
-    eGui.innerHTML = `
-    <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-download"></i>
-
+    if ($can("ექსელის გადმოწერა")) {
+        eGui.innerHTML = `
+            <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="excel" class="fas fa-file-excel"></i>
+            <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-download"></i>
 		`;
+    } else {
+        eGui.innerHTML = `
+            <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-download"></i>
+		`;
+    }
+
+    return eGui;
+}
+
+function actionCellRendererDownloadEvaluations(params) {
+    let eGui = document.createElement("div");
+
+    eGui.innerHTML = `
+            <i style="cursor:pointer; font-size:1.2em; margin-right:0.3em; color:red;" data-action="pdf" class="fas fa-file-download"></i>
+		`;
+
     return eGui;
 }
 
@@ -136,6 +153,10 @@ export default {
         };
     },
     setup(props) {
+        let canDownloadExcel = 0;
+        if (props.setting.model == "invoices") {
+            canDownloadExcel = 1;
+        }
         let is_table_advanced = [];
         if (props.setting.model?.target != "Client") {
             is_table_advanced = props.setting.is_table_advanced
@@ -146,7 +167,9 @@ export default {
                           maxWidth: 117,
                           filter: false,
                           cellStyle: { textAlign: "center" },
-                          cellRenderer: actionCellRendererDownload,
+                          cellRenderer: canDownloadExcel
+                              ? actionCellRendererDownload
+                              : actionCellRendererDownloadEvaluations,
                           editable: false,
                           colId: "gadawera",
                       },
@@ -381,8 +404,8 @@ export default {
                     this.remove(params, params.data.id, params.node.data);
                 }
             } else if (params.column.colId == "gadawera") {
+                console.log(this.setting.model);
                 let action = params.event.target.dataset.action;
-
                 if (action == "excel") {
                     window.location.href =
                         this.setting.url.nested.excel.replace(

@@ -29,12 +29,13 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 class InvoiceExport extends DefaultValueBinder implements WithDrawings, FromView, WithEvents,  WithCustomValueBinder
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     private $res;
 
 
-    public function __construct($res) {
+    public function __construct($res)
+    {
         $this->res = $res;
     }
 
@@ -45,7 +46,7 @@ class InvoiceExport extends DefaultValueBinder implements WithDrawings, FromView
         $drawing->setDescription('This is my logo');
         $drawing->setPath('./Logo-Test.png');
         $drawing->setWidth(150);
-        
+
         $drawing->setCoordinates('A1');
         $drawing->setOffsetX(17);
         $drawing->setOffsetY(17);
@@ -75,12 +76,12 @@ class InvoiceExport extends DefaultValueBinder implements WithDrawings, FromView
     }
 
 
-    
+
     public function registerEvents(): array
     {
 
         return [
-            AfterSheet::class    => function(AfterSheet $event) {
+            AfterSheet::class    => function (AfterSheet $event) {
 
                 $styleArray = [
                     'numberformat' => [
@@ -107,14 +108,14 @@ class InvoiceExport extends DefaultValueBinder implements WithDrawings, FromView
 
                 $num = (string) count($this->res['category_attributes']) + 1 + 10;
 
-                $event->sheet->getDelegate()->getStyle('A10:Y'.$num)->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('A10:Y' . $num)->applyFromArray($styleArray);
 
                 // $event->sheet->getDelegate()->getStyle('A1:'.$delgate->getHighestColumn().''.$delgate->getHighestRow())->applyFromArray($styleArray);
             },
         ];
     }
-    
-    public static function beforeWriting(BeforeWriting $event) 
+
+    public static function beforeWriting(BeforeWriting $event)
     {
         //
     }

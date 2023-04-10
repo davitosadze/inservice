@@ -37,6 +37,7 @@ class EvaluationController extends Controller
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
             ],
+            'model' => "evaluations",
             'url' => [
                 'request' =>
                 ['index' => route('api.evaluations.index'), 'edit' => route('evaluations.edit', ['evaluation' => "new"]), 'destroy' => route('api.evaluations.destroy', ['evaluation' => '__delete__'])],
@@ -60,8 +61,6 @@ class EvaluationController extends Controller
     public function excel($id)
     {
         $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        $name = "app/public/test.xlsx";
-
 
         return Excel::download(new ReservingExport($model), "Sales Register 2019 Cr.xlsx");
     }

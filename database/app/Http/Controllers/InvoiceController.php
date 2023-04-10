@@ -9,7 +9,7 @@ use App\Models\Invoice;
 use App\Models\Category;
 use App\Models\Purchaser;
 
-use App\Exports\InvoiceExport;
+use App\Exports\ReservingExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
@@ -59,7 +59,7 @@ class InvoiceController extends Controller
     public function excel($id)
     {
         $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        return Excel::download(new InvoiceExport($model), 'users.xlsx');
+        return Excel::download(new ReservingExport($model), 'users.xlsx');
     }
 
     public function pdf($id)

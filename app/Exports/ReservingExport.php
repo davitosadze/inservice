@@ -15,8 +15,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Events\AfterSheet;
-
-
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -25,7 +24,7 @@ use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class ReservingExport extends DefaultValueBinder implements WithDrawings, FromView, WithEvents,  WithCustomValueBinder
+class ReservingExport extends DefaultValueBinder implements WithDrawings, FromView, WithEvents,  WithCustomValueBinder, SkipsEmptyRows
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -44,11 +43,11 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
         $drawing->setName('Logo');
         $drawing->setDescription('This is my logo');
         $drawing->setPath('/Applications/XAMPP/xamppfiles/htdocs/Sites/inservice-fresh/public/inservice-logo.png');
-        $drawing->setWidth(150);
+        $drawing->setWidth(80);
 
-        $drawing->setCoordinates('A1');
+        $drawing->setCoordinates('H1');
         $drawing->setOffsetX(17);
-        $drawing->setOffsetY(17);
+        $drawing->setOffsetY(15);
 
         return $drawing;
     }
@@ -88,11 +87,11 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
                         'code' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2,
                     ],
                     'font' => [
-                        'bold' => true,
+                        'bold' => false
                     ],
                     'borders' => [
                         'allBorders' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE,
                         ],
 
                     ]
@@ -102,10 +101,14 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
 
                 $event->sheet->getDelegate()->getStyle('A1:H1')->applyFromArray($styleArray);
                 $event->sheet->getDelegate()->getStyle('J1:N1')->applyFromArray($styleArray);
+                $event->sheet->getDelegate()->getStyle('C3')->getFont()->setSize(30);
+                $event->sheet->getDelegate()->getStyle('A6:N6')->getFont()->setSize(8.5);
 
                 $event->sheet->getDelegate()->getStyle('A3:H8')->applyFromArray($styleArray);
 
                 $num = (string) count($this->res['category_attributes']) + 1 + 10;
+
+
 
                 $event->sheet->getDelegate()->getStyle('A10:U' . $num)->applyFromArray($styleArray);
                 $event->sheet->getDelegate()->getStyle('A' . $num + 2 . ':U' . $num + 11)->applyFromArray($styleArray);
