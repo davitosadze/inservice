@@ -42,7 +42,7 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
         $drawing = new Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('This is my logo');
-        $drawing->setPath('/Applications/XAMPP/xamppfiles/htdocs/Sites/inservice-fresh/public/inservice-logo.png');
+        $drawing->setPath('../public/inservice-logo.png');
         $drawing->setWidth(80);
 
         $drawing->setCoordinates('H1');
