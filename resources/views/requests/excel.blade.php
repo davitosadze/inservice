@@ -30,9 +30,9 @@
                 ];
             }
     
-            $result['prices'] += isset($item['pivot']['evaluation_price']) ? $item['pivot']['evaluation_price'] : 0;
-            $result['calc'] += isset($item['pivot']['evaluation_calc']) ? $item['pivot']['evaluation_calc'] : 0;
-            $result['service_prices'] += isset($item['pivot']['evaluation_service_price']) ? $item['pivot']['evaluation_service_price'] : 0;
+            $result['prices'] += isset($item['pivot']['price']) ? $item['pivot']['price'] : 0;
+            $result['calc'] += isset($item['pivot']['calc']) ? $item['pivot']['calc'] : 0;
+            $result['service_prices'] += isset($item['pivot']['service_price']) ? $item['pivot']['service_price'] : 0;
     
             return $result;
         });
