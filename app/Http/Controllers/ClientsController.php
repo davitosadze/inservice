@@ -20,6 +20,8 @@ class ClientsController extends Controller
         $setting = [
             'columns' => [['field' => "client_identification_code", 'headerName' => 'კლიენტის მაიდენთიფიცირებელი კოდი'], ['field' => "client_name", 'headerName' => 'კლიენტის სახელი'],  ['headerName' => 'მომსახურების შიდა სახელი', 'field' => "service_name"], ['headerName' => 'კონტრაქტის მომსახურების ტიპი', 'field' => "contract_service_type"], ['headerName' => 'კონტრაქტის სტატუსი', 'field' => "contract_status"]],
             'model' => ['target' => 'Client'],
+            "table_view_enabled" => true,
+
             'url' => [
                 'request' =>
                 [
@@ -79,6 +81,7 @@ class ClientsController extends Controller
                     'index' => route('api.clients.index')
                 ],
             ]
+
         ];
 
         return view('clients.view', ['model' => $model, 'additional' => $additional, 'setting' => $setting]);

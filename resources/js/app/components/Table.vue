@@ -11,21 +11,23 @@
         />
         <hr />
     </div>
-    <ag-grid-vue
-        style="width: 100%; height: 77vh"
-        class="ag-theme-alpine"
-        :columnDefs="columnDefs"
-        :defaultColDef="defaultColDef"
-        :rowData="rowData"
-        :paginationPageSize="17"
-        :pagination="true"
-        :columnTypes="columnTypes"
-        :tooltipShowDelay="tooltipShowDelay"
-        :tooltipHideDelay="tooltipHideDelay"
-        @grid-ready="onGridReady"
-        @cell-clicked="onCellClicked"
-    >
-    </ag-grid-vue>
+    <div style="flex: 1 1 auto; overflow: hidden" class="ag-theme-quartz">
+        <ag-grid-vue
+            style="height: 77vh"
+            class="ag-theme-alpine"
+            :columnDefs="columnDefs"
+            :defaultColDef="defaultColDef"
+            :rowData="rowData"
+            :paginationPageSize="17"
+            :pagination="true"
+            :columnTypes="columnTypes"
+            :tooltipShowDelay="tooltipShowDelay"
+            :tooltipHideDelay="tooltipHideDelay"
+            @grid-ready="onGridReady"
+            @cell-clicked="onCellClicked"
+        >
+        </ag-grid-vue>
+    </div>
 </template>
 
 <script>
@@ -158,7 +160,7 @@ export default {
             canDownloadExcel = 1;
         }
         let is_table_advanced = [];
-        if (props.setting.model?.target != "Client") {
+        if (!props.setting.table_view_enabled) {
             is_table_advanced = props.setting.is_table_advanced
                 ? [
                       {

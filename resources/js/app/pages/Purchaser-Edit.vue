@@ -52,6 +52,11 @@
                                 placeholder=""
                             />
                         </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput">აღწერა:</label>
+                            <ckeditor :editor="editor" v-model="model.description"></ckeditor>
+
+                         </div>
                     </div>
                 </div>
 
@@ -92,7 +97,18 @@
 
 <script>
 import Util from "Util";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+  import CKEditor from "@ckeditor/ckeditor5-vue"
+
 export default {
+    data() {
+        return {
+            editor: ClassicEditor,
+         };
+    },
+    components: {
+      ckeditor: CKEditor.component
+    },
     props: ["user", "url", "model", "additional", "setting"],
     mounted() {},
     computed: {

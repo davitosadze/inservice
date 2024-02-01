@@ -36,7 +36,7 @@ class PurchaserController extends Controller
     {
         //
 
-        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false,'errs' => [], 'result' => [], 'statusText' => "" ];
+        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
         $response = $request->id ? Gate::inspect('update', Purchaser::find($request->id)) : Gate::inspect('create', Purchaser::class);
 
         if ($response->allowed()) {
@@ -62,7 +62,7 @@ class PurchaserController extends Controller
 
                 return response()->json($result);
             };
-        
+
 
             $model = Purchaser::firstOrNew(['id' => $request->id]);
             $model->fill($request->all());
@@ -74,7 +74,6 @@ class PurchaserController extends Controller
             $result['statusText'] = 'მონაცემები განახლდა წარმატებით';
 
             return response()->json($result, Response::HTTP_CREATED);
-
         } else {
             $result['errs'][0] = $response->message();
             return response()->json($result);
@@ -104,6 +103,7 @@ class PurchaserController extends Controller
         //
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -114,7 +114,7 @@ class PurchaserController extends Controller
     {
         //
 
-        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false,'errs' => [], 'result' => [], 'statusText' => "" ];
+        $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
         $response = Gate::inspect('delete', Purchaser::find($id));
 
@@ -125,13 +125,12 @@ class PurchaserController extends Controller
                 $destroy = Purchaser::find($id)->delete();
 
                 if ($destroy) {
-                   $result['success'] = true;
-                   $result['result'] = $id;
-                   $result['status'] = Response::HTTP_CREATED;
+                    $result['success'] = true;
+                    $result['result'] = $id;
+                    $result['status'] = Response::HTTP_CREATED;
                 }
-
-            } catch(Exception $e) {
-                $result['errs'][0] = 'გაურკვეველი შეცდომა! '. $e->getMessage();
+            } catch (Exception $e) {
+                $result['errs'][0] = 'გაურკვეველი შეცდომა! ' . $e->getMessage();
             }
 
             return response()->json($result, Response::HTTP_CREATED);

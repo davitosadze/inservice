@@ -13,7 +13,6 @@ window.app = createApp({});
 app.use(VueAxios, axios);
 app.use(VueToast);
 app.use(LaravelPermissionToVueJS);
-
 window.createApp = createApp;
 
 app.component("v-select", vSelect);
@@ -54,6 +53,15 @@ app.component(
     defineAsyncComponent(() =>
         import(
             /*webpackChunkName: 'purchaser-edit' */ "./app/pages/Purchaser-Edit"
+        )
+    )
+);
+
+app.component(
+    "purchaser-view",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'purchaser-view' */ "./app/pages/Purchaser-View"
         )
     )
 );
@@ -112,6 +120,24 @@ app.component(
     "modal",
     defineAsyncComponent(() =>
         import(/*webpackChunkName: 'modal' */ "./app/components/Modal")
+    )
+);
+
+app.component(
+    "calendar-event-modal",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'modal' */ "./app/components/CalendarEventModal"
+        )
+    )
+);
+
+app.component(
+    "file-actions-modal",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'modal' */ "./app/components/FileActionsModal"
+        )
     )
 );
 

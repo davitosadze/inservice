@@ -1,0 +1,423 @@
+<template>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <!-- Main content -->
+
+                <div class="invoice p-3 mb-3">
+                    <div style="">
+                        <div class="form-group row">
+                            <label
+                                for="staticEmail"
+                                class="col-sm-3 col-form-label"
+                                ><b>მყიდველის სახელი:</b></label
+                            >
+                            <label class="col-sm-3 col-form-label">{{
+                                model.name
+                            }}</label>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput2"
+                                >დამატებითი სახელი:</label
+                            >
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 col-form-label">{{
+                                    model.subj_name
+                                }}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >მყიდველის მისამართი:</label
+                            >
+                            <label class="col-sm-3 col-form-label">{{
+                                model.subj_address
+                            }}</label>
+                        </div>
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >საიდენთიპიკაციო კოდი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 col-form-label">{{
+                                    model.identification_num
+                                }}</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >აღწერა:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p v-html="model.description"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >გალერეა:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <file-pond
+                                    @activatefile="onActivateFile"
+                                    @processfile="fileProcessed"
+                                    label-idle="Put Your Gallery Images Here"
+                                    name="purchaserGallery"
+                                    :server="`/uploadPurchaserGallery/${model.id}`"
+                                    ref="pond"
+                                    :allow-multiple="true"
+                                    :files="galleryImages"
+                                    :allowRemove="false"
+                                    :allowRevert="false"
+                                    @init="handleFilePondInitGallery"
+                                />
+                            </div>
+                        </div>
+
+                        <carousel
+                            :items-to-show="1"
+                            :autoplay="2000"
+                            :wrap-around="true"
+                        >
+                            <slide v-for="slide in galleryImages" :key="slide">
+                                <div class="carousel__item">
+                                    <img class="w-full" :src="slide.source" />
+                                </div>
+                            </slide>
+
+                            <template #addons>
+                                <navigation />
+                                <pagination />
+                            </template>
+                        </carousel>
+
+                        <div>
+                            <Qalendar
+                                :events="events"
+                                :config="config"
+                                :day-min-height="250"
+                                @date-was-clicked="handleDateClicked"
+                                @edit-event="handleEditEvent"
+                                @delete-event="handleDeleteEvent"
+                            />
+                            <calendar-event-modal
+                                @eventStored="fetchEvents"
+                                :is-visible="this.isModalVisible"
+                                :selected-date="this.selectedDate"
+                                :purchaser-id="this.model.id"
+                                :on-edit="this.isModalOnEdit"
+                                :event-id="this.eventId"
+                                @close-modal="closeModal"
+                                @add-event="addEvent"
+                            />
+                        </div>
+
+                        <div class="mt-5 row">
+                            <div
+                                v-for="subject in subjects"
+                                :key="subject.id"
+                                class="col-md-3"
+                            >
+                                <file-pond
+                                    @activatefile="onActivateFile"
+                                    @processfile="fileProcessed"
+                                    :name="subject.name + 'Files'"
+                                    :ref="subject.ref"
+                                    :label-idle="
+                                        'Drop ' +
+                                        subject.name +
+                                        ' files here...'
+                                    "
+                                    :server="`/purchaser/${this.model.id}/files`"
+                                    :allow-multiple="true"
+                                    :allowRemove="false"
+                                    :allowRevert="false"
+                                    :files="subject.files"
+                                    @init="handleFilePondInit(subject.ref)"
+                                />
+                            </div>
+                            <file-actions-modal
+                                :is-visible="isFileActionsModalVisible"
+                                :file="activatedFile"
+                                @fileDeleted="fetchAfterDelete"
+                                @close="closeModal"
+                            ></file-actions-modal>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import draggable from "../vendors/vuedraggable/src/vuedraggable";
+import useVuelidate from "@vuelidate/core";
+import FileUpload from "vue-upload-component";
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import vueFilePond, { setOptions } from "vue-filepond";
+import { Qalendar } from "qalendar";
+import CalendarEventModal from "../components/CalendarEventModal.vue";
+import FileActionsModal from "../components/FileActionsModal.vue";
+// Import FilePond styles
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+
+const FilePond = vueFilePond(FilePondPluginImagePreview);
+
+export default {
+    props: ["user", "model", "setting", "additional"],
+
+    components: {
+        FileUpload,
+        draggable,
+        FilePond,
+        Carousel,
+        Slide,
+        Pagination,
+        Navigation,
+        Qalendar,
+        CalendarEventModal,
+        FileActionsModal,
+    },
+    setup(props, context) {
+        return {
+            v$: useVuelidate(),
+        };
+    },
+    created() {
+        this.fetchPurchaserFiles();
+        this.fetchGalleryImages();
+        this.m = this.attributeInit;
+    },
+    mounted() {
+        this.fetchEvents();
+
+        this.v$.model.$touch();
+    },
+    data() {
+        return {
+            isModalVisible: false,
+            activatedFile: null,
+            isFileActionsModalVisible: false,
+            isModalOnEdit: false,
+            eventId: 0,
+            selectedDate: "",
+            events: [],
+            purchaserFiles: [],
+            galleryImages: [],
+            config: {
+                defaultMode: "month",
+                disableModes: ["week", "day"],
+            },
+            subjects: [],
+            selector: "",
+            step: false,
+            keys: [],
+            selectBuilder: [],
+        };
+    },
+    watch: {},
+    validations() {
+        return {
+            model: {},
+        };
+    },
+    computed: {
+        attributeInit() {
+            return this.model;
+        },
+    },
+    methods: {
+        handleFilePondInit(pond) {},
+        handleFilePondInitGallery(pond) {},
+
+        initializeSubjects() {
+            this.subjects = [
+                {
+                    id: 1,
+                    name: "Accounting",
+                    ref: "accountingPond",
+                    files: this.purchaserFiles
+                        ? this.purchaserFiles.AccountingFiles
+                        : [],
+                },
+                {
+                    id: 2,
+                    name: "Performance Acts",
+                    ref: "performanceActsPond",
+                    files: this.purchaserFiles
+                        ? this.purchaserFiles.performanceActsFiles
+                        : [],
+                },
+                {
+                    id: 3,
+                    name: "Technical Documentation",
+                    ref: "technicalDocumentationPond",
+                    files: this.purchaserFiles
+                        ? this.purchaserFiles.technicalDocumentationFiles
+                        : [],
+                },
+                {
+                    id: 4,
+                    name: "Additional Information",
+                    ref: "additionalInformationPond",
+                    files: this.purchaserFiles
+                        ? this.purchaserFiles.additionalInformationFiles
+                        : [],
+                },
+            ];
+        },
+        fetchAfterDelete() {
+            this.fetchGalleryImages();
+            this.fetchPurchaserFiles();
+        },
+        fetchPurchaserFiles() {
+            axios
+                .get(`/purchaser/${this.model.id}/files`)
+                .then((response) => {
+                    this.purchaserFiles = response.data;
+                    this.initializeSubjects();
+                })
+                .catch((error) => {
+                    console.error("Error fetching purchaser files", error);
+                });
+        },
+
+        fetchGalleryImages() {
+            axios
+                .get(`/purchaserGallery/${this.model.id}`)
+                .then((response) => {
+                    this.galleryImages = response.data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching purchaser files", error);
+                });
+        },
+
+        onActivateFile(file) {
+            this.activatedFile = file;
+            this.isFileActionsModalVisible = true;
+            this.fetchPurchaserFiles();
+        },
+
+        fileProcessed(item, file) {
+            this.fetchPurchaserFiles();
+            this.fetchGalleryImages();
+        },
+        handleDateClicked(date) {
+            this.isModalOnEdit = false;
+            this.isModalVisible = true;
+            this.eventId = 0;
+            this.selectedDate = date;
+        },
+        closeModal() {
+            this.isModalVisible = false;
+            this.isFileActionsModalVisible = false;
+        },
+        handleEditEvent(event_id) {
+            this.eventId = event_id;
+            this.isModalVisible = true;
+            this.isModalOnEdit = true;
+        },
+        handleDeleteEvent(event_id) {
+            const isConfirmed = window.confirm(
+                "Are you sure you want to delete this event?"
+            );
+
+            if (isConfirmed) {
+                axios
+                    .delete(`/calendar/events/${event_id}`)
+                    .then((response) => {
+                        console.log(
+                            "Event deleted successfully:",
+                            response.data
+                        );
+
+                        this.fetchEvents();
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting event:", error);
+                    });
+            } else {
+                console.log("Deletion canceled");
+            }
+        },
+        addEvent(event) {
+            this.fetchEvents();
+            this.isModalVisible = false;
+        },
+        fetchEvents() {
+            axios
+                .get(`/calendar/events/purchaser/${this.model.id}`)
+                .then((response) => {
+                    this.events = response.data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching events:", error);
+                });
+        },
+    },
+};
+</script>
+<style scoped>
+@import "../../../../node_modules/qalendar/dist/style.css";
+
+.carousel__item {
+    width: 40%;
+}
+.carousel__item img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s;
+    border-radius: 8px;
+}
+
+.carousel__viewport {
+    perspective: 1000px;
+}
+
+.carousel__slide {
+    opacity: 1;
+    transform: rotateY(0) scale(1);
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.carousel__slide--prev,
+.carousel__slide--next {
+    opacity: 0.9;
+}
+
+.carousel__slide--active {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Optional: Add a hover effect */
+.carousel__item:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+}
+
+.modal.fade.show {
+    backdrop-filter: blur(5px);
+}
+</style>

@@ -224,17 +224,6 @@ class ReportController extends Controller
                             });
                         };
                     });
-
-                    // print_r(ReportItem::whereIn('uuid', array_column($item, 'uuid'))->map());
-                    // $modelItem = $model->items()->firstOrNew(['id' => isset($item['id']) ? $item['id'] : null]);
-                    // $modelItem->fill($item);
-                    // if (isset($item['media'])  && !empty($item['media'])) {
-                    //     $from = public_path('tmp/uploads/');
-                    //     collect($item['media'])->map(function($single) use ($from, $modelItem) {
-                    //         $modelItem->addMedia($from . $single)->toMediaCollection('images');
-                    //     });
-                    // };
-                    // $modelItem->save();
                 });
             });
 

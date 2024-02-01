@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
-
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 
@@ -47,6 +46,19 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     Route::resource("purchasers", PurchaserController::class);
     Route::resource("purchasers.special-attributes", SpecialAttributeController::class);
+
+    Route::post("uploadPurchaserGallery/{purchaser_id}", [PurchaserController::class, 'uploadPurchaserGallery']);
+    Route::get("purchaserGallery/{purchaser_id}", [PurchaserController::class, 'purchaserGallery']);
+    Route::post("purchaser/{purchaser_id}/files", [PurchaserController::class, 'uploadFiles']);
+    Route::get("purchaser/{purchaser_id}/files", [PurchaserController::class, 'purchaserFiles']);
+    Route::delete("purchaser/media/{media_id}", [PurchaserController::class, 'deleteFiles']);
+
+    // Calendar
+    Route::post("calendar/add-event", [CalendarController::class, 'storeEvent']);
+    Route::get("calendar/events/purchaser/{purchaser_id}", [CalendarController::class, 'events']);
+    Route::get("calendar/events/{event}", [CalendarController::class, 'getEvent']);
+    Route::post("calendar/update-event/{event_id}", [CalendarController::class, 'updateEvent']);
+    Route::delete("calendar/events/{event}", [CalendarController::class, 'delete']);
 
     Route::resource("evaluations", EvaluationController::class);
 
