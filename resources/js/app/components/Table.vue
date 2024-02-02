@@ -11,7 +11,7 @@
         />
         <hr />
     </div>
-    <div style="flex: 1 1 auto; overflow: hidden" class="ag-theme-quartz">
+    <div style="flex: 1 1 auto; overflow: hidden">
         <ag-grid-vue
             style="height: 77vh"
             class="ag-theme-alpine"

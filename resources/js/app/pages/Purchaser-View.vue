@@ -77,7 +77,7 @@
                                 <file-pond
                                     @activatefile="onActivateFile"
                                     @processfile="fileProcessed"
-                                    label-idle="Put Your Gallery Images Here"
+                                    label-idle="გალერეა"
                                     name="purchaserGallery"
                                     :server="`/uploadPurchaserGallery/${model.id}`"
                                     ref="pond"
@@ -107,25 +107,49 @@
                             </template>
                         </carousel>
 
-                        <div>
-                            <Qalendar
-                                :events="events"
-                                :config="config"
-                                :day-min-height="250"
-                                @date-was-clicked="handleDateClicked"
-                                @edit-event="handleEditEvent"
-                                @delete-event="handleDeleteEvent"
-                            />
-                            <calendar-event-modal
-                                @eventStored="fetchEvents"
-                                :is-visible="this.isModalVisible"
-                                :selected-date="this.selectedDate"
-                                :purchaser-id="this.model.id"
-                                :on-edit="this.isModalOnEdit"
-                                :event-id="this.eventId"
-                                @close-modal="closeModal"
-                                @add-event="addEvent"
-                            />
+                        <div class="row">
+                            <div class="col">
+                                <!-- Scrollable object with items from events -->
+                                <div
+                                    class="col-sm"
+                                    style="overflow-y: auto; max-height: 300px"
+                                >
+                                    <ul class="list-group">
+                                        <li
+                                            v-for="event in events"
+                                            :key="event.id"
+                                            class="list-group-item"
+                                        >
+                                            {{
+                                                event.title +
+                                                " " +
+                                                event.time.start
+                                            }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-9 mt-1">
+                                <!-- Qalendar and calendar-event-modal components -->
+                                <Qalendar
+                                    :events="events"
+                                    :config="config"
+                                    :day-min-height="250"
+                                    @date-was-clicked="handleDateClicked"
+                                    @edit-event="handleEditEvent"
+                                    @delete-event="handleDeleteEvent"
+                                />
+                                <calendar-event-modal
+                                    @eventStored="fetchEvents"
+                                    :is-visible="this.isModalVisible"
+                                    :selected-date="this.selectedDate"
+                                    :purchaser-id="this.model.id"
+                                    :on-edit="this.isModalOnEdit"
+                                    :event-id="this.eventId"
+                                    @close-modal="closeModal"
+                                    @add-event="addEvent"
+                                />
+                            </div>
                         </div>
 
                         <div class="mt-5 row">
@@ -139,11 +163,7 @@
                                     @processfile="fileProcessed"
                                     :name="subject.name + 'Files'"
                                     :ref="subject.ref"
-                                    :label-idle="
-                                        'Drop ' +
-                                        subject.name +
-                                        ' files here...'
-                                    "
+                                    :label-idle="subject.geo_name"
                                     :server="`/purchaser/${this.model.id}/files`"
                                     :allow-multiple="true"
                                     :allowRemove="false"
@@ -255,6 +275,7 @@ export default {
                 {
                     id: 1,
                     name: "Accounting",
+                    geo_name: "აღრიცხვის ფაილები",
                     ref: "accountingPond",
                     files: this.purchaserFiles
                         ? this.purchaserFiles.AccountingFiles
@@ -263,6 +284,7 @@ export default {
                 {
                     id: 2,
                     name: "Performance Acts",
+                    geo_name: "შესრულების აქტები",
                     ref: "performanceActsPond",
                     files: this.purchaserFiles
                         ? this.purchaserFiles.performanceActsFiles
@@ -271,6 +293,7 @@ export default {
                 {
                     id: 3,
                     name: "Technical Documentation",
+                    geo_name: "ტექნიკური დოკუმენტაცია",
                     ref: "technicalDocumentationPond",
                     files: this.purchaserFiles
                         ? this.purchaserFiles.technicalDocumentationFiles
@@ -279,6 +302,7 @@ export default {
                 {
                     id: 4,
                     name: "Additional Information",
+                    geo_name: "დამატებითი ინფორმაცია/ფაილები",
                     ref: "additionalInformationPond",
                     files: this.purchaserFiles
                         ? this.purchaserFiles.additionalInformationFiles

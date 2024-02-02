@@ -54,15 +54,17 @@
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput">აღწერა:</label>
-                            <ckeditor :editor="editor" v-model="model.description"></ckeditor>
-
-                         </div>
+                            <ckeditor
+                                :editor="editor"
+                                v-model="model.description"
+                            ></ckeditor>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <div>
-                        <button
+                        <!-- <button
                             v-if="model.id"
                             @click="redirect(attrsLink)"
                             type="button"
@@ -70,7 +72,7 @@
                             style="margin-right: 5px"
                         >
                             ატრიბუტები
-                        </button>
+                        </button> -->
 
                         <button
                             @click="exit"
@@ -97,17 +99,17 @@
 
 <script>
 import Util from "Util";
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-  import CKEditor from "@ckeditor/ckeditor5-vue"
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from "@ckeditor/ckeditor5-vue";
 
 export default {
     data() {
         return {
             editor: ClassicEditor,
-         };
+        };
     },
     components: {
-      ckeditor: CKEditor.component
+        ckeditor: CKEditor.component,
     },
     props: ["user", "url", "model", "additional", "setting"],
     mounted() {},
