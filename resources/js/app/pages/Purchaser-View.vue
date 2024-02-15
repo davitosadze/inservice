@@ -92,12 +92,16 @@
 
                         <carousel
                             :items-to-show="1"
-                            :autoplay="2000"
+                            :autoplay="0"
                             :wrap-around="true"
                         >
                             <slide v-for="slide in galleryImages" :key="slide">
                                 <div class="carousel__item">
-                                    <img class="w-full" :src="slide.source" />
+                                    <img
+                                        @click="onSlideClick(slide.source)"
+                                        class="w-full"
+                                        :src="slide.source"
+                                    />
                                 </div>
                             </slide>
 
@@ -107,6 +111,15 @@
                             </template>
                         </carousel>
 
+                        <div v-if="isFullScreenOpen" class="full-screen-modal">
+                            <span class="close-button" @click="closeFullScreen"
+                                >&times;</span
+                            >
+                            <img
+                                class="full-screen-image"
+                                :src="fullScreenImageSrc"
+                            />
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <!-- Scrollable object with items from events -->
@@ -252,6 +265,8 @@ export default {
             selector: "",
             step: false,
             keys: [],
+            isFullScreenOpen: false,
+            fullScreenImageSrc: "",
             selectBuilder: [],
         };
     },
@@ -343,6 +358,14 @@ export default {
             this.fetchPurchaserFiles();
         },
 
+        closeFullScreen() {
+            this.isFullScreenOpen = false;
+            this.fullScreenImageSrc = "";
+        },
+        onSlideClick(imageSrc) {
+            this.isFullScreenOpen = true;
+            this.fullScreenImageSrc = imageSrc;
+        },
         fileProcessed(item, file) {
             this.fetchPurchaserFiles();
             this.fetchGalleryImages();
@@ -443,5 +466,31 @@ export default {
 
 .modal.fade.show {
     backdrop-filter: blur(5px);
+}
+.full-screen-modal {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-screen-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
 }
 </style>
