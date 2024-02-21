@@ -97,7 +97,6 @@ export default {
                     title: this.title,
                     purchaser_id: this.purchaserId,
                 });
-                alert("Success: Event Modifed successfully!");
                 this.$emit("eventStored");
 
                 this.isModalVisible = false;

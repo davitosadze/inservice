@@ -68,12 +68,12 @@
 
                         <div class="form-group row">
                             <label
-                                class="col-sm-3 col-form-label"
+                                class="col-sm-2 col-form-label"
                                 for="formGroupExampleInput"
                                 >გალერეა:</label
                             >
 
-                            <div class="col-sm-9">
+                            <div class="col-sm-4">
                                 <file-pond
                                     @activatefile="onActivateFile"
                                     @processfile="fileProcessed"
@@ -88,28 +88,31 @@
                                     @init="handleFilePondInitGallery"
                                 />
                             </div>
-                        </div>
-
-                        <carousel
-                            :items-to-show="1"
-                            :autoplay="0"
-                            :wrap-around="true"
-                        >
-                            <slide v-for="slide in galleryImages" :key="slide">
-                                <div class="carousel__item">
-                                    <img
-                                        @click="onSlideClick(slide.source)"
-                                        class="w-full"
-                                        :src="slide.source"
-                                    />
+                            <div class="col-sm-6">
+                                <div v-if="galleryImages.length > 0">
+                                    <div
+                                        v-for="(file, index) in galleryImages"
+                                        class="galleryImage"
+                                        style="
+                                            display: inline-block;
+                                            padding: 3px;
+                                        "
+                                        :key="index"
+                                    >
+                                        <img
+                                            @click="onSlideClick(file.source)"
+                                            :src="file.source"
+                                            alt="uploaded preview"
+                                            style="
+                                                max-width: 200px;
+                                                max-height: 200px;
+                                                margin-right: 10px;
+                                            "
+                                        />
+                                    </div>
                                 </div>
-                            </slide>
-
-                            <template #addons>
-                                <navigation />
-                                <pagination />
-                            </template>
-                        </carousel>
+                            </div>
+                        </div>
 
                         <div v-if="isFullScreenOpen" class="full-screen-modal">
                             <span class="close-button" @click="closeFullScreen"
