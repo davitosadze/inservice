@@ -16,10 +16,7 @@
 
     <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
 
-
-        <!-- /.card-body -->
         <div id="renderer">
 
 
