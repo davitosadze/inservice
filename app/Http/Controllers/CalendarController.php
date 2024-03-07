@@ -14,7 +14,7 @@ class CalendarController extends Controller
         $modifiedEvents = [];
 
         foreach ($events as $event) {
-            $content = "შინაარსი: " . $event->response?->content . "<br>" . "გამოსწორების მიზეზი: " . $event->response?->job_description;
+            $content = "შინაარსი: " . $event->response?->content . "<br><br>" . "გამოსწორების მიზეზი: " . $event->response?->job_description;
 
             $modifiedEvent = [
                 "title" => $event->title,
