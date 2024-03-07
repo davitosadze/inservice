@@ -24,9 +24,11 @@
                 </button>
             </div>
         </div>
-        <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)'
-            :setting='@json($setting)' name="alter-table"></layout>
+        <div id="renderer" class="mt-2">
 
+            <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)'
+                :setting='@json($setting)' name="alter-table"></layout>
+        </div>
     </section>
 
 </x-app-layout>

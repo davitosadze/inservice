@@ -20,6 +20,36 @@
                 :options="invoice_options"
                 :data="invoices"
             />
+            <GChart
+                type="PieChart"
+                :options="response_options"
+                :data="responses"
+            />
+
+            <div class="card mt-5 card-primary card-outline card-tabs">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>მყიდველი</th>
+                                <th v-for="(item, index) in this.systems">
+                                    {{ item.name }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(item, index) in filteredData"
+                                :key="index"
+                            >
+                                <td v-for="(response, index) in item">
+                                    {{ response === "Null" ? "0%" : response }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -35,18 +65,26 @@ export default {
     data() {
         return {
             date: null,
+            data: [],
             loading: true,
             evaluations: [],
+            systems: [],
+            responses: [],
             invoices: [],
         };
     },
     components: { Datepicker, GChart },
-
+    computed: {
+        filteredData() {
+            return this.data;
+        },
+    },
     methods: {
         handleDate(modelData) {
             this.loading = true;
             this.evaluations = [["Evaluations", "Evaluations"]];
             this.invoices = [["Invoices", "Invoices"]];
+            this.responses = [["Responses", "Responses"]];
 
             let statistics = [];
             const start_date = modelData[0];
@@ -57,11 +95,18 @@ export default {
             };
             window.axios.get("/api/statistics", { params }).then((res) => {
                 statistics = res.data;
+                this.systems = statistics.systems;
+                console.log(this.systems);
                 this.loading = false;
                 statistics.customers.map((i) => {
                     this.evaluations.push([i.name, i.evaluations]);
                     this.invoices.push([i.name, i.invoices]);
                 });
+                statistics.responses.map((i) => {
+                    this.responses.push([i.name, i.count]);
+                });
+                this.data = statistics.responsesPercentage;
+                console.log(this.data);
             });
         },
     },
@@ -96,10 +141,17 @@ export default {
                     position: "labeled",
                 },
             },
+            response_options: {
+                title: "რეაგირებები",
+                width: "100%",
+                height: 400,
+                legend: {
+                    position: "labeled",
+                },
+            },
         };
     },
     mounted() {
-        console.log(this.date);
         this.handleDate(this.date);
     },
 };

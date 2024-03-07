@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Evaluation;
 use App\Models\Invoice;
+use App\Models\Response;
+use App\Models\System;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller
 {
@@ -29,20 +32,41 @@ class StatisticController extends Controller
 
             foreach ($invoices as $invoice) {
                 $user_invoices_sum +=  $this->getItemSum($invoice->id, "invoice");
-                // $invoices_summary += $user_invoices_sum;
             }
 
             foreach ($evaluations as $evaluation) {
 
                 $user_evaluations_sum += $this->getItemSum($evaluation->id, "evaluation");
-                // $evaluations_summary += $user_evaluations_sum;
             }
             $userObject["invoices"] = (int)($user_invoices_sum);
             $userObject["evaluations"] = (int)($user_evaluations_sum);
             $stats["customers"][] = $userObject;
         }
-        // $stats["invoices_summary"] = $invoices_summary;
-        // $stats["evaluations_summary"] = $evaluations_summary;
+        $responses = Response::select('name', DB::raw('count(*) as count'))
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->groupBy('name')
+            ->get();
+
+
+        $responsesPercentage = $responses->map(function ($response) {
+            $systems = System::where("parent_id", NULL)->orderBy('id', 'desc')->get();
+            $data = [$response->name];
+
+            $responsesCount = Response::where('name', $response->name)->count();
+            foreach ($systems as $system) {
+                $count = Response::where('name', $response->name)->where('system_one', $system->id)->count();
+                $percentage = number_format(($count / $responsesCount) * 100, 0);
+                $data[] = $percentage ? $percentage . "%" : "Null";
+            }
+            return $data;
+        });
+
+        $systems = System::where("parent_id", NULL)->orderBy('id', 'desc')->get();
+
+
+        $stats["responses"] = $responses;
+        $stats["responsesPercentage"] = $responsesPercentage;
+        $stats["systems"] = $systems;
         return response()->json($stats, 200);
     }
 

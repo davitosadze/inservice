@@ -48,6 +48,16 @@ app.component(
         )
     )
 );
+
+app.component(
+    "insert-system",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'insert-system' */ "./app/components/InsertSystem"
+        )
+    )
+);
+
 app.component(
     "purchaser-edit",
     defineAsyncComponent(() =>

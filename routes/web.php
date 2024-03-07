@@ -16,6 +16,10 @@ use App\Http\Controllers\SpecialAttributeController;
 use App\Http\Controllers\CategoryAttributeController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PerformerController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\SystemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +32,11 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-
 Route::middleware(['auth', 'has_permission'])->group(function () {
 
     Route::get("/dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/test', [DashboardController::class, 'test']);
     Route::get("/profile", [UserController::class, 'profile'])->name('profile');
 
     Route::resource("users", UserController::class);
@@ -65,6 +69,19 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("reports", ReportController::class);
     Route::post("reports/uploads", [ReportController::class, 'upload']);
     Route::get("reports/uploads2/{report_item}", [ReportController::class, 'upload2']);
+
+    // Responses
+    Route::resource("responses", ResponseController::class);
+
+    // Regions
+    Route::resource("regions", RegionController::class);
+
+    // Performers
+    Route::resource("performers", PerformerController::class);
+
+    // Systems
+    Route::resource("systems", SystemController::class);
+
 
     Route::get("evaluations/pdf/{id}", [EvaluationController::class, 'pdf'])->name('evaluations.pdf');
     Route::get("evaluations/excel/{id}", [EvaluationController::class, 'excel'])->name('evaluations.excel');

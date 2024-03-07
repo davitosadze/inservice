@@ -153,7 +153,6 @@ export default {
                 .getAttribute("content");
 
             this.v$.m.$touch();
-
             this.$http
                 .post(action, this.m, {
                     "Content-Type": "application/json",

@@ -20,6 +20,7 @@ class CalendarController extends Controller
                     "start" => $event->date,
                     "end" => $event->date,
                 ],
+                "description" => $event->response?->content,
 
                 "isEditable" => true,
                 "id" => $event->id,

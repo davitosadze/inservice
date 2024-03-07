@@ -11,7 +11,11 @@ use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
 use App\Http\Controllers\API\ClientsController;
+use App\Http\Controllers\Api\PerformerController;
+use App\Http\Controllers\Api\RegionController;
+use App\Http\Controllers\Api\ResponseController;
 use App\Http\Controllers\API\StatisticController;
+use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\DashboardController;
 
 /*
@@ -41,6 +45,20 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::post("addClientExpense/{client_id}", [ClientsController::class, 'addClientExpense']);
     Route::delete("deleteClientExpense/{expense_id}", [ClientsController::class, 'deleteClientExpense']);
+
+    // Regions
+    Route::apiResource('regions', RegionController::class);
+
+    // Performers
+    Route::apiResource('performers', PerformerController::class);
+
+    // Responses
+    Route::get('responses/export', [ResponseController::class, "export"])->name("responses.export");
+    Route::apiResource('responses', ResponseController::class);
+
+    // Systems
+    Route::apiResource('systems', SystemController::class);
+    Route::get('systems/{id}/children', [SystemController::class, 'children']);
 
     Route::apiResource("evaluations", EvaluationController::class);
 

@@ -32,12 +32,12 @@ class CategoryAttributeController extends Controller
         $additional = ['category' => Category::find($request->category), /* 'last_num' => CategoryAttribute::latest('id')->first()->id */];
         $setting = [
             'url' => [
-                'request' => 
-                    [
-                        'index' => route('api.categories.index'),
-                        'exit' =>  route('categories.edit', ['category' => 'new']),
-                        'destroy' => route('api.category-attributes.destroy', ['category_attribute' => 'delete'])
-                    ]
+                'request' =>
+                [
+                    'index' => route('api.categories.index'),
+                    'exit' =>  route('categories.edit', ['category' => 'new']),
+                    'destroy' => route('api.category-attributes.destroy', ['category_attribute' => 'delete'])
+                ]
             ]
         ];
 
