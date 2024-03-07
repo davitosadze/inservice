@@ -14,13 +14,15 @@ class CalendarController extends Controller
         $modifiedEvents = [];
 
         foreach ($events as $event) {
+            $content = "შინაარსი: " . $event->response?->content . "<br>" . "გამოსწორების მიზეზი: " . $event->response?->job_description;
+
             $modifiedEvent = [
                 "title" => $event->title,
                 "time" => [
                     "start" => $event->date,
                     "end" => $event->date,
                 ],
-                "description" => $event->response?->content,
+                "description" => $event->response ? $content : "",
 
                 "isEditable" => true,
                 "id" => $event->id,
