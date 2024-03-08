@@ -83,6 +83,16 @@
                 @endif
                 </li>
 
+                @if (Auth::user()->can('რეაგირების ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('responses.index') }}"
+                            class="nav-link {{ request()->routeIs('responses.*') ? ' active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <p>რეაგირებები</p>
+                        </a>
+                    </li>
+                @endif
+
                 @if (Auth::user()->can('isInter'))
                     <li class="nav-item menu-is-opening menu-open">
                         <a href="#" class="nav-link">
@@ -113,49 +123,42 @@
                                 </a>
                             </li>
 
+
                         </ul>
                     </li>
+                @endif
 
-                    @if (Auth::user()->can('რეაგირების ნახვა'))
-                        <li class="nav-item">
-                            <a href="{{ route('responses.index') }}"
-                                class="nav-link {{ request()->routeIs('responses.*') ? ' active' : '' }}">
-                                <i class="fab nav-icon fa-elementor"></i>
-                                <p>რეაგირებები</p>
-                            </a>
-                        </li>
-                    @endif
+                @if (Auth::user()->can('რეგიონის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('regions.index') }}"
+                            class="nav-link {{ request()->routeIs('regions.*') ? ' active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <p>რეგიონები</p>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (Auth::user()->can('რეგიონის ნახვა'))
-                        <li class="nav-item">
-                            <a href="{{ route('regions.index') }}"
-                                class="nav-link {{ request()->routeIs('regions.*') ? ' active' : '' }}">
-                                <i class="fab nav-icon fa-elementor"></i>
-                                <p>რეგიონები</p>
-                            </a>
-                        </li>
-                    @endif
+                @if (Auth::user()->can('შემსრულებლის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('performers.index') }}"
+                            class="nav-link {{ request()->routeIs('performers.*') ? ' active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <p>შემსრულებლები</p>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (Auth::user()->can('შემსრულებლის ნახვა'))
-                        <li class="nav-item">
-                            <a href="{{ route('performers.index') }}"
-                                class="nav-link {{ request()->routeIs('performers.*') ? ' active' : '' }}">
-                                <i class="fab nav-icon fa-elementor"></i>
-                                <p>შემსრულებლები</p>
-                            </a>
-                        </li>
-                    @endif
+                @if (Auth::user()->can('სისტემის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('systems.index') }}"
+                            class="nav-link {{ request()->routeIs('systems.*') ? ' active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <p>სისტემები</p>
+                        </a>
+                    </li>
+                @endif
 
-                    @if (Auth::user()->can('სისტემის ნახვა'))
-                        <li class="nav-item">
-                            <a href="{{ route('systems.index') }}"
-                                class="nav-link {{ request()->routeIs('systems.*') ? ' active' : '' }}">
-                                <i class="fab nav-icon fa-elementor"></i>
-                                <p>სისტემები</p>
-                            </a>
-                        </li>
-                    @endif
-
+                @if (Auth::user()->can('isInter'))
                     <li class="nav-item">
                         <a href="" class="nav-link">
                             <i class="fas fa-wrench nav-icon"></i>
@@ -163,6 +166,7 @@
                         </a>
                     </li>
                 @endif
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
