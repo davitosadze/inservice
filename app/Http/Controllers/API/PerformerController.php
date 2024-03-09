@@ -13,7 +13,7 @@ class PerformerController extends Controller
 {
     public function index()
     {
-        return response(Performer::get()->toArray());
+        return response(Performer::where("is_hidden", 0)->get()->toArray());
     }
 
     public function destroy($id)
@@ -28,7 +28,8 @@ class PerformerController extends Controller
 
             try {
                 $performer = Performer::find($id);
-                $performer->delete();
+                $performer->is_hidden = 1;
+                $performer->save();
                 $result['success'] = true;
                 $result['status'] = Response::HTTP_CREATED;
                 $result = Arr::prepend($result, 'მონაცემები განახლდა წარმატებით', 'statusText');

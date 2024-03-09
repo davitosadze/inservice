@@ -165,6 +165,12 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    @if ($model->performer?->is_hidden)
+                                        <center><b>
+                                                არჩეული შემსრულებელი:
+                                                {{ $model->performer?->name . ' ბაზიდან წაშლილია' }}
+                                            </b></center>
+                                    @endif
                                 </div>
                             </div>
                             <div class="form-group">

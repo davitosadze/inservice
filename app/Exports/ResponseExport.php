@@ -6,12 +6,6 @@ use App\Exports\Sheets\ResponseBySystemExport;
 use App\Exports\Sheets\ResponseChartSheet;
 use App\Exports\Sheets\ResponseFirstSheet;
 use App\Exports\Sheets\ResponsePercentageSheet;
-use App\Models\Customer;
-use App\Models\Response;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithCharts;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class ResponseExport implements WithMultipleSheets

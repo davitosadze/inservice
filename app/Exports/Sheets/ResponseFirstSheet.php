@@ -4,12 +4,14 @@ namespace App\Exports\Sheets;
 
 use App\Models\Response;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithCharts;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class ResponseFirstSheet implements FromCollection, WithHeadings, WithMapping, WithTitle
+class ResponseFirstSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, WithEvents
 {
 
     private $from;
@@ -73,6 +75,32 @@ class ResponseFirstSheet implements FromCollection, WithHeadings, WithMapping, W
             "თარიღი",
             "სისტემა 1",
             "სისტემა 2"
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $cellRange = 'A1:O1'; // Assuming your headings are in A1:P1
+                foreach (range('A', 'P') as $columnID) {
+                    $event->sheet->getDelegate()->getColumnDimension($columnID)->setAutoSize(true);
+                }
+
+                $event->sheet->getStyle($cellRange)->applyFromArray([
+                    'font' => [
+                        'color' => ['rgb' => 'FFFFFF'], // white color text
+                        'size' => 12, // Font size in points
+
+                    ],
+                    'fill' => [
+                        'fillType' => Fill::FILL_SOLID,
+                        'startColor' => ['rgb' => '008000'], // green background color
+                    ],
+
+                ]);
+            },
         ];
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Exports\Sheets;
 
 use App\Models\Response;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Chart\Chart as ChartChart;
@@ -14,7 +12,6 @@ use PhpOffice\PhpSpreadsheet\Chart\Layout;
 use PhpOffice\PhpSpreadsheet\Chart\Legend;
 use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
 use PhpOffice\PhpSpreadsheet\Chart\Title;
-use PhpOffice\PhpSpreadsheet\Worksheet\Chart;
 
 class ResponseChartSheet implements WithCharts, WithTitle
 {

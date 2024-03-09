@@ -80,6 +80,29 @@ class ResponseController extends Controller
     public function store(Request $request)
     {
 
+        $validator = Validator::make($request->all(), [
+
+            'subject_name' => ['required'],
+            'subject_address' => ['required'],
+            'content' => ['required'],
+            'requisites' => ['required'],
+            'inventory_number' => ['required'],
+            'time' => ['required'],
+            'date' => ['required'],
+            'region_id' => ['required'],
+            'performer_id' => ['required'],
+            'name' => ['required'],
+            'identification_num' => ['required'],
+            'system_one' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            $result['errs'] = $validator->errors()->all();
+            $result['statusText'] = 'შეცდომა, მონაცემების განახლებისას';
+
+            return response()->json($result);
+        };
+
         $result = [
             'status' => HttpResponse::HTTP_FORBIDDEN,
             'success' => false,
@@ -174,7 +197,7 @@ class ResponseController extends Controller
         }
         $additional = [
             'purchasers' => Purchaser::get()->toArray(),
-            'performers' => Performer::get()->toArray(),
+            'performers' => Performer::where('is_hidden', 0)->get()->toArray(),
             'systems' => System::all(),
             'regions' => Region::get()->toArray()
         ];

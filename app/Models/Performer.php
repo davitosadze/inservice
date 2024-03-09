@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Performer extends Model
 {
-    protected $fillable = ["name", "user_id"];
+    protected $fillable = ["name", "user_id", "is_hidden"];
 
     public function user()
     {
