@@ -103,7 +103,7 @@ export default {
                     this.invoices.push([i.name, i.invoices]);
                 });
                 statistics.responses.map((i) => {
-                    this.responses.push([i.name, i.count]);
+                    this.responses.push([i.nameFormatted, i.count]);
                 });
                 this.data = statistics.responsesPercentage;
                 console.log(this.data);

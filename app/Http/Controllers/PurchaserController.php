@@ -32,6 +32,8 @@ class PurchaserController extends Controller
                 ]
             ],
             'is_table_advanced' => true,
+            'model' => "purchaser",
+
             "table_view_enabled" => true,
 
         ];

@@ -64,6 +64,7 @@ function alterRenderer(params) {
 
 function alterRendererWithView(params) {
     let eGui = document.createElement("div");
+
     if ($can("კლიენტის რედაქტირება")) {
         eGui.innerHTML = `
 			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
@@ -74,6 +75,29 @@ function alterRendererWithView(params) {
         eGui.innerHTML = `
 			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
 			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
+		`;
+    }
+    return eGui;
+}
+
+function alterRendererPurchasers(params) {
+    let eGui = document.createElement("div");
+
+    if ($can("მყიდველის ნახვა")) {
+        eGui.innerHTML = `
+        <i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
+ 		`;
+    }
+
+    if ($can("მყიდველის რედაქტირება")) {
+        eGui.innerHTML += `
+ 			<i id="gela" style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="edit" class="fas fa-edit"></i>
+ 		`;
+    }
+
+    if ($can("მყიდველის წაშლა")) {
+        eGui.innerHTML += `
+ 			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
 		`;
     }
     return eGui;
@@ -213,32 +237,61 @@ export default {
                   ];
         } else {
             if (props.setting.is_table_advanced) {
-                is_table_advanced = [
-                    {
-                        headerName: "გადმოწერა",
-                        headerClass: "text-center",
-                        maxWidth: 117,
-                        filter: false,
-                        cellStyle: { textAlign: "center" },
-                        cellRenderer: canDownloadExcel
-                            ? actionCellRendererDownload
-                            : actionCellRendererDownloadPdfOnly,
-                        editable: false,
-                        colId: "gadawera",
-                    },
+                if (props.setting.model == "purchaser") {
+                    is_table_advanced = [
+                        {
+                            headerName: "გადმოწერა",
+                            headerClass: "text-center",
+                            maxWidth: 117,
+                            filter: false,
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: canDownloadExcel
+                                ? actionCellRendererDownload
+                                : actionCellRendererDownloadPdfOnly,
+                            editable: false,
+                            colId: "gadawera",
+                        },
 
-                    {
-                        headerName: "ქმედება",
-                        headerClass: "text-center",
-                        maxWidth: 100,
-                        filter: false,
-                        cellStyle: { textAlign: "center" },
-                        cellRenderer: alterRendererWithView,
-                        editable: false,
+                        {
+                            headerName: "ქმედება",
+                            headerClass: "text-center",
+                            maxWidth: 100,
+                            filter: false,
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: alterRendererPurchasers,
+                            editable: false,
 
-                        colId: "action",
-                    },
-                ];
+                            colId: "action",
+                        },
+                    ];
+                } else {
+                    is_table_advanced = [
+                        {
+                            headerName: "გადმოწერა",
+                            headerClass: "text-center",
+                            maxWidth: 117,
+                            filter: false,
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: canDownloadExcel
+                                ? actionCellRendererDownload
+                                : actionCellRendererDownloadPdfOnly,
+                            editable: false,
+                            colId: "gadawera",
+                        },
+
+                        {
+                            headerName: "ქმედება",
+                            headerClass: "text-center",
+                            maxWidth: 100,
+                            filter: false,
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: alterRendererWithView,
+                            editable: false,
+
+                            colId: "action",
+                        },
+                    ];
+                }
             } else {
                 is_table_advanced = [
                     {

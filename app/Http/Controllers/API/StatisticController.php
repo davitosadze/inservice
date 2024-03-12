@@ -10,6 +10,7 @@ use App\Models\System;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatisticController extends Controller
 {
@@ -42,24 +43,40 @@ class StatisticController extends Controller
             $userObject["evaluations"] = (int)($user_evaluations_sum);
             $stats["customers"][] = $userObject;
         }
-        $responses = Response::select('name', DB::raw('count(*) as count'))
+
+        $responses = Response::select(
+            DB::raw("REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', '') as nameFormatted"),
+            DB::raw('COUNT(*) as count')
+        )
             ->whereBetween('created_at', [$start_date, $end_date])
-            ->groupBy('name')
+            ->groupBy('nameFormatted')
             ->get();
 
 
         $responsesPercentage = $responses->map(function ($response) {
-            $systems = System::where("parent_id", NULL)->orderBy('id', 'desc')->get();
-            $data = [$response->name];
+            $responsesDistincted = Response::select(
+                DB::raw("DISTINCT name"),
+                DB::raw("REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', '') as nameFormatted")
+            )->where(DB::raw("REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', '')"), $response->nameFormatted)
+                ->count();
 
-            $responsesCount = Response::where('name', $response->name)->count();
+            $systems = System::whereNull("parent_id")->orderBy('id', 'desc')->get();
+
+            $data = [$response->nameFormatted];
+
             foreach ($systems as $system) {
-                $count = Response::where('name', $response->name)->where('system_one', $system->id)->count();
-                $percentage = number_format(($count / $responsesCount) * 100, 0);
-                $data[] = $percentage ? $percentage . "%" : "Null";
+                $count = Response::where('system_one', $system->id)
+                    ->where(DB::raw("REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', '')"), $response->nameFormatted)
+                    ->count();
+
+                $percentage = $responsesDistincted > 0 ? number_format(($count / $responsesDistincted) * 100, 0) . "%" : "Null";
+
+                $data[] = $percentage;
             }
+
             return $data;
         });
+
 
         $systems = System::where("parent_id", NULL)->orderBy('id', 'desc')->get();
 
