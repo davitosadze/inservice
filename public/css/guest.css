@@ -695,6 +695,12 @@ select {
 .mb-0 {
   margin-bottom: 0px;
 }
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
 .block {
   display: block;
 }

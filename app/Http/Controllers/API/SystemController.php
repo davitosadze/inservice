@@ -30,8 +30,7 @@ class SystemController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name' => [
-                    'required',
-                    Rule::unique('systems')->ignore($request->id)
+                    'required'
                 ],
 
             ]);

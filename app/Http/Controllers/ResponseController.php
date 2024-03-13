@@ -196,7 +196,7 @@ class ResponseController extends Controller
             abort(404);
         }
         $additional = [
-            'purchasers' => Purchaser::get()->toArray(),
+            'purchasers' => Purchaser::whereNot('single', 1)->get()->toArray(),
             'performers' => Performer::where('is_hidden', 0)->get()->toArray(),
             'systems' => System::all(),
             'regions' => Region::get()->toArray()
