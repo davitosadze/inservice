@@ -160,6 +160,16 @@ app.component(
         )
     )
 );
+
+app.component(
+    "insert-act",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'alter-table' */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/components/InsertAct"
+        )
+    )
+);
+
 app.component(
     "report-table",
     defineAsyncComponent(() =>

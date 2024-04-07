@@ -23,7 +23,8 @@ class Response extends Model
         "name",
         "identification_num",
         "system_one",
-        "system_two"
+        "system_two",
+        "status"
     ];
 
     use HasFactory;
@@ -32,6 +33,11 @@ class Response extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function act()
+    {
+        return $this->hasOne(Act::class);
     }
 
     public function purchaser()
@@ -46,7 +52,7 @@ class Response extends Model
 
     public function performer()
     {
-        return $this->belongsTo(Performer::class, "performer_id");
+        return $this->belongsTo(User::class, "performer_id");
     }
 
     public function systemOne()

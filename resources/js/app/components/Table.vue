@@ -21,6 +21,7 @@
             :paginationPageSize="17"
             :pagination="true"
             :columnTypes="columnTypes"
+            :rowClassRules="rowClassRules"
             :tooltipShowDelay="tooltipShowDelay"
             :tooltipHideDelay="tooltipHideDelay"
             @grid-ready="onGridReady"
@@ -173,6 +174,7 @@ export default {
             gridApi: null,
             canEdit: false,
             columnApi: null,
+            rowClassRules: null,
             date: null,
             dates: [subDays(new Date(), 10), new Date()],
             isDatepickerDisabled: true,
@@ -362,7 +364,13 @@ export default {
             },
         };
     },
-    mounted() {},
+    mounted() {
+        this.rowClassRules = {
+            "rag-green": "data.status == 3",
+            "rag-red": "data.status == 1",
+            "rag-yellow": "data.status == 2",
+        };
+    },
     methods: {
         handleDate(modelData) {
             const start_date = modelData[0];
@@ -535,6 +543,15 @@ export default {
 </script>
 
 <style>
+.rag-red {
+    background-color: #d200004f !important;
+}
+.rag-green {
+    background-color: #6d93004a !important;
+}
+.rag-yellow {
+    background-color: #bcff004a !important;
+}
 .ag-header-cell-menu-button {
     display: none;
 }

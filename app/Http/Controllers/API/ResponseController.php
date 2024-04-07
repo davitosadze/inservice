@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Exports\ResponseExport;
 use App\Http\Controllers\Controller;
@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -18,7 +19,16 @@ class ResponseController extends Controller
 {
     public function index()
     {
-        return response(Response::with(['purchaser', 'region', 'user'])->get()->toArray());
+
+        if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
+            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
+                ->where("performer_id", Auth::user()->id)
+                ->get();
+        } else {
+            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')->get();
+        }
+
+        return response($responses->toArray());
     }
 
     public function export(Request $request)

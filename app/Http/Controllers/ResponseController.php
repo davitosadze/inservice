@@ -11,11 +11,15 @@ use App\Models\Purchaser;
 use App\Models\Region;
 use App\Models\Response;
 use App\Models\System;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ResponseController extends Controller
@@ -29,6 +33,8 @@ class ResponseController extends Controller
     {
         //
         $this->authorize('viewAny', Response::class);
+
+
 
         $additional = [];
         $setting = [
@@ -57,7 +63,7 @@ class ResponseController extends Controller
 
         ];
 
-        return view('responses.index', ['model' => Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')->get(), 'additional' => $additional, 'setting' => $setting]);
+        return view('responses.index', ['additional' => $additional, 'setting' => $setting]);
     }
 
 
@@ -84,11 +90,6 @@ class ResponseController extends Controller
 
             'subject_name' => ['required'],
             'subject_address' => ['required'],
-            'content' => ['required'],
-            'requisites' => ['required'],
-            'inventory_number' => ['required'],
-            'time' => ['required'],
-            'date' => ['required'],
             'region_id' => ['required'],
             'performer_id' => ['required'],
             'name' => ['required'],
@@ -116,18 +117,10 @@ class ResponseController extends Controller
         DB::beginTransaction();
 
         try {
-            $validator = Validator::make($request->all(), [
-                'subject_name' => 'required',
-                'subject_address' => 'required'
-            ]);
 
-            if ($validator->fails()) {
-                $result['errs'] = $validator->errors()->all();
-                $result['statusText'] = 'შეცდომა, მონაცემების განახლებისას';
-                return response()->json($result);
-            }
 
             $model = Response::firstOrNew(['id' => $request->id]);
+
             $purchaser = json_decode($request->purchaser);
 
             $model->fill($request->all());
@@ -140,6 +133,15 @@ class ResponseController extends Controller
             if (!$model->user) {
                 $model->user()->associate(auth()->user());
             }
+
+            if (!$model->id) {
+                $model->status = 1;
+            }
+
+            if ($model->status == 2) {
+                $model->status = 3;
+            }
+
             $model->save();
 
             $calendarModel = CalendarEvent::firstOrNew(['response_id' => $model->id]);
@@ -197,7 +199,9 @@ class ResponseController extends Controller
         }
         $additional = [
             'purchasers' => Purchaser::whereNot('single', 1)->get()->toArray(),
-            'performers' => Performer::where('is_hidden', 0)->get()->toArray(),
+            'performers' =>  User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
+                $query->whereIn('name', ['ინჟინერი']);
+            })->get()->toArray(),
             'systems' => System::all(),
             'regions' => Region::get()->toArray()
         ];

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CalendarController;
@@ -16,6 +17,9 @@ use App\Http\Controllers\SpecialAttributeController;
 use App\Http\Controllers\CategoryAttributeController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeviceBrandController;
+use App\Http\Controllers\DeviceTypeController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PerformerController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ResponseController;
@@ -33,6 +37,7 @@ use App\Http\Controllers\SystemController;
 */
 
 Route::middleware(['auth', 'has_permission'])->group(function () {
+
 
     Route::get("/dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
@@ -75,6 +80,20 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     // Regions
     Route::resource("regions", RegionController::class);
+
+    // Device Types
+    Route::resource("device-types", DeviceTypeController::class);
+
+    // Device Brands
+    Route::resource("device-brands", DeviceBrandController::class);
+
+    // Locations
+    Route::resource("locations", LocationController::class);
+
+    // Act
+    Route::resource("acts", ActController::class);
+    Route::get("acts/{id}/export", [ActController::class, "export"])->name('acts.export');
+
 
     // Performers
     Route::resource("performers", PerformerController::class);

@@ -110,46 +110,6 @@
             </div>
         </div>
     </div>
-    <!-- <div
-        class="modal fade show"
-        tabindex="-1"
-        role="dialog"
-        v-if="isEditModalOpen"
-    >
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Child System</h5>
-                    <button
-                        type="button"
-                        class="close"
-                        @click="closeModal"
-                        aria-label="Close"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form @submit.prevent="handleChildSubmit">
-                        <div class="form-group">
-                            <label for="childName">Child System Name:</label>
-                            <input
-                                v-model="childName"
-                                id="childName"
-                                type="text"
-                                placeholder="Enter child system name"
-                                class="form-control"
-                                required
-                            />
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            Save Changes
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </template>
 
 <script>
@@ -250,6 +210,7 @@ export default {
             let action = document
                 .querySelector("form#render")
                 .getAttribute("action");
+
             let token = document
                 .querySelector('meta[name="csrf-token"')
                 .getAttribute("content");

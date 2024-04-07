@@ -33,6 +33,7 @@
 
     <!-- Main content -->
     <section class="content">
+
         {{ Form::model($model, ['route' => ['responses.store', $model->id], 'id' => 'render']) }}
 
         <div id="renderer">
@@ -173,57 +174,61 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">შინაარსი:</label>
-                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">დანადგარის ლოკაციის ზუსტი აღწერა:</label>
-
-                                {{ Form::textarea('exact_location', $model->exact_location, ['placeholder' => 'დანადგარის ლოკაციის ზუსტი აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">ხარვეზის გამოსწორების მიზენით ჩატარებული სამუშაოების
-                                    დეტალური აღწერა:</label>
-
-                                {{ Form::textarea('job_description', $model->job_description, ['placeholder' => 'ხარვეზის გამოსწორების მიზენით ჩატარებული სამუშაოების დეტალური აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">დეფექტური აქტ(ებ)ის რეკვიზიტები</label>
-
-                                {{ Form::text('requisites', $model->requisites, ['placeholder' => 'დეფექტური აქტ(ებ)ის რეკვიზიტები', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">ინვენტარის ნომერი/აგრეგატის უნიკალური კოდი (არსებობის
-                                    შემთხვევაში)</label>
 
 
-                                {{ Form::text('inventory_number', $model->inventory_number, ['placeholder' => 'ინვენტარის ნომერი/აგრეგატის უნიკალური კოდი (არსებობის შემთხვევაში)', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+                            @if ($model->id && $model->status >= 2)
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">შინაარსი:</label>
+                                    {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
 
-                            </div>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="formGroupExampleInput">ფილიალში გამოცხადების დრო</label>
-                                {{ Form::text('time', $model->time, ['placeholder' => 'ფილიალში გამოცხადების დრო', 'class' => 'form-control']) }}
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">დანადგარის ლოკაციის ზუსტი აღწერა:</label>
 
-                            </div>
+                                    {{ Form::textarea('exact_location', $model->exact_location ? $model->exact_location : $model->act?->location?->name, ['placeholder' => 'დანადგარის ლოკაციის ზუსტი აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">ხარვეზის გამოსწორების მიზენით ჩატარებული
+                                        სამუშაოების
+                                        დეტალური აღწერა:</label>
+
+                                    {{ Form::textarea('job_description', $model->job_description, ['placeholder' => 'ხარვეზის გამოსწორების მიზენით ჩატარებული სამუშაოების დეტალური აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">დეფექტური აქტ(ებ)ის რეკვიზიტები</label>
+
+                                    {{ Form::text('requisites', $model->act?->id, ['placeholder' => 'დეფექტური აქტ(ებ)ის რეკვიზიტები', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">ინვენტარის ნომერი/აგრეგატის უნიკალური კოდი
+                                        (არსებობის
+                                        შემთხვევაში)</label>
 
 
-                            <div class="form-group mb-5">
-                                <label for="formGroupExampleInput">თარიღი</label>
-                                {{ Form::date('date', $model->date, ['class' => 'form-control']) }}
+                                    {{ Form::text('inventory_number', $model->inventory_number ? $model->inventory_number : $model->act?->inventory_code, ['placeholder' => 'ინვენტარის ნომერი/აგრეგატის უნიკალური კოდი (არსებობის შემთხვევაში)', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
 
-                            </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">ფილიალში გამოცხადების დრო</label>
+                                    {{ Form::text('time', $model->act?->created_at, ['placeholder' => 'ფილიალში გამოცხადების დრო', 'class' => 'form-control']) }}
+
+                                </div>
 
 
+                                <div class="form-group mb-5">
+                                    <label for="formGroupExampleInput">თარიღი</label>
+                                    {{ Form::date('date', $model->date, ['class' => 'form-control']) }}
+
+                                </div>
+                            @endif
 
 
                         </div>

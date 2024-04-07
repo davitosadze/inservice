@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ActController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,23 +12,15 @@ use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
 use App\Http\Controllers\API\ClientsController;
+use App\Http\Controllers\API\DeviceBrandController;
+use App\Http\Controllers\API\DeviceTypeController;
+use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\PerformerController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\ResponseController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\DashboardController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
@@ -49,6 +42,16 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Regions
     Route::apiResource('regions', RegionController::class);
 
+    // Device Types
+    Route::apiResource('device-types', DeviceTypeController::class);
+
+    // Device Brands
+    Route::apiResource('device-brands', DeviceBrandController::class);
+
+    // Locations
+    Route::apiResource('locations', LocationController::class);
+
+
     // Performers
     Route::apiResource('performers', PerformerController::class);
 
@@ -59,6 +62,10 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Systems
     Route::apiResource('systems', SystemController::class);
     Route::get('systems/{id}/children', [SystemController::class, 'children']);
+
+    // Acts
+    Route::apiResource('acts', ActController::class);
+
 
     Route::apiResource("evaluations", EvaluationController::class);
 
