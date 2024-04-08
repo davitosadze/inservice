@@ -544,13 +544,13 @@ export default {
 
 <style>
 .rag-red {
-    background-color: #d200004f !important;
+    background-color: #ec333880 !important;
 }
 .rag-green {
-    background-color: #6d93004a !important;
+    background-color: #6dbe4f80 !important;
 }
 .rag-yellow {
-    background-color: #bcff004a !important;
+    background-color: #fbb22f80 !important;
 }
 .ag-header-cell-menu-button {
     display: none;

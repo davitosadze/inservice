@@ -195,14 +195,14 @@
                                         სამუშაოების
                                         დეტალური აღწერა:</label>
 
-                                    {{ Form::textarea('job_description', $model->job_description, ['placeholder' => 'ხარვეზის გამოსწორების მიზენით ჩატარებული სამუშაოების დეტალური აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+                                    {{ Form::textarea('job_description', $model->job_description ? $model->job_description : $model->act?->note, ['placeholder' => 'ხარვეზის გამოსწორების მიზენით ჩატარებული სამუშაოების დეტალური აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
 
                                 </div>
 
                                 <div class="form-group">
                                     <label for="formGroupExampleInput">დეფექტური აქტ(ებ)ის რეკვიზიტები</label>
 
-                                    {{ Form::text('requisites', $model->act?->id, ['placeholder' => 'დეფექტური აქტ(ებ)ის რეკვიზიტები', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+                                    {{ Form::text('requisites', $model->act?->uuid, ['placeholder' => 'დეფექტური აქტ(ებ)ის რეკვიზიტები', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
 
                                 </div>
 

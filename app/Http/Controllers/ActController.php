@@ -27,7 +27,7 @@ class ActController extends Controller
             'url' => [
                 'request' =>
                 [
-                    'index' => route('api.acts.index')
+                    'index' => route('responses.index')
                 ],
             ]
         ];

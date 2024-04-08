@@ -14,10 +14,18 @@ app.use(VueAxios, axios);
 app.use(VueToast);
 app.use(LaravelPermissionToVueJS);
 window.createApp = createApp;
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
 
 app.component("v-select", vSelect);
 app.component("update-media", UpdateMedia);
-
+const vuetify = createVuetify({
+    theme: {
+        defaultTheme: "light",
+    },
+    components,
+});
+app.use(vuetify);
 // app.component('upload-media' , UploadMedia);
 
 /// Layout

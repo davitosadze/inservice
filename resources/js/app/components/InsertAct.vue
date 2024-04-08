@@ -6,66 +6,42 @@
                     <div class="tab-content" id="custom-tabs-three-tabContent">
                         <div class="form-group">
                             <label for="locationSelector">მდებაროება</label>
-                            <select
+                            <v-combobox
                                 v-model="v$.m.location_id.$model"
-                                class="form-control"
-                                id="locationSelector"
-                            >
-                                <option value="" disabled selected>
-                                    აირჩიეთ მდებაროება
-                                </option>
-                                <!-- Placeholder option -->
-                                <option
-                                    v-for="location in locations"
-                                    :value="location.id"
-                                >
-                                    {{ location.name }}
-                                </option>
-                            </select>
+                                :items="locations"
+                                item-title="name"
+                                item-value="id"
+                                label="ლოკაციები"
+                                :return-object="false"
+                            ></v-combobox>
                         </div>
 
                         <div class="form-group">
                             <label for="deviceTypeSelector"
                                 >მოწყობილობის სახეობა</label
                             >
-                            <select
+                            <v-combobox
+                                label="მოწყობილობის სახეობები"
                                 v-model="v$.m.device_type_id.$model"
-                                class="form-control"
-                                id="deviceTypeSelector"
-                            >
-                                <option value="" disabled selected>
-                                    აირჩიეთ მოწყობილობის სახეობა
-                                </option>
-                                <!-- Placeholder option -->
-                                <option
-                                    v-for="deviceType in deviceTypes"
-                                    :value="deviceType.id"
-                                >
-                                    {{ deviceType.name }}
-                                </option>
-                            </select>
+                                item-title="name"
+                                item-value="id"
+                                :items="this.deviceTypes"
+                                :return-object="false"
+                            ></v-combobox>
                         </div>
 
                         <div class="form-group">
                             <label for="deviceBrandSelector"
                                 >მოწყობილობის ბრენდი</label
                             >
-                            <select
+                            <v-combobox
+                                label="მოწყობილობის ბრენდები"
                                 v-model="v$.m.device_brand_id.$model"
-                                class="form-control"
-                                id="deviceBrandSelector"
-                            >
-                                <option value="" disabled selected>
-                                    აირჩიეთ მოწყობილობის ბრენდი
-                                </option>
-                                <!-- Placeholder option -->
-                                <option
-                                    v-for="deviceBrand in deviceBrands"
-                                    :value="deviceBrand.id"
-                                >
-                                    {{ deviceBrand.name }}
-                                </option>
-                            </select>
+                                item-title="name"
+                                item-value="id"
+                                :items="this.deviceBrands"
+                                :return-object="false"
+                            ></v-combobox>
                         </div>
 
                         <div class="form-group">
@@ -154,7 +130,7 @@
                                     <vueSignature
                                         class="border"
                                         ref="signature"
-                                        :defaultUrl="m.signature"
+                                        :defaultUrl="this.signature"
                                         :sigOption="option"
                                         :w="'400px'"
                                         :h="'200px'"
@@ -177,7 +153,7 @@
                                         <vueSignature
                                             class="border"
                                             ref="signature"
-                                            :defaultUrl="m.signature"
+                                            :defaultUrl="this.signature"
                                             :sigOption="option"
                                             :w="'100%'"
                                             :h="'100%'"
@@ -214,6 +190,8 @@
 
 <script>
 import Util from "Util";
+import "vuetify/styles";
+
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import vueSignature from "vue-signature";
@@ -235,6 +213,7 @@ export default {
             deviceTypes: [],
             m: this.model,
             response_id: 0,
+            signature: this.model.signature,
         };
     },
     setup() {
@@ -279,7 +258,10 @@ export default {
             );
         },
         toggleFullScreen() {
-            this.fullScreen = !this.fullScreen; // Toggle full screen mode
+            this.fullScreen = !this.fullScreen;
+            var signature = this.$refs.signature.save();
+            console.log(signature);
+            this.signature = signature;
         },
         fetchLocations() {
             const locationsEndpoint = "/api/locations";
@@ -392,6 +374,9 @@ export default {
 </script>
 
 <style>
+.v-field__input input {
+    border: none !important;
+}
 .full-screen-overlay {
     z-index: 0;
     position: fixed;

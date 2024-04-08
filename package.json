@@ -42,6 +42,7 @@
         "filepond-plugin-image-preview": "^4.6.12",
         "filepond-plugin-image-resize": "^2.0.10",
         "filepond-plugin-image-transform": "^3.8.7",
+        "jquery-editable-select": "^2.2.5",
         "laravel-permission-to-vuejs": "^3.0.1",
         "popper.js": "^1.16.1",
         "qalendar": "^3.7.0",
@@ -58,6 +59,7 @@
         "vue-toast-notification": "3.0",
         "vue-upload-component": "^3.1.8",
         "vue3-carousel": "^0.3.1",
-        "vuedraggable": "^4.1.0"
+        "vuedraggable": "^4.1.0",
+        "vuetify": "^3.5.14"
     }
 }

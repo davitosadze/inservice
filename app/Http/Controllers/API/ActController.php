@@ -4,7 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Act;
+use App\Models\DeviceBrand;
+use App\Models\DeviceType;
+use App\Models\Location;
 use App\Models\Response as ModelsResponse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -21,7 +25,6 @@ class ActController extends Controller
 
     public function store(Request $request)
     {
-
         $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
         $response = $request->id ? Gate::inspect('update', Act::find($request->id)) : Gate::inspect('create', Act::class);
@@ -39,6 +42,7 @@ class ActController extends Controller
 
             try {
 
+
                 $model = Act::firstOrNew(['id' => $request->id]);
                 $response_id = $request->get('response_id');
                 $response = ModelsResponse::find($response_id);
@@ -46,7 +50,46 @@ class ActController extends Controller
                 $response->save();
 
 
-                $model->fill($request->all());
+                $model->fill($request->except(['location_id', 'device_type_id', 'device_brand_id']));
+
+                $locationId = $request->get('location_id');
+
+                if (is_numeric($locationId)) {
+                    $model->location_id = $locationId;
+                } else {
+                    $location = Location::firstOrCreate(['name' => $locationId]);
+                    $model->location_id = $location->id;
+                }
+
+                if ($request->has('device_type_id')) {
+                    $deviceTypeId = $request->get('device_type_id');
+
+                    if (is_numeric($deviceTypeId)) {
+                        $model->device_type_id = $deviceTypeId;
+                    } else {
+                        $deviceType = DeviceType::firstOrCreate(['name' => $deviceTypeId]);
+                        $model->device_type_id = $deviceType->id;
+                    }
+                }
+
+                if ($request->has('device_brand_id')) {
+                    $deviceBrandId = $request->get('device_brand_id');
+
+                    if (is_numeric($deviceBrandId)) {
+                        $model->device_brand_id = $deviceBrandId;
+                    } else {
+                        $deviceBrand = DeviceBrand::firstOrCreate(['name' => $deviceBrandId]);
+                        $model->device_brand_id = $deviceBrand->id;
+                    }
+                }
+
+
+                if (!$model->uuid) {
+                    $todayActs = Act::count();
+                    $today = Carbon::today();
+                    $formattedDate = $today->format('ymd');
+                    $model->uuid = $formattedDate . "/" . $todayActs;
+                }
                 if (!$model->user) {
                     $model->user()->associate(auth()->user());
                 }

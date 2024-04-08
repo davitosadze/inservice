@@ -20,6 +20,7 @@ class Act extends Model
         'position',
         'additional_information',
         'signature',
+        'uuid'
     ];
 
     protected $attributes = [

@@ -45,7 +45,7 @@ class ActExport implements WithEvents
     protected function populateSheet($sheet)
     {
         $act = $this->act;
-        $heading = 'შპს "ინსერვისი" აქტი №' . $act->id;
+        $heading = 'შპს "ინსერვისი" აქტი №' . $act->uuid;
         $sheet->setCellValue("A1", $heading);
 
         $actDay = Carbon::parse($act->created_at)->day;
@@ -76,5 +76,8 @@ class ActExport implements WithEvents
 
         // Purchaser
         $sheet->setCellValue("C12", $act->response?->subject_name);
+
+        $client = $act->position . " , " . $act->client_name;
+        $sheet->setCellValue("C14", $client);
     }
 }
