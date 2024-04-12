@@ -46,12 +46,12 @@ class ActController extends Controller
 
         $model = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
 
-        $name = "ინვოისი.pdf";
+        $name = "აქტი#" . $act->id;
 
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model]);
 
 
-        return $pdf->stream($name);
+        return $pdf->download($name);
 
 
         // $act = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
