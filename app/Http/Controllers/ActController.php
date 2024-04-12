@@ -46,7 +46,7 @@ class ActController extends Controller
 
         $model = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
 
-        $name = "აქტი#" . $act->id;
+        $name = "აქტი#" . $model->id;
 
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model]);
 
