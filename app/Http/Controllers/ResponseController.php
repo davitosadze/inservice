@@ -29,9 +29,9 @@ class ResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
         $this->authorize('viewAny', Response::class);
 
 
@@ -53,13 +53,14 @@ class ResponseController extends Controller
             'url' => [
                 'request' =>
                 [
-                    'index' => route('api.responses.index'),
+                    'index' => route('api.responses.index', ["type" => $request->get('type')]),
                     'show' => route('responses.show', ['response' => "new"]),
                     'edit' => route('responses.edit', ['response' => "new"]),
                     'destroy' => route('api.responses.destroy', ['response' => "__delete__"])
                 ]
             ],
             "table_view_enabled" => true,
+            "type" => "gamarjoba"
 
         ];
 
@@ -140,6 +141,11 @@ class ResponseController extends Controller
 
             if ($model->status == 2) {
                 $model->status = 3;
+                $model->act()->update([
+                    "note" => $request->get("job_description"),
+                    "inventory_code" => $request->get("inventory_number"),
+                    "uuid" => $request->get("requisites"),
+                ]);
             }
 
             $model->save();

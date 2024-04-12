@@ -175,14 +175,12 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="formGroupExampleInput">შინაარსი:</label>
+                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
 
+                            </div>
                             @if ($model->id && $model->status >= 2)
-                                <div class="form-group">
-                                    <label for="formGroupExampleInput">შინაარსი:</label>
-                                    {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
-
-                                </div>
-
                                 <div class="form-group">
                                     <label for="formGroupExampleInput">დანადგარის ლოკაციის ზუსტი აღწერა:</label>
 

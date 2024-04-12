@@ -5,11 +5,15 @@ namespace App\Exports;
 use App\Models\Act;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Files\LocalTemporaryFile;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class ActExport implements WithEvents
 {
@@ -26,21 +30,35 @@ class ActExport implements WithEvents
     }
     public function registerEvents(): array
     {
+
         return [
+
             BeforeWriting::class => function (BeforeWriting $event) {
                 $this->configureSheet($event->writer);
 
                 $sheet = $event->writer->getSheetByIndex(0);
                 $this->populateSheet($sheet);
             },
+
         ];
     }
 
+    public function drawings(): array
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Example image');
+        $drawing->setDescription('This is an example image');
+        $drawing->setPath(public_path('inservice-logo.png')); // Path to your image file
+        $drawing->setHeight(100); // Set height
+        $drawing->setCoordinates('A20'); // Set coordinates where the image will be placed
+        return [$drawing];
+    }
     protected function configureSheet(Writer $writer)
     {
         $templateFile = new LocalTemporaryFile(storage_path(self::TEMPLATE_FILE));
         $writer->reopen($templateFile, Excel::XLSX);
     }
+
 
     protected function populateSheet($sheet)
     {

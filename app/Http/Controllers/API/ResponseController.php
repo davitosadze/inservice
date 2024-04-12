@@ -17,15 +17,23 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ResponseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
             $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
-                ->where("performer_id", Auth::user()->id)
+                ->where("performer_id", Auth::user()->id);
+        } else {
+            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc');
+        }
+
+        if ($request->get("type") == "done") {
+            $responses = $responses->where("status", ">=", 3)
+                ->orWhere("status", 0)
                 ->get();
         } else {
-            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')->get();
+            $responses = $responses->whereIn("status", [1, 2])
+                ->get();
         }
 
         return response($responses->toArray());

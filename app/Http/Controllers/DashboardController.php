@@ -8,14 +8,18 @@ use App\Models\Response;
 use App\Models\System;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-
-        return view('dashboard');
+        if (Auth::user()->hasRole("ინჟინერი")) {
+            return redirect("/responses?type=pending");
+        } else {
+            return view('dashboard');
+        }
     }
 
     public function test()

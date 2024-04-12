@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ActExport;
+use App\Exports\TestExport;
 use App\Models\Act;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ActController extends Controller
 {
@@ -37,12 +39,25 @@ class ActController extends Controller
 
 
 
+
+
     public function export($id)
     {
-        $act = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
-        $year = Carbon::parse($act->created_at)->year % 10;
 
-        $act_name = "აქტი#" . $act->id;
-        return Excel::download(new ActExport($act), '' . $act_name . '.xlsx');
+        $model = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
+
+        $name = "ინვოისი.pdf";
+
+        $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model]);
+
+
+        return $pdf->stream($name);
+
+
+        // $act = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
+        // $year = Carbon::parse($act->created_at)->year % 10;
+
+        // $act_name = "აქტი#" . $act->id;
+        // return Excel::download(new ActExport($act), '' . $act_name . '.xlsx');
     }
 }

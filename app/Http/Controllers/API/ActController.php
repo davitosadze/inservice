@@ -53,34 +53,18 @@ class ActController extends Controller
                 $model->fill($request->except(['location_id', 'device_type_id', 'device_brand_id']));
 
                 $locationId = $request->get('location_id');
-
-                if (is_numeric($locationId)) {
+                if ($request->has('location_id') && is_numeric($locationId)) {
                     $model->location_id = $locationId;
-                } else {
-                    $location = Location::firstOrCreate(['name' => $locationId]);
-                    $model->location_id = $location->id;
                 }
 
-                if ($request->has('device_type_id')) {
-                    $deviceTypeId = $request->get('device_type_id');
-
-                    if (is_numeric($deviceTypeId)) {
-                        $model->device_type_id = $deviceTypeId;
-                    } else {
-                        $deviceType = DeviceType::firstOrCreate(['name' => $deviceTypeId]);
-                        $model->device_type_id = $deviceType->id;
-                    }
+                $deviceTypeId = $request->get('device_type_id');
+                if ($request->has('device_type_id') && is_numeric($deviceTypeId)) {
+                    $model->device_type_id = $deviceTypeId;
                 }
 
-                if ($request->has('device_brand_id')) {
-                    $deviceBrandId = $request->get('device_brand_id');
-
-                    if (is_numeric($deviceBrandId)) {
-                        $model->device_brand_id = $deviceBrandId;
-                    } else {
-                        $deviceBrand = DeviceBrand::firstOrCreate(['name' => $deviceBrandId]);
-                        $model->device_brand_id = $deviceBrand->id;
-                    }
+                $deviceBrandId = $request->get('device_brand_id');
+                if ($request->has('device_brand_id') && is_numeric($deviceBrandId)) {
+                    $model->device_brand_id = $deviceBrandId;
                 }
 
 

@@ -9,12 +9,16 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link">
-                        <i class="fa fa-home nav-icon"></i>
-                        <p>მიმოხილვა</p>
-                    </a>
-                </li>
+                @if (!Auth::user()->hasRole('ინჟინერი'))
+                    <li class="nav-item">
+
+                        <a href="{{ route('dashboard') }}" class="nav-link">
+                            <i class="fa fa-home nav-icon"></i>
+                            <p>მიმოხილვა</p>
+                        </a>
+
+                    </li>
+                @endif
                 <li class="nav-item menu-is-opening menu-open">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
@@ -120,15 +124,26 @@
                 @endif
 
                 @if (Auth::user()->can('რეაგირების ნახვა'))
+                    @if (!Auth::user()->hasRole('ინჟინერი'))
+                        <li class="nav-item">
+                            <a href="{{ route('responses.index', ['type' => 'done']) }}"
+                                class="nav-link  {{ request()->routeIs('responses.*') && request()->query('type') == 'done' ? 'active' : '' }}">
+                                <i class="fab nav-icon fa-elementor"></i>
+                                <p>რეაგირებები</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
+                @if (Auth::user()->can('რეაგირების ნახვა'))
                     <li class="nav-item">
-                        <a href="{{ route('responses.index') }}"
-                            class="nav-link {{ request()->routeIs('responses.*') ? ' active' : '' }}">
+                        <a href="{{ route('responses.index', ['type' => 'pending']) }}"
+                            class="nav-link {{ request()->routeIs('responses.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
-                            <p>რეაგირებები</p>
+                            <span>განსახილველი <br> რეაგირებები</span>
                         </a>
                     </li>
                 @endif
-
 
                 @if (Auth::user()->can('რეაგირების რედაქტირება'))
                     <li class="nav-item menu-is-opening">
