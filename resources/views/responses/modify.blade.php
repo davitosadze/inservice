@@ -175,6 +175,32 @@
                                 </div>
                             </div>
 
+
+                            <div class="mb-3">
+                                <div class="row mb-2" style="align-items: center;">
+                                    <div class="col-4"><b>მოწყობილობის დასახელება :</b></div>
+                                    <div class="col-8">
+                                        <select name="device_type" class="form-control performer">
+                                            <option disabled selected>--- აირჩეთ ---</option>
+
+
+                                            <option @selected($model->device_type == 1) value='1'>
+                                                კონდიცირება
+                                            </option>
+
+                                            <option @selected($model->device_type == 2) value='2'>
+                                                ვენტილაცია
+                                            </option>
+
+                                            <option @selected($model->device_type == 3) value='3'>
+                                                გათბობა
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="formGroupExampleInput">შინაარსი:</label>
                                 {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}

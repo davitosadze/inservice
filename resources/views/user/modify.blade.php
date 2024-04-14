@@ -71,6 +71,37 @@
 
                             <hr />
 
+                            <label for="name">მიუთითეთ თუ მენეჯერია</label>
+                            <hr>
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input @checked($model->manager_type == 0) value="0" class="form-check-input"
+                                        type="radio" name="manager_type" id="group1radio1">
+                                    <label class="form-check-label" for="group1radio1">არცერთი</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input @checked($model->manager_type == 1) value="1" class="form-check-input"
+                                        type="radio" name="manager_type" id="group1radio1">
+                                    <label class="form-check-label" for="group1radio1">რეაგირება</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input @checked($model->manager_type == 2) value="2" class="form-check-input"
+                                        type="radio" name="manager_type" id="group1radio2">
+                                    <label class="form-check-label" for="group1radio2">სარემონტო სამუშაო</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input @checked($model->manager_type == 3) value="3" class="form-check-input"
+                                        type="radio" name="manager_type" id="group1radio3">
+                                    <label class="form-check-label" for="group1radio3">გეგმიური სასერვისო
+                                        სამუშაო</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input @checked($model->manager_type == 4) value="4" class="form-check-input"
+                                        type="radio" name="manager_type" id="group1radio4">
+                                    <label class="form-check-label" for="group1radio4">სხვა ტიპის სამუშაო</label>
+                                </div>
+                            </div>
+                            <hr>
                             <label for="name">როლები</label>
 
                             <table class="table table-striped">

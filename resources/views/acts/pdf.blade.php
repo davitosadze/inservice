@@ -189,13 +189,13 @@
             </td>
             <td
                 style="width:53pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
-                <p class="inner-text">
+                <p style="font-size:15px; padding-top:0px;" class="inner-text">
                     {{ \Carbon\Carbon::parse($model->created_at)->day }}
                 </p>
             </td>
             <td
                 style="width:62pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
-                <p class="inner-text">
+                <p style="font-size:15px; padding-top:0px;" class="inner-text">
 
                     {{ \Carbon\Carbon::parse($model->created_at)->month }}
                 </p>
@@ -237,7 +237,9 @@
             </td>
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->user?->manager_type == 1 ? '✓' : '' }}
+                </p>
             </td>
             <td
                 style="width:54pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
@@ -259,7 +261,9 @@
             </td>
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->user?->manager_type == 2 ? '✓' : '' }}
+                </p>
             </td>
             <td
                 style="width:80pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
@@ -268,7 +272,9 @@
             </td>
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->device_type == 1 ? '✓' : '' }}
+                </p>
             </td>
             <td
                 style="width:54pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
@@ -278,7 +284,7 @@
             <td
                 style="width:53pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
                 <p class="inner-text">
-                    {{ $model->response?->created_at }}
+                    {{ $model->created_at }}
                 </p>
             </td>
             <td
@@ -300,7 +306,9 @@
             </td>
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->user?->manager_type == 3 ? '✓' : '' }}
+                </p>
             </td>
             <td
                 style="width:80pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
@@ -309,7 +317,9 @@
             </td>
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->device_type == 2 ? '✓' : '' }}
+                </p>
             </td>
             <td
                 style="width:54pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
@@ -331,7 +341,9 @@
             </td>
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->user?->manager_type == 4 ? '✓' : '' }}
+                </p>
             </td>
             <td
                 style="width:80pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
@@ -340,7 +352,9 @@
             </td>
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                <p style="text-indent: 0pt;text-align: left;"><br /></p>
+                <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    {{ $model->response?->device_type == 3 ? '✓' : '' }}
+                </p>
             </td>
             <td style="width:221pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
                 colspan="4">
@@ -422,21 +436,21 @@
 
         <tr>
             <td>დამკვეთი: <b>{{ $model->response?->subject_name }}</b></td>
-            <td>შემსრულებელი: <b>{{ $model->response?->performer?->name }}</b></td>
+            <td style="text-align: right">შემსრულებელი: <b>{{ $model->response?->performer?->name }}</b></td>
         </tr>
         <tr>
-            <td>პოზიცია, სახელი-გვარი გარკვევით: <b>{{ $model->position . ' , ' . $model->client_name }}</b></td>
-            <td>სახელი-გვარი გარკვევით:</td>
+            <td><b>{{ $model->position . ' , ' . $model->client_name }}</b></td>
+            <td style="text-align: right">ხელმოწერა:</td>
+
         </tr>
         <tr>
-            <td>ხელმოწერა:
-            </td>
             <td>ხელმოწერა:</td>
 
         </tr>
         <tr>
-            <td>უსაფრთხოების ადმინისტრატორი, პასუხისმგებელი პირი</td>
             <td><img src="{{ $model->signature }}" width="250px" alt=""></td>
+            <td style="text-align: right"><img src="{{ $model->response?->user?->signature() }}" width="250px"
+                    alt=""></td>
         </tr>
 
     </table>

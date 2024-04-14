@@ -51,7 +51,7 @@ class ActController extends Controller
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model]);
 
 
-        return $pdf->download($name);
+        return $pdf->stream($name);
 
 
         // $act = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();

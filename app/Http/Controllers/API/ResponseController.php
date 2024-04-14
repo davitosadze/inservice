@@ -22,6 +22,7 @@ class ResponseController extends Controller
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
             $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
+                ->where("status", 1)
                 ->where("performer_id", Auth::user()->id);
         } else {
             $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc');

@@ -29,7 +29,8 @@ class User extends Authenticatable implements HasMedia
         'name',
         'email',
         'password',
-        'inter_password'
+        'inter_password',
+        'manager_type'
     ];
 
     /**
@@ -80,5 +81,13 @@ class User extends Authenticatable implements HasMedia
     public function invoices()
     {
         return $this->hasMany(Invoice::class, "user_id");
+    }
+
+    public function signature()
+    {
+        if ($this->media('*')->first() === null) {
+            return;
+        }
+        return $this->getMedia('*')->first()?->original_url;
     }
 }
