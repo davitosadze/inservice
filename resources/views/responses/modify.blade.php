@@ -246,12 +246,12 @@
 
                                 </div>
 
-
+                                {{-- 
                                 <div class="form-group mb-5">
                                     <label for="formGroupExampleInput">თარიღი</label>
                                     {{ Form::date('date', $model->date, ['class' => 'form-control']) }}
 
-                                </div>
+                                </div> --}}
                             @endif
 
 

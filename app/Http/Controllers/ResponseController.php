@@ -158,7 +158,7 @@ class ResponseController extends Controller
                 "content" => $request->content,
                 "purchaser_id" => $purchaser->id,
                 "response_id" => $model->id,
-                "date" => Carbon::parse($request->date)
+                "date" => Carbon::now()
             ])->save();
 
 

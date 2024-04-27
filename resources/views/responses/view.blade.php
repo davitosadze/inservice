@@ -122,11 +122,6 @@
                                         დრო:</b></label>
                                 <label class="col-sm-3 col-form-label">{{ $response->time }}</label>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="staticEmail" class="col-sm-3 col-form-label"><b>თარიღი:</b></label>
-                                <label class="col-sm-3 col-form-label">{{ $response->date }}</label>
-                            </div>
                         @endif
 
                         <div class="form-group row">
