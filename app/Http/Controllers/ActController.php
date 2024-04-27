@@ -29,7 +29,9 @@ class ActController extends Controller
             'url' => [
                 'request' =>
                 [
-                    'index' => route('responses.index')
+                    'index' => route('responses.index', ["type" => "pending"]),
+                    'exit' =>  route('responses.index', ["type" => "pending"]),
+
                 ],
             ]
         ];

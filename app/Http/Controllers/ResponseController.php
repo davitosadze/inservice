@@ -222,7 +222,7 @@ class ResponseController extends Controller
             $children = $selectedSystem->children;
         }
 
-        $setting = ['url' => ['request' => ['index' => route('responses.index')]]];
+        $setting = ['url' => ['request' => ['index' => route('responses.index', ["type" => "pending"])]]];
 
         return view('responses.modify', ['model' => $model, 'additional' => $additional, 'setting' => $setting, 'selectedSystemId' => $selectedSystemId, 'selectedChildId' => $selectedChildId, 'children' => $children]);
     }

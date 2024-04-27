@@ -86,12 +86,11 @@
                             <label class="col-sm-3 col-form-label">{{ $response->performer?->name }}</label>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="staticEmail" class="col-sm-3 col-form-label"><b>შინაარსი:</b></label>
+                            <label class="col-sm-9 col-form-label">{{ $response->content }}</label>
+                        </div>
                         @if ($response->id && $response->status >= 2)
-                            <div class="form-group row">
-                                <label for="staticEmail" class="col-sm-3 col-form-label"><b>შინაარსი:</b></label>
-                                <label class="col-sm-9 col-form-label">{{ $response->content }}</label>
-                            </div>
-
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label"><b>დანადგარის ლოკაციის ზუსტი
                                         აღწერა:</b></label>

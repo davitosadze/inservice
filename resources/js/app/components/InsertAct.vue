@@ -325,12 +325,7 @@ export default {
                             this.model.id == null &&
                             response.data.success == true
                         ) {
-                            window.location.replace(
-                                window.location.href.replace(
-                                    "new",
-                                    response.data.result.id
-                                )
-                            );
+                            window.location.href = "/responses?type=pending";
                         } else if (result.value) {
                             window.location.replace(
                                 this.setting.url.request.index.replace(
@@ -367,7 +362,7 @@ export default {
         },
 
         exit() {
-            return (window.location.href = this.act);
+            alert("Ha");
         },
     },
 };

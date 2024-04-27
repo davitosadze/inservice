@@ -21,10 +21,13 @@
 
 <body class="font-sans antialiased hold-transition sidebar-mini layout-fixed">
 
-    @include('partials.navigation')
-    @include('partials.main-sidebar')
+    @role('ინჟინერი')
+    @else
+        @include('partials.navigation')
+        @include('partials.main-sidebar')
+    @endrole
 
-    <main class="content-wrapper" id="app">
+    <main class="@role('ინჟინერი') @else content-wrapper @endrole" id="app">
         @if (Session::has('flashMessage'))
             <div class="alert alert-dismissible {{ Session::has('flashType') ? 'alert-' . session('flashType') : '' }}">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -74,9 +77,7 @@
     <script type="text/javascript">
         window.Laravel = {
             csrfToken: "{{ csrf_token() }}",
-            jsPermissions: {!! auth()->check()
-                ? auth()->user()->jsPermissions()
-                : null !!}
+            jsPermissions: {!! auth()->check() ? auth()->user()->jsPermissions() : null !!}
         }
     </script>
     @stack('scripts')
