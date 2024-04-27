@@ -28,7 +28,7 @@ class ActPolicy
 
     public function update(User $user, Act $act)
     {
-        return (($user->can("აქტის რედაქტირება") && $act->user->id == $user->id) || $user->hasRole('director'));
+        return ($user->can("აქტის რედაქტირება") || $user->hasRole('director'));
     }
 
     public function delete(User $user, Act $act)

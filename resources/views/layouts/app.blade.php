@@ -21,9 +21,10 @@
 
 <body class="font-sans antialiased hold-transition sidebar-mini layout-fixed">
 
+    @include('partials.navigation')
+
     @role('ინჟინერი')
     @else
-        @include('partials.navigation')
         @include('partials.main-sidebar')
     @endrole
 
