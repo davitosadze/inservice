@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeviceBrand extends Model
 {
-    protected $fillable = ["name"];
+    protected $fillable = ["name", "not_visible"];
     use HasFactory;
 
     public function user()

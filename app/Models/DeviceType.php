@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeviceType extends Model
 {
-    protected $fillable = ["name"];
+    protected $fillable = ["name", "not_visible"];
     public function user()
     {
         return $this->belongsTo(User::class);

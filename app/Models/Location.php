@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
-    protected $fillable = ["name"];
+    protected $fillable = ["name", "not_visible"];
     use HasFactory;
 
     public function user()

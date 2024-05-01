@@ -268,7 +268,13 @@ export default {
             this.$http
                 .get(locationsEndpoint)
                 .then((response) => {
-                    this.locations = response.data;
+                    this.locations = response.data.filter((item) => {
+                        return (
+                            item.not_visible !== 1 ||
+                            (item.not_visible === 1 &&
+                                item.id === this.model.location_id)
+                        );
+                    });
                 })
                 .catch((error) => {
                     console.error("Error fetching options:", error);
@@ -280,7 +286,13 @@ export default {
             this.$http
                 .get(deviceTypesEndpoint)
                 .then((response) => {
-                    this.deviceTypes = response.data;
+                    this.deviceTypes = response.data.filter((item) => {
+                        return (
+                            item.not_visible !== 1 ||
+                            (item.not_visible === 1 &&
+                                item.id === this.model.device_type_id)
+                        );
+                    });
                 })
                 .catch((error) => {
                     console.error("Error fetching options:", error);
@@ -291,7 +303,13 @@ export default {
             this.$http
                 .get(deviceBrandsEndpoint)
                 .then((response) => {
-                    this.deviceBrands = response.data;
+                    this.deviceBrands = response.data.filter((item) => {
+                        return (
+                            item.not_visible !== 1 ||
+                            (item.not_visible === 1 &&
+                                item.id === this.model.device_brand_id)
+                        );
+                    });
                 })
                 .catch((error) => {
                     console.error("Error fetching options:", error);
