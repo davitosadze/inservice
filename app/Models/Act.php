@@ -21,9 +21,7 @@ class Act extends Model
         'additional_information',
         'signature',
         'uuid',
-        'location_text',
-        'device_type_text',
-        'device_brand_text'
+
     ];
 
     protected $attributes = [
@@ -38,9 +36,7 @@ class Act extends Model
         "client_name" => "",
         "position" => "",
         "additional_information" => "",
-        "location_text" => "",
-        "device_type_text" => "",
-        "device_brand_text" => "",
+
     ];
 
 
