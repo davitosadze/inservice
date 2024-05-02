@@ -71,7 +71,7 @@ class RegionPolicy
     public function delete(User $user, Region $region)
     {
         //
-        return (($user->can("რეგიონის წაშლა") && $region->user->id == $user->id) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
+        return (($user->can("რეგიონის წაშლა")) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
     }
 
     /**

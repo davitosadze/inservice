@@ -33,6 +33,6 @@ class DeviceBrandPolicy
 
     public function delete(User $user, DeviceBrand $device_brand)
     {
-        return (($user->can("მოწყობილობის ბრენდის წაშლა") && $device_brand->user->id == $user->id) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
+        return (($user->can("მოწყობილობის ბრენდის წაშლა")) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
     }
 }

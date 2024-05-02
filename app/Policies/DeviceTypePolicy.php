@@ -33,6 +33,6 @@ class DeviceTypePolicy
 
     public function delete(User $user, DeviceType $device_type)
     {
-        return (($user->can("მოწყობილობის ტიპის წაშლა") && $device_type->user->id == $user->id) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
+        return (($user->can("მოწყობილობის ტიპის წაშლა")) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
     }
 }
