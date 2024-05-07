@@ -11,10 +11,10 @@
         />
         <hr />
     </div>
-    <div style="flex: 1 1 auto; overflow: hidden">
+    <div>
         <ag-grid-vue
-            style="height: 77vh"
-            class="ag-theme-alpine"
+            style="height: 77vh; width: 100%"
+            class="ag-theme-quartz"
             :columnDefs="columnDefs"
             :defaultColDef="defaultColDef"
             :rowData="rowData"
@@ -38,10 +38,9 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { ref } from "vue";
 
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-
-import { AgGridVue } from "ag-grid-vue3";
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import { AgGridVue } from "ag-grid-vue3"; // Vue Data Grid Component
 
 function actionCellRenderer(params) {
     let eGui = document.createElement("div");
@@ -314,7 +313,7 @@ export default {
         return {
             defaultColDef: {
                 flex: 1,
-                // width: 100,
+                minWidth: 150, // Set a minimum width for columns
                 filter: true,
                 floatingFilter: true,
                 sortable: true,

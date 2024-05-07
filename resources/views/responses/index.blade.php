@@ -37,13 +37,49 @@
                 </div>
             </div>
 
-            <!-- /.card-body -->
-            <div id="renderer" class="mt-2">
-                <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)'
-                    :setting='@json($setting)' name="alter-table">
-                </layout>
-            </div>
+            @if (app('request')->input('type') == 'pending')
+                <hr>
+                <div class="row">
+                    @foreach ($responses as $response)
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <h5
+                                    class="@if ($response->status == 1) rag-red @elseif($response->status == 2) rag-yellow @endif card-header">
+                                    {{ $response->id }}</h5>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $response->purchaser?->name }}</h5>
+                                    <p class="card-text">{{ $response->purchaser?->subj_address }}</p>
+                                    <p class="card-text">{{ $response->purchaser?->subj_name }}</p>
+                                    <div class="btn-group" role="group" aria-label="Button group">
+                                        <!-- View button with icon -->
+                                        @if (Auth::user()->can('რეაგირების ნახვა'))
+                                            <a href="{{ route('responses.show', $response->id) }}"
+                                                class="btn btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        @endif
+                                        @if (Auth::user()->can('რეაგირების რედაქტირება'))
+                                            <a href="{{ route('responses.edit', $response->id) }}"
+                                                class="btn btn-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
 
+                </div>
+            @else
+                <!-- /.card-body -->
+                <div id="renderer" class="mt-2">
+                    <layout class="mt-2" :user='@json(auth()->user())'
+                        :additional='@json($additional)' :setting='@json($setting)'
+                        name="alter-table">
+                    </layout>
+                </div>
+            @endif
     </section>
 
 </x-app-layout>
@@ -97,3 +133,13 @@
         });
     });
 </script>
+<style>
+    .rag-red {
+        background-color: #ec3339 !important;
+        color: white;
+    }
+
+    .rag-yellow {
+        background-color: #fbb42f !important;
+    }
+</style>

@@ -182,6 +182,17 @@
                     >
                         <i class="far fa-paper-plane"></i> შენახვა
                     </button>
+
+                    <button
+                        :disabled="v$.$errors.length"
+                        v-if="$can('აქტის რედაქტირება') && this.model.id"
+                        @click="sendAndApprove"
+                        type=""
+                        class="btn btn-success btn-block"
+                    >
+                        <i class="far fa-paper-plane"></i> შენახვა და
+                        დადასტურება
+                    </button>
                 </div>
             </div>
         </div>
@@ -333,6 +344,67 @@ export default {
             this.m.signature = signature;
 
             this.$http
+                .post(action, this.m, {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token,
+                })
+                .then(async (response) => {
+                    Util.useSwall(response).then((result) => {
+                        if (
+                            this.model.id == null &&
+                            response.data.success == true
+                        ) {
+                            window.location.href = "/responses?type=pending";
+                        } else if (result.value) {
+                            window.location.replace(
+                                this.setting.url.request.index.replace(
+                                    "api/",
+                                    ""
+                                )
+                            );
+                        }
+
+                        if (!response.data.success) {
+                            response.data.errs.map((item) =>
+                                this.$toast.error(item, {
+                                    position: "top-right",
+                                    duration: 7000,
+                                })
+                            );
+                        }
+                    });
+                })
+                .catch((e) => {
+                    Util.useSwall().then((result) => {
+                        this.$toast.error(e.response.statusText, {
+                            position: "top-right",
+                            duration: 7000,
+                        });
+                    });
+                });
+
+            return false;
+        },
+        sendAndApprove(e) {
+            e.preventDefault();
+            let action = document
+                .querySelector("form#render")
+                .getAttribute("action");
+            let token = document
+                .querySelector('meta[name="csrf-token"')
+                .getAttribute("content");
+
+            this.v$.m.$touch();
+            if (this.v$.m.$error) {
+                alert("Erroriaa");
+            }
+
+            var signature = this.$refs.signature.save();
+            this.m.signature = signature;
+            this.m.approve = 1;
+
+            this.$http
+
                 .post(action, this.m, {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": token,

@@ -1,7 +1,7 @@
 <template>
     <ag-grid-vue
         style="width: 100%; height: 77vh"
-        class="ag-theme-alpine"
+        class="ag-theme-quartz"
         :columnDefs="columnDefs"
         :defaultColDef="defaultColDef"
         :rowData="rowData"
@@ -19,10 +19,9 @@
 <script>
 import Util from "Util";
 
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-
-import { AgGridVue } from "ag-grid-vue3";
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import { AgGridVue } from "ag-grid-vue3"; // Vue Data Grid Component
 
 function actionCellRenderer(params) {
     let eGui = document.createElement("div");
@@ -132,7 +131,7 @@ export default {
         return {
             defaultColDef: {
                 flex: 1,
-                // width: 100,
+                minWidth: 120,
                 filter: true,
                 floatingFilter: true,
                 sortable: true,
@@ -145,7 +144,6 @@ export default {
             columnTypes: {
                 nonEditableColumn: { editable: false },
                 dateColumn: {
-                    // specify we want to use the date filter
                     filter: "agDateColumnFilter",
                     // add extra parameters for the date filter
                     filterParams: {
@@ -183,7 +181,6 @@ export default {
     },
     mounted() {
         // params.api.setRowData(this.model)
-        console.log("model", this.model);
     },
     methods: {
         removeRequest(id, setting, callback) {

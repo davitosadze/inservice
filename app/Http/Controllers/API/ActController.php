@@ -25,6 +25,7 @@ class ActController extends Controller
 
     public function store(Request $request)
     {
+
         $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
         $response = $request->id ? Gate::inspect('update', Act::find($request->id)) : Gate::inspect('create', Act::class);
@@ -46,7 +47,13 @@ class ActController extends Controller
                 $model = Act::firstOrNew(['id' => $request->id]);
                 $response_id = $request->get('response_id');
                 $response = ModelsResponse::find($response_id);
-                $response->status = 2;
+
+                if ($request->approve == 1) {
+                    $response->status = 3;
+                } else {
+                    $response->status = 2;
+                }
+
                 $response->save();
 
 

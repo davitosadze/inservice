@@ -36,7 +36,6 @@ class ResponseController extends Controller
 
 
 
-        $additional = [];
         $setting = [
             'columns' => [
                 ['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'],
@@ -64,7 +63,26 @@ class ResponseController extends Controller
 
         ];
 
-        return view('responses.index', ['additional' => $additional, 'setting' => $setting]);
+        $additional = [];
+
+        if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
+            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
+                ->where("status", 1)
+                ->where("performer_id", Auth::user()->id);
+        } else {
+            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc');
+        }
+
+        if ($request->get("type") == "done") {
+            $responses = $responses->where("status", ">=", 3)
+                ->orWhere("status", 0)
+                ->get();
+        } else {
+            $responses = $responses->whereIn("status", [1, 2])
+                ->get();
+        }
+
+        return view('responses.index', ['additional' => $additional, 'setting' => $setting, 'responses' => $responses]);
     }
 
 
