@@ -42,7 +42,10 @@
                                 v-for="(item, index) in filteredData"
                                 :key="index"
                             >
-                                <td v-for="(response, index) in item">
+                                <td
+                                    style="max-width: 250px"
+                                    v-for="(response, index) in item"
+                                >
                                     {{ response === "Null" ? "0%" : response }}
                                 </td>
                             </tr>

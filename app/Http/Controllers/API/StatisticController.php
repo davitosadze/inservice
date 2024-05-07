@@ -45,7 +45,7 @@ class StatisticController extends Controller
         }
 
         $responses = Response::select(
-            DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', '') as nameFormatted"),
+            DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', '') as nameFormatted"),
             DB::raw('COUNT(*) as count')
         )
             ->whereBetween('created_at', [$start_date, $end_date])
@@ -56,8 +56,8 @@ class StatisticController extends Controller
         $responsesPercentage = $responses->map(function ($response) {
             $responsesDistincted = Response::select(
                 DB::raw("DISTINCT name"),
-                DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', '') as nameFormatted")
-            )->where(DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', '')"), $response->nameFormatted)
+                DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', '') as nameFormatted")
+            )->where(DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', '')"), $response->nameFormatted)
                 ->count();
 
             $systems = System::whereNull("parent_id")->orderBy('id', 'desc')->get();
@@ -66,7 +66,7 @@ class StatisticController extends Controller
 
             foreach ($systems as $system) {
                 $count = Response::where('system_one', $system->id)
-                    ->where(DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', '')"), $response->nameFormatted)
+                    ->where(DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', '')"), $response->nameFormatted)
                     ->count();
 
                 $percentage = $responsesDistincted > 0 ? number_format(($count / $responsesDistincted) * 100, 0) . "%" : "Null";
