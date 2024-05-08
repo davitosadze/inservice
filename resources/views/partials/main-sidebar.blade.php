@@ -5,7 +5,7 @@
         <span class="brand-text font-weight-light">INSERVICE LLC</span>
     </a>
     <!-- Sidebar -->
-    <div style="overflow-y: scroll!important" class="sidebar">
+    <div style="overflow-y: auto!important" class="sidebar">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">

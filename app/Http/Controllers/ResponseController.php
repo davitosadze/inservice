@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ReservingExport;
-use App\Exports\ResponseExport;
-use App\Exports\ResponseHtmlExport;
 use App\Models\CalendarEvent;
-use App\Models\Performer;
 use App\Models\Purchaser;
 use App\Models\Region;
 use App\Models\Response;
 use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Gate;
 
 class ResponseController extends Controller
 {
@@ -266,5 +262,12 @@ class ResponseController extends Controller
      */
     public function destroy($id)
     {
+        $result = ['status' => HttpResponse::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
+
+        $response = Gate::inspect('delete', Response::find($id));
+
+        $response = Response::find($id);
+        $response->delete();
+        return redirect()->back();
     }
 }

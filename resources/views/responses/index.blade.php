@@ -50,20 +50,36 @@
                                     <h5 class="card-title">{{ $response->purchaser?->name }}</h5>
                                     <p class="card-text">{{ $response->purchaser?->subj_address }}</p>
                                     <p class="card-text">{{ $response->purchaser?->subj_name }}</p>
-                                    <div class="btn-group" role="group" aria-label="Button group">
-                                        <!-- View button with icon -->
-                                        @if (Auth::user()->can('რეაგირების ნახვა'))
-                                            <a href="{{ route('responses.show', $response->id) }}"
-                                                class="btn btn-primary">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                        @endif
-                                        @if (Auth::user()->can('რეაგირების რედაქტირება'))
-                                            <a href="{{ route('responses.edit', $response->id) }}"
-                                                class="btn btn-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                        @endif
+                                    <div class="row" role="group" aria-label="Button group">
+
+                                        <div class="col-sm-3">
+                                            @if (Auth::user()->can('რეაგირების ნახვა'))
+                                                <a href="{{ route('responses.show', $response->id) }}"
+                                                    class="btn btn-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            @endif
+
+                                            @if (Auth::user()->can('რეაგირების რედაქტირება'))
+                                                <a href="{{ route('responses.edit', $response->id) }}"
+                                                    class="ml-2 btn btn-primary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endif
+                                        </div>
+                                        <div class="col-sm-9" style="text-align: right;">
+                                            @if (Auth::user()->can('რეაგირების წაშლა'))
+                                                <form method="POST"
+                                                    action="{{ route('responses.destroy', $response->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button style="text-align: right" type="button"
+                                                        class="btn btn-danger" onclick="confirmDelete(this)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -91,6 +107,11 @@
         window.location.href = e.target.getAttribute("href")
     })
 
+    function confirmDelete(button) {
+        if (confirm('ნამდვილად გსურთ რეაგირების წაშლა?')) {
+            button.closest('form').submit();
+        }
+    }
     $(document).ready(function() {
 
         $("#export").click(function() {
