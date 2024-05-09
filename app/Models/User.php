@@ -85,7 +85,7 @@ class User extends Authenticatable implements HasMedia
 
     public function signature()
     {
-        if ($this->media('*')->first() === null) {
+        if ($this->getMedia('*')->first() === null) {
             return;
         }
         return $this->getMedia('*')->first()?->original_url;
