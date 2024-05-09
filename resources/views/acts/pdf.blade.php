@@ -449,7 +449,7 @@
         </tr>
         <tr>
             <td><img src="{{ $model->signature }}" width="250px" alt=""></td>
-            <td style="text-align: right"><img src="{{ $model->response?->user?->signature() }}" width="250px"
+            <td style="text-align: right"><img src="{{ $model->response?->performer?->signature() }}" width="250px"
                     alt=""></td>
         </tr>
 
