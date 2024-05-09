@@ -65,7 +65,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     // Acts
     Route::apiResource('acts', ActController::class);
-
+    Route::post("acts/{act}/reject", [ActController::class, "reject"]);
 
     Route::apiResource("evaluations", EvaluationController::class);
 

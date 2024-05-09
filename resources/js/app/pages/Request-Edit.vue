@@ -88,7 +88,7 @@
                                     style="align-items: center"
                                 >
                                     <div class="col-4">
-                                        <b>საიდენთიპიკაციო კოდი :</b>
+                                        <b>საიდენთიფიკაციო კოდი :</b>
                                     </div>
                                     <div class="col-8">
                                         <input

@@ -77,6 +77,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     // Responses
     Route::resource("responses", ResponseController::class);
+    Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
 
     // Regions
     Route::resource("regions", RegionController::class);

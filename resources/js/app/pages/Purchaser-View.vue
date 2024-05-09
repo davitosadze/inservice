@@ -44,7 +44,7 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
-                                >საიდენთიპიკაციო კოდი:</label
+                                >საიდენთიფიკაციო კოდი:</label
                             >
 
                             <div class="col-sm-9">

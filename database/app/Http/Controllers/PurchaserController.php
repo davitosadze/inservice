@@ -19,10 +19,10 @@ class PurchaserController extends Controller
 
         $additional = [];
         $setting = [
-            'columns' => [['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'], ['field' => "name", 'headerName' => 'საიდენთიპიკაციო კოდი', "valueGetter" => 'data.identification_num'], ['field' => "name", 'headerName' => 'კლიენტის სახელი'], ['field' => "subj_name", 'headerName' => 'დამატებითი სახელი'], ['field' => "subj_address", 'headerName' => 'კლიენტის მისამართი'] ],
+            'columns' => [['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'], ['field' => "name", 'headerName' => 'საიდენთიფიკაციო კოდი', "valueGetter" => 'data.identification_num'], ['field' => "name", 'headerName' => 'კლიენტის სახელი'], ['field' => "subj_name", 'headerName' => 'დამატებითი სახელი'], ['field' => "subj_address", 'headerName' => 'კლიენტის მისამართი']],
             'url' => [
-                'request' => 
-                    ['index' => route('api.purchasers.index'), 'edit' => route('purchasers.edit', ['purchaser' => "new"]), 'destroy' => route('api.purchasers.destroy', ['purchaser' => "__delete__"])]
+                'request' =>
+                ['index' => route('api.purchasers.index'), 'edit' => route('purchasers.edit', ['purchaser' => "new"]), 'destroy' => route('api.purchasers.destroy', ['purchaser' => "__delete__"])]
             ]
         ];
         return view('purchasers.index', ['additional' => $additional, 'setting' => $setting]);
@@ -71,11 +71,11 @@ class PurchaserController extends Controller
         //
         $model = Purchaser::firstOrNew(['id' => $id]);
         $this->authorize('view', $model);
-        
+
         $additional = [];
         $setting = [
             'url' => [
-                'request' => 
+                'request' =>
                 [
                     'attrs' => route('purchasers.special-attributes.index', ['purchaser' => 'new']),
                     'index' => route('api.purchasers.index')

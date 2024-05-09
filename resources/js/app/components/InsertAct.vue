@@ -5,7 +5,9 @@
                 <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
                     <div class="tab-content" id="custom-tabs-three-tabContent">
                         <div class="form-group">
-                            <label for="locationSelector">მდებაროება</label>
+                            <label for="locationSelector"
+                                >დანადგარის ლოკაციის ზუსტი აღწერა</label
+                            >
                             <v-combobox
                                 v-model="v$.m.location_id.$model"
                                 :items="locations"
@@ -86,14 +88,14 @@
                         <div class="form-group">
                             <label for="clientInfoInput"
                                 >კლიენტის წარმომადგენელი / სახელი და
-                                გავრი</label
+                                გვარი</label
                             >
                             <input
                                 type="text"
                                 v-model="v$.m.client_name.$model"
                                 class="form-control"
                                 id="clientInfoInput"
-                                placeholder="კლიენტის წარმომადგენელი / სახელი და გავრი"
+                                placeholder="კლიენტის წარმომადგენელი / სახელი და გვარი"
                             />
                         </div>
 
@@ -178,21 +180,36 @@
                         v-if="$can('აქტის რედაქტირება')"
                         @click="send"
                         type=""
-                        class="btn btn-success btn-block"
+                        class="btn btn-primary btn-block"
                     >
                         <i class="far fa-paper-plane"></i> შენახვა
                     </button>
 
-                    <button
-                        :disabled="v$.$errors.length"
-                        v-if="$can('აქტის რედაქტირება') && this.model.id"
-                        @click="sendAndApprove"
-                        type=""
-                        class="btn btn-success btn-block"
+                    <div
+                        class="mt-2"
+                        v-if="this.user.roles[0].name != 'ინჟინერი'"
                     >
-                        <i class="far fa-paper-plane"></i> შენახვა და
-                        დადასტურება
-                    </button>
+                        <button
+                            :disabled="v$.$errors.length"
+                            v-if="$can('აქტის რედაქტირება') && this.model.id"
+                            @click="sendAndApprove"
+                            type=""
+                            class="btn btn-success btn-block"
+                        >
+                            <i class="far fa-paper-plane"></i> შენახვა და
+                            დადასტურება
+                        </button>
+
+                        <button
+                            :disabled="v$.$errors.length"
+                            v-if="$can('აქტის რედაქტირება') && this.model.id"
+                            @click="reject"
+                            type=""
+                            class="btn btn-danger btn-block"
+                        >
+                            <i class="fa fa-times"></i> დახარვეზება
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -395,9 +412,6 @@ export default {
                 .getAttribute("content");
 
             this.v$.m.$touch();
-            if (this.v$.m.$error) {
-                alert("Erroriaa");
-            }
 
             var signature = this.$refs.signature.save();
             this.m.signature = signature;
@@ -446,7 +460,58 @@ export default {
 
             return false;
         },
+        reject(e) {
+            e.preventDefault();
 
+            let token = document
+                .querySelector('meta[name="csrf-token"')
+                .getAttribute("content");
+
+            this.v$.m.$touch();
+
+            this.$http
+
+                .post("/api/acts/" + this.m.id + "/reject", this.m, {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token,
+                })
+                .then(async (response) => {
+                    Util.useSwall(response).then((result) => {
+                        if (
+                            this.model.id == null &&
+                            response.data.success == true
+                        ) {
+                            window.location.href = "/responses?type=pending";
+                        } else if (result.value) {
+                            window.location.replace(
+                                this.setting.url.request.index.replace(
+                                    "api/",
+                                    ""
+                                )
+                            );
+                        }
+
+                        if (!response.data.success) {
+                            response.data.errs.map((item) =>
+                                this.$toast.error(item, {
+                                    position: "top-right",
+                                    duration: 7000,
+                                })
+                            );
+                        }
+                    });
+                })
+                .catch((e) => {
+                    Util.useSwall().then((result) => {
+                        this.$toast.error(e.response.statusText, {
+                            position: "top-right",
+                            duration: 7000,
+                        });
+                    });
+                });
+
+            return false;
+        },
         clear() {
             this.$refs.signature.clear();
         },

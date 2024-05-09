@@ -104,7 +104,7 @@
                                     </div>
 
                                     <div class="row mb-2" style="align-items: center;">
-                                        <div class="col-4"><b>საიდენთიპიკაციო კოდი :</b></div>
+                                        <div class="col-4"><b>საიდენთიფიკაციო კოდი :</b></div>
                                         <div class="col-8">
                                             {{ Form::text('identification_num', $model->identification_num, ['class' => 'form-control']) }}
                                         </div>

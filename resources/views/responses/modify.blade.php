@@ -53,11 +53,11 @@
                             <div class="mb-3">
 
                                 <input type="hidden" name="id" value="{{ $model->id }}">
-
                                 <p class="lead">სისტემები</p>
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>აირჩიეთ სისტემა:</b></div>
-                                    <div class="col-8">
+
+                                <div class="form-group">
+                                    <label for="formGroupExampleInput">აირჩიეთ სისტემა:</label>
+                                    <div class="col-md-12">
                                         <select name="system_one" class="form-control system_one">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['systems']->where('parent_id', null) as $system)
@@ -69,7 +69,8 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-2"
+
+                                <div class="form-group mb-2"
                                     style="align-items: center; display: {{ $selectedSystemId ? 'flex' : 'none' }}"
                                     id="systemTwoWrapper">
                                     <div class="col-4"><b>აირჩიეთ ქვე-სისტემა:</b></div>
@@ -90,9 +91,9 @@
                                 <p class="lead">კვლევის ობიექტი</p>
 
 
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>აირჩიეთ :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>აირჩიეთ :</b></div>
+                                    <div class="col-12">
                                         <select name="purchaser" class="form-control purchaser">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['purchasers'] as $purchaser)
@@ -105,30 +106,30 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>კლიენტის სახელი :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>კლიენტის სახელი :</b></div>
+                                    <div class="col-12">
                                         {{ Form::text('name', $model->name, ['class' => 'form-control']) }}
                                     </div>
                                 </div>
 
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>დამატებითი სახელი :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>დამატებითი სახელი :</b></div>
+                                    <div class="col-12">
                                         {{ Form::text('subject_name', $model->subject_name, ['class' => 'form-control']) }}
                                     </div>
                                 </div>
 
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>კლიენტის მისამართი :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>კლიენტის მისამართი :</b></div>
+                                    <div class="col-12">
                                         {{ Form::text('subject_address', $model->subject_address, ['class' => 'form-control']) }}
                                     </div>
                                 </div>
 
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>საიდენთიპიკაციო კოდი :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>საიდენთიფიკაციო კოდი :</b></div>
+                                    <div class="col-12">
                                         {{ Form::text('identification_num', $model->identification_num, ['class' => 'form-control']) }}
                                     </div>
                                 </div>
@@ -137,9 +138,9 @@
 
 
                             <div class="mb-3">
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>რეგიონი :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>რეგიონი :</b></div>
+                                    <div class="col-12">
                                         <select name="region_id" class="form-control region">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['regions'] as $region)
@@ -153,9 +154,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>შემსრულებელი :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>შემსრულებელი :</b></div>
+                                    <div class="col-12">
                                         <select name="performer_id" class="form-control performer">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['performers'] as $performer)
@@ -177,9 +178,9 @@
 
 
                             <div class="mb-3">
-                                <div class="row mb-2" style="align-items: center;">
-                                    <div class="col-4"><b>მოწყობილობის დასახელება :</b></div>
-                                    <div class="col-8">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>მოწყობილობის დასახელება :</b></div>
+                                    <div class="col-12">
                                         <select name="device_type" class="form-control performer">
                                             <option disabled selected>--- აირჩეთ ---</option>
 

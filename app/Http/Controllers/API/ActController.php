@@ -150,4 +150,24 @@ class ActController extends Controller
             return response()->json($result);
         }
     }
+
+    public function reject($id)
+    {
+        try {
+
+            $act = Act::find($id);
+            $act->response->status = 1;
+
+
+            if ($act->response->save()) {
+                $result['success'] = true;
+                $result['result'] = $id;
+                $result['status'] = Response::HTTP_CREATED;
+            }
+        } catch (Exception $e) {
+            $result['errs'][0] = 'გაურკვეველი შეცდომა! ' . $e->getMessage();
+        }
+
+        return response()->json($result, Response::HTTP_CREATED);
+    }
 }

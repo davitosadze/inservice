@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="staticEmail" class="col-sm-3 col-form-label"><b>საიდენთიპიკაციო
+                            <label for="staticEmail" class="col-sm-3 col-form-label"><b>საიდენთიფიკაციო
                                     კოდი:</b></label>
                             <label class="col-sm-3 col-form-label">{{ $response->identification_num }}</label>
                         </div>

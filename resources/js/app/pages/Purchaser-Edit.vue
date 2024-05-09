@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput"
-                                >საიდენთიპიკაციო კოდი :</label
+                                >საიდენთიფიკაციო კოდი :</label
                             >
                             <input
                                 v-model="model.identification_num"

@@ -270,4 +270,12 @@ class ResponseController extends Controller
         $response->delete();
         return redirect()->back();
     }
+
+    public function arrived($id)
+    {
+        $response = Response::find($id);
+        $response->time = Carbon::now();
+        $response->save();
+        return back();
+    }
 }

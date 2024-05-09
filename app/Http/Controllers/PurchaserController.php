@@ -21,7 +21,7 @@ class PurchaserController extends Controller
 
         $additional = [];
         $setting = [
-            'columns' => [['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'], ['field' => "name", 'headerName' => 'საიდენთიპიკაციო კოდი', "valueGetter" => 'data.identification_num'], ['field' => "name", 'headerName' => 'კლიენტის სახელი'], ['field' => "subj_name", 'headerName' => 'დამატებითი სახელი'], ['field' => "subj_address", 'headerName' => 'კლიენტის მისამართი']],
+            'columns' => [['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'], ['field' => "name", 'headerName' => 'საიდენთიფიკაციო კოდი', "valueGetter" => 'data.identification_num'], ['field' => "name", 'headerName' => 'კლიენტის სახელი'], ['field' => "subj_name", 'headerName' => 'დამატებითი სახელი'], ['field' => "subj_address", 'headerName' => 'კლიენტის მისამართი']],
             'url' => [
                 'request' =>
                 [

@@ -28,15 +28,16 @@
 
             <br>
 
-            <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <button href="{{ request()->url() }}/new/edit" id="create"
-                        class="btn btn-sm btn-outline-success">
-                        <i class="fas fa-shield-alt"></i> დამატება
-                    </button>
+            @if (Auth::user()->can('რეაგირების შექმნა'))
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <button href="{{ request()->url() }}/new/edit" id="create"
+                            class="btn btn-sm btn-outline-success">
+                            <i class="fas fa-shield-alt"></i> დამატება
+                        </button>
+                    </div>
                 </div>
-            </div>
-
+            @endif
             @if (app('request')->input('type') == 'pending')
                 <hr>
                 <div class="row">
@@ -59,6 +60,16 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             @endif
+
+                                            @role('ინჟინერი')
+                                                @if (!$response->time)
+                                                    <a href="{{ route('responses.arrived', $response->id) }}"
+                                                        onclick="return confirm('ნამდვილად მიხვედით?')"
+                                                        class="ml-2 btn btn-success">
+                                                        <i class="fas fa-globe">მივედი</i>
+                                                    </a>
+                                                @endif
+                                            @endrole
 
                                             @if (Auth::user()->can('რეაგირების რედაქტირება'))
                                                 <a href="{{ route('responses.edit', $response->id) }}"
