@@ -33,6 +33,6 @@ class LocationPolicy
 
     public function delete(User $user, Location $location)
     {
-        return (($user->can("ლოკაციის წაშლა")) || $user->hasRole('director')) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
+        return ($user->can("ლოკაციის წაშლა")) ? Response::allow() : Response::deny('არ გაქვთ ნებართვა!');
     }
 }
