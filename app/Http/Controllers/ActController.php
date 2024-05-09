@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ActController extends Controller
 {
@@ -45,13 +46,16 @@ class ActController extends Controller
 
     public function export($id)
     {
-        return $response = Act::find($id)->response->performer->signature();
 
         $model = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
 
+        $signature = Media::where('model_type', 'App\Models\User')
+            ->where('model_id', Act::find($id)->response?->performer?->id)
+            ->first()->original_url;
+
         $name = "აქტი#" . $model->id . ".pdf";
 
-        $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model]);
+        $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model, "signature" => $signature]);
 
 
         return $pdf->stream($name);
