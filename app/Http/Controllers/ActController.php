@@ -45,7 +45,7 @@ class ActController extends Controller
 
     public function export($id)
     {
-        return $response = Act::find($id)->response->performer->signature();
+        return $response = Act::find($id)->response->performer;
 
         $model = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
 
