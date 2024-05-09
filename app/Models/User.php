@@ -88,6 +88,6 @@ class User extends Authenticatable implements HasMedia
         if ($this->media('*')->first() === null) {
             return;
         }
-        return $this->getMedia('*')[0]->original_url;
+        return $this->getMedia('*')->first()?->original_url;
     }
 }
