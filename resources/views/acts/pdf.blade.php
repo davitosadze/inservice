@@ -371,7 +371,7 @@
             <td style="width:105pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
                 colspan="3">
                 <p class="inner-text">
-                    {{ $model->deviceType->name }}
+                    {{ $model->deviceType?->name }}
                 </p>
             </td>
             <td style="width:221pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
@@ -388,7 +388,7 @@
             <td style="width:105pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
                 colspan="3">
                 <p class="inner-text">
-                    {{ $model->deviceBrand->name }}
+                    {{ $model->deviceBrand?->name }}
                 </p>
             </td>
             <td style="width:221pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
