@@ -89,6 +89,7 @@ class ActController extends Controller
                     }
                 }
 
+
                 if (!$model->uuid) {
                     $todayActs = Act::count();
                     $today = Carbon::today();

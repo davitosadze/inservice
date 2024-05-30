@@ -94,26 +94,47 @@
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label"><b>დანადგარის ლოკაციის ზუსტი
                                         აღწერა:</b></label>
-                                <label class="col-sm-8 col-form-label">{{ $response->exact_location }}</label>
+
+                                @php
+                                    $location =
+                                        $response->status == 3
+                                            ? $response->act?->location?->name
+                                            : $response->exact_location;
+                                @endphp
+
+                                <label class="col-sm-8 col-form-label">{{ $location }}</label>
+
                             </div>
 
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label"><b>ხარვეზის გამოსწორების
                                         მიზენით
                                         ჩატარებული სამუშაოების დეტალური აღწერა:</b></label>
-                                <label class="col-sm-8 col-form-label">{{ $response->job_description }}</label>
+                                @php
+                                    $job_description =
+                                        $response->status == 3 ? $response->act?->note : $response->job_description;
+                                @endphp
+
+                                <label class="col-sm-8 col-form-label">{{ $job_description }}</label>
+
                             </div>
 
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label"><b>დეფექტური აქტ(ებ)ის
                                         რეკვიზიტები:</b></label>
-                                <label class="col-sm-8 col-form-label">{{ $response->requisites }}</label>
+                                <label class="col-sm-8 col-form-label">{{ $response->act?->uuid }}</label>
                             </div>
 
                             <div class="form-group row">
                                 <label for="staticEmail" class="col-sm-4 col-form-label"><b>ინვენტარის ნომერი/აგრეგატის
                                         უნიკალური კოდი (არსებობის შემთხვევაში):</b></label>
-                                <label class="col-sm-8 col-form-label">{{ $response->inventory_number }}</label>
+                                @php
+                                    $inventory_number =
+                                        $response->status == 3
+                                            ? $response->act?->inventory_code
+                                            : $response->inventory_number;
+                                @endphp
+                                <label class="col-sm-8 col-form-label">{{ $inventory_number }}</label>
                             </div>
 
 

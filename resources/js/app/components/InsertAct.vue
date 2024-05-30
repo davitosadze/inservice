@@ -123,26 +123,39 @@
                             />
                         </div>
 
+                        <div></div>
                         <div>
                             <div class="form-group">
                                 <label for="additionalInfoInput"
                                     >ხელმოწერა</label
                                 >
                                 <div v-if="!fullScreen">
-                                    <vueSignature
-                                        class="border"
+                                    <!-- <vueSignature
+                                        class="border non-full-screen"
                                         ref="signature"
                                         :defaultUrl="this.signature"
                                         :sigOption="option"
                                         :w="'400px'"
                                         :h="'200px'"
-                                    ></vueSignature>
-                                    <span
-                                        v-if="$can('აქტის რედაქტირება')"
-                                        class="btn btn-success mt-1"
-                                        @click="clear"
-                                        >ხელმოწერის გასუფთავება</span
-                                    >
+                                    ></vueSignature> -->
+
+                                    <img
+                                        :class="
+                                            isCreatedBeforeToday()
+                                                ? 'signature-image-old'
+                                                : 'signature-image'
+                                        "
+                                        v-if="signatureDataUrl"
+                                        :src="signatureDataUrl"
+                                        alt="Signature"
+                                    />
+                                    <SignatureModal
+                                        :isVisible="showModal"
+                                        :signatureDataUrl="signatureDataUrl"
+                                        @close="showModal = false"
+                                        @save="handleSave"
+                                    />
+
                                     <span
                                         v-if="$can('აქტის რედაქტირება')"
                                         class="btn ml-1 btn-primary mt-1"
@@ -150,16 +163,9 @@
                                         >გადიდება</span
                                     >
                                 </div>
+
                                 <div v-else>
                                     <div class="full-screen-overlay">
-                                        <vueSignature
-                                            class="border"
-                                            ref="signature"
-                                            :defaultUrl="this.signature"
-                                            :sigOption="option"
-                                            :w="'100%'"
-                                            :h="'100%'"
-                                        ></vueSignature>
                                         <span
                                             class="btn mb-2 btn-danger mt-1"
                                             @click="toggleFullScreen"
@@ -171,6 +177,10 @@
                         </div>
                     </div>
                 </div>
+                <SignatureModal
+                    :isVisible="showModal"
+                    @close="showModal = false"
+                />
 
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <div class="form-group"></div>
@@ -222,16 +232,18 @@ import "vuetify/styles";
 
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import vueSignature from "vue-signature";
+import SignatureModal from "../components/SignatureModal.vue";
+
 export default {
     props: ["user", "url", "model", "additional", "setting"],
     components: {
-        vueSignature,
+        SignatureModal,
     },
     data() {
         return {
+            showModal: false,
             fullScreen: false,
-
+            signatureDataUrl: this.model.signature,
             option: {
                 penColor: "rgb(0, 0, 0)",
                 backgroundColor: "rgb(255,255,255)",
@@ -280,16 +292,37 @@ export default {
         };
     },
     methods: {
+        isCreatedBeforeToday() {
+            const createdAt = new Date(this.m.updated_at);
+            const today = new Date("2024-05-30");
+            console.log(createdAt < today);
+            return createdAt < today;
+        },
+        handleSave(signatureDataUrl) {
+            this.signatureDataUrl = signatureDataUrl.data; // Store the signature data URL
+            this.showModal = false; // Close the modal
+        },
+        undo() {
+            this.$refs.signaturePad.undoSignature();
+        },
+        save() {
+            const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
+            this.signature = data;
+            console.log(this.signature);
+            console.log(isEmpty);
+            console.log(data);
+        },
         $can(permissionName) {
             return (
                 Laravel.jsPermissions.permissions.indexOf(permissionName) !== -1
             );
         },
         toggleFullScreen() {
-            this.fullScreen = !this.fullScreen;
-            var signature = this.$refs.signature.save();
-            console.log(signature);
-            this.signature = signature;
+            // this.fullScreen = !this.fullScreen;
+            this.showModal = true;
+            // var signature = this.$refs.signature.save();
+            // console.log(signature);
+            // this.signature = signature;
         },
         fetchLocations() {
             const locationsEndpoint = "/api/locations";
@@ -357,8 +390,7 @@ export default {
                 alert("Erroriaa");
             }
 
-            var signature = this.$refs.signature.save();
-            this.m.signature = signature;
+            this.m.signature = this.signatureDataUrl;
 
             this.$http
                 .post(action, this.m, {
@@ -413,9 +445,8 @@ export default {
 
             this.v$.m.$touch();
 
-            var signature = this.$refs.signature.save();
-            this.m.signature = signature;
             this.m.approve = 1;
+            this.m.signature = this.signatureDataUrl;
 
             this.$http
 
@@ -524,6 +555,21 @@ export default {
 </script>
 
 <style>
+.signature-image-old {
+    display: block;
+    width: 50%;
+}
+.signature-image {
+    display: block;
+    width: 20%;
+    transform: rotate(-90deg);
+    width: 10%;
+    margin-left: 50px;
+}
+.non-full-screen {
+    display: inline;
+    transform: rotate(-90deg);
+}
 .v-field__input input {
     border: none !important;
 }

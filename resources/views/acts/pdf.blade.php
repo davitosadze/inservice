@@ -448,7 +448,15 @@
 
         </tr>
         <tr>
-            <td><img src="{{ $model->signature }}" width="250px" alt=""></td>
+            <td>
+                @if ($model->updated_at < \Carbon\Carbon::parse('2024-05-30'))
+                    <img style="" src="{{ $model->signature }}" width="30%" alt="">
+                @else
+                    <img style="margin-top:-50px; margin-left:60px; transform: rotate(-90deg)"
+                        src="{{ $model->signature }}" width="10%" alt="">
+                @endif
+
+            </td>
             <td style="text-align: right"><img src="{{ $signature }}" width="250px" alt=""></td>
         </tr>
 

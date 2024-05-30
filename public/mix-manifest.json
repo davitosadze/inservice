@@ -1,7 +1,7 @@
 {
     "/js/vendors/lte-core.js": "/js/vendors/lte-core.js?id=87a77a5bf44d11cdc07956022aaf2e77",
     "/js/guest.js": "/js/guest.js?id=f75805b7ea69bfec692bfe3212760bdb",
-    "/js/app.js": "/js/app.js?id=3db3422d928e84f02cb57069e62aab87",
+    "/js/app.js": "/js/app.js?id=2e9ff9cad847b2fab6e1d75fbe485583",
     "/js/manifest.js": "/js/manifest.js?id=9d8c528c6edd63bbcad3eeeb33a9cbce",
     "/js/vendors/layout.js": "/js/vendors/layout.js?id=c74981f841aa3fae1e224525302a5e4e",
     "/js/vendors/insert.js": "/js/vendors/insert.js?id=fcf7a5e92cc983960e02d4ec88b0a2d0",
@@ -15,14 +15,14 @@
     "/js/vendors/client-view.js": "/js/vendors/client-view.js?id=8232eeb17f23486c165f53ea8038a975",
     "/js/vendors/dashboard.js": "/js/vendors/dashboard.js?id=ecf979acb84f4980a0f9157cd0edd638",
     "/js/vendors/invoice-edit.js": "/js/vendors/invoice-edit.js?id=b23f8f4fe0ea9179bf3ca5c23a61c698",
-    "/js/vendors/modal.js": "/js/vendors/modal.js?id=2f0a3f7a8d36de8553245705e535a2c8",
-    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=faaec40b1348760b5e28913057b06d52",
+    "/js/vendors/modal.js": "/js/vendors/modal.js?id=f1ed5591c443b451028460bd9a9a4efc",
+    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=2d40ba0d3e8d8c33384f686f71ee3e61",
     "/js/vendors/report-table.js": "/js/vendors/report-table.js?id=f7026a54f45b8963aca9097b6a40c60b",
     "/js/vendors/tab.js": "/js/vendors/tab.js?id=652da258d9fcdffaea9fa18648a1cddf",
     "/js/vendors/input-alter.js": "/js/vendors/input-alter.js?id=590279461e271b3fa97bfaf7aae6505b",
     "/js/vendors/purchaser-single-attribute.js": "/js/vendors/purchaser-single-attribute.js?id=352e75739be03bc182b41573e59cd19b",
     "/css/vendors/lte-core.css": "/css/vendors/lte-core.css?id=be9d5cca40accc569b51e00858ecaa5b",
     "/css/app.css": "/css/app.css?id=44cb0d9e7ad0094e5874d97f2af21824",
-    "/css/guest.css": "/css/guest.css?id=d942560229564dc24bc70e6a78fe8413",
+    "/css/guest.css": "/css/guest.css?id=c811abceefeddedc2a9b3fee15385822",
     "/js/vendor.js": "/js/vendor.js?id=638052af2cf984322e1dbaa68d3ad56d"
 }

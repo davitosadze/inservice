@@ -8,9 +8,12 @@ import RequestAttribute from "./app/components/RequestAttribute";
 import RequestExpense from "./app/components/RequestExpense";
 import { UploadMedia, UpdateMedia } from "./app/vendors/vue-media-upload";
 import LaravelPermissionToVueJS from "laravel-permission-to-vuejs";
+import VueSignaturePad from "vue-signature-pad";
 
 window.app = createApp({});
 app.use(VueAxios, axios);
+app.use(VueSignaturePad);
+
 app.use(VueToast);
 app.use(LaravelPermissionToVueJS);
 window.createApp = createApp;
@@ -156,6 +159,13 @@ app.component(
         import(
             /*webpackChunkName: 'modal' */ "./app/components/FileActionsModal"
         )
+    )
+);
+
+app.component(
+    "signature-modal",
+    defineAsyncComponent(() =>
+        import(/*webpackChunkName: 'modal' */ "./app/components/SignatureModal")
     )
 );
 
