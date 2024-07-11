@@ -299,6 +299,7 @@ export default {
             this.showModal = false;
         },
         handleSave(emittedData) {
+            alert(emittedData);
             this.signatureDataUrl = emittedData[0].data; // Store the signature data URL
             this.showModal = false;
         },
