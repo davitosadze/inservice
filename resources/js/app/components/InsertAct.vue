@@ -299,7 +299,8 @@ export default {
             return createdAt < today;
         },
         handleSave(signatureDataUrl) {
-            this.signatureDataUrl = signatureDataUrl.data; // Store the signature data URL
+            alert(signatureDataUrl);
+            this.signatureDataUrl = signatureDataUrl.data;
             this.showModal = false; // Close the modal
         },
         undo() {

@@ -28,10 +28,7 @@
                     ></VueSignaturePad>
                 </div>
                 <div class="modal-footer">
-                    <button
-                        class="btn btn-primary"
-                        @click="saveSignature($event)"
-                    >
+                    <button class="btn btn-primary" @click="closeAndSave()">
                         შენახვა
                     </button>
 
@@ -90,7 +87,6 @@ export default {
 
             const dataUrl = this.$refs.signaturePad.saveSignature();
 
-            this.$emit("save", dataUrl);
             this.closeModal();
         },
         clearSignature() {
