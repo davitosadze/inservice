@@ -296,7 +296,7 @@ export default {
             return createdAt < today;
         },
         handleClose(test) {
-            alert(test);
+            alert(test[0].data);
             showModal = false;
         },
         handleSave(signatureDataUrl) {
