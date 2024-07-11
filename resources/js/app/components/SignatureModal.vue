@@ -86,8 +86,8 @@ export default {
             event.preventDefault(); // Prevent the default form submission behavior
 
             const dataUrl = this.$refs.signaturePad.saveSignature();
-
-            this.$emit("saveSignatureEmit", dataUrl);
+            this.$emit("save", [dataUrl]);
+            this.closeModal();
         },
         clearSignature() {
             this.$refs.signaturePad.clearSignature();
