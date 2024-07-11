@@ -14,7 +14,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/vendors/lte-core.css') }}">
-
+    @yield('head')
     @stack('styles')
 
 </head>

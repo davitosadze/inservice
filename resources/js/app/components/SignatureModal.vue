@@ -28,9 +28,12 @@
                     ></VueSignaturePad>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" @click="saveSignature">
+                    <button
+                        class="btn btn-primary"
+                        @click="saveSignature($event)"
+                    >
                         შენახვა
-                    </a>
+                    </button>
 
                     <a class="btn btn-danger" @click="clearSignature">წაშლა</a>
                 </div>
@@ -82,9 +85,10 @@ export default {
         closeModal() {
             this.$emit("close");
         },
-        saveSignature() {
+        saveSignature(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
             const dataUrl = this.$refs.signaturePad.saveSignature();
-            // Emit the data to the parent
             this.$emit("save", dataUrl);
         },
         clearSignature() {
