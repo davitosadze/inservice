@@ -84,7 +84,7 @@ export default {
         },
         saveSignature(event) {
             event.preventDefault(); // Prevent the default form submission behavior
-            this.$emit("close");
+            this.$emit("close", "1");
         },
         clearSignature() {
             this.$refs.signaturePad.clearSignature();
