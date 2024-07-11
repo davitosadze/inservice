@@ -28,9 +28,10 @@
                     ></VueSignaturePad>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" @click="saveSignature"
-                        >შენახვა</a
-                    >
+                    <button class="btn btn-primary" @click="saveSignature">
+                        შენახვა
+                    </button>
+
                     <a class="btn btn-danger" @click="clearSignature">წაშლა</a>
                 </div>
             </div>
@@ -140,13 +141,13 @@ canvas {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
 }
 
 .modal.full-screen .modal-dialog {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     margin: 0;
     max-width: none;
 }

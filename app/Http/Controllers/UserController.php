@@ -39,33 +39,35 @@ class UserController extends Controller
         //
     }
 
-    public function upload(Request $request){
-          $path = public_path('tmp/uploads');
+    public function upload(Request $request)
+    {
+        $path = public_path('tmp/uploads');
 
-          if (!file_exists($path)) {
+        if (!file_exists($path)) {
             mkdir($path, 0777, true);
-          }
-
-          $file = $request->file('image');
-
-          $name = uniqid() . '_' . trim($file->getClientOriginalName());
-
-          $file->move($path, $name);
-
-          return ['name'=>$name];
         }
 
-    public function upload2($item){
-            $images = User::with(['media'])->find($item);
+        $file = $request->file('image');
 
-            if (!$images) {
-                $images = [];
-            } else {
-                $images = $images->getMedia('credential')->toArray();
-            };
+        $name = uniqid() . '_' . trim($file->getClientOriginalName());
 
-            return ['media'=>$images];
-        }
+        $file->move($path, $name);
+
+        return ['name' => $name];
+    }
+
+    public function upload2($item)
+    {
+        $images = User::with(['media'])->find($item);
+
+        if (!$images) {
+            $images = [];
+        } else {
+            $images = $images->getMedia('credential')->toArray();
+        };
+
+        return ['media' => $images];
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -75,7 +77,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
 
         $validator = Validator::make($request->all(), [
             'name' => [
@@ -104,6 +106,11 @@ class UserController extends Controller
 
         $model = User::firstOrNew(['id' => $request->id]);
         $model->fill($request->all());
+
+        if ($request->profile_image) {
+            $model->clearMediaCollection('user-profile-images');
+            $model->addMediaFromRequest('profile_image')->toMediaCollection('user-profile-images');
+        }
 
         $request->whenHas('signature', function ($input) use ($model) {
             $from = public_path('tmp/uploads/');

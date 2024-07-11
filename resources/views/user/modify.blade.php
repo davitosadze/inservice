@@ -23,7 +23,7 @@
 
             <div class="card card-primary card-outline card-tabs">
                 <div class="card-body">
-                    {{ Form::model($model, ['route' => ['users.store', $model->id ? $model->id : 'new']]) }}
+                    {{ Form::model($model, ['route' => ['users.store', $model->id ? $model->id : 'new'], 'files' => true]) }}
                     <div class="row">
 
                         <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
@@ -43,6 +43,12 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="email">თანამდებობა</label>
+                                            {{ Form::text('position', $model->position, ['class' => 'form-control']) }}
+                                        </div>
+                                    </div>
                                     @if (auth()->user()->hasRole('director'))
                                         <div class="form-row">
                                             <div class="form-group col">
@@ -56,9 +62,28 @@
                                             </div>
                                         </div>
                                     @endif
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="name">სამუშაოს აღწერილობა</label>
+                                            {{ Form::textarea('job_description', $model->job_description, ['class' => 'form-control']) }}
+                                        </div>
+
+                                    </div>
 
                                 </div>
 
+                                <div class="form-group col">
+                                    <label for="avatar">პროფილის სურათი</label>
+                                    <input type="file" name="profile_image" class="form-control" id="">
+                                </div>
+
+
+                                @if ($model->getFirstMediaUrl('user-profile-images'))
+                                    <div class="row">
+                                        <img class="m-5" style="width: 250px"
+                                            src="{{ $model->getFirstMediaUrl('user-profile-images') }}" alt="">
+                                    </div>
+                                @endif
                                 <div class="form-group col">
                                     <label for="email">ხელმოწერა</label>
                                     <update-media class="mt-2" key="0" index="inter" each="1"
@@ -106,7 +131,8 @@
 
                             <table class="table table-striped">
                                 <thead>
-                                    <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
+                                    <th scope="col" width="1%"><input type="checkbox" name="all_permission">
+                                    </th>
                                     <th scope="col" width="20%">დასხელება</th>
                                     <th scope="col" width="1%">Guard</th>
                                 </thead>

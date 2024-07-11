@@ -51,9 +51,18 @@
                                     <h5 class="card-title">{{ $response->purchaser?->name }}</h5>
                                     <p class="card-text">{{ $response->purchaser?->subj_address }}</p>
                                     <p class="card-text">{{ $response->purchaser?->subj_name }}</p>
+                                    <p class="card-text">{{ $response->performer?->name }}</p>
                                     <div class="row" role="group" aria-label="Button group">
 
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-6">
+                                            @if (Auth::user()->can('აქტის ნახვა'))
+                                                <a href="{{ route('acts.edit', $response->act?->id) }}"
+                                                    class="mr-2 btn btn-success">
+                                                    აქტი
+                                                </a>
+                                            @endif
+
+
                                             @if (Auth::user()->can('რეაგირების ნახვა'))
                                                 <a href="{{ route('responses.show', $response->id) }}"
                                                     class="btn btn-primary">
@@ -71,6 +80,8 @@
                                                 @endif
                                             @endrole
 
+
+
                                             @if (Auth::user()->can('რეაგირების რედაქტირება'))
                                                 <a href="{{ route('responses.edit', $response->id) }}"
                                                     class="ml-2 btn btn-primary">
@@ -78,7 +89,7 @@
                                                 </a>
                                             @endif
                                         </div>
-                                        <div class="col-sm-9" style="text-align: right;">
+                                        <div class="col-sm-6" style="text-align: right;">
                                             @if (Auth::user()->can('რეაგირების წაშლა'))
                                                 <form method="POST"
                                                     action="{{ route('responses.destroy', $response->id) }}">

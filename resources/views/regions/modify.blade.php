@@ -51,9 +51,18 @@
                             <div class="form-group">
                                 <label for="formGroupExampleInput">რეგიონის სახელი</label>
                                 {{ Form::text('name', $model->name, ['placeholder' => 'რეგიონის სახელი', 'class' => 'form-control']) }}
-
                             </div>
 
+                            <div class="form-group">
+                                <label for="formGroupExampleInput">მდებარეობა</label>
+                                <select name="location" class="form-control" id="">
+                                    <option value="0">აირჩიეთ</option>
+                                    <option @if ($model->location == 'აღმოსავლეთ საქართველო') selected @endif
+                                        value="აღმოსავლეთ საქართველო">აღმოსავლეთ საქართველო</option>
+                                    <option @if ($model->location == 'დასავლეთ საქართველო') selected @endif
+                                        value="დასავლეთ საქართველო">დასავლეთ საქართველო</option>
+                                </select>
+                            </div>
 
 
 

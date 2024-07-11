@@ -37,11 +37,11 @@
                                         <div class="form-group col">
                                             <label for="name">სახელი</label>
                                             <input type="hidden" name="id" value="{{ $model->id }}">
-                                            {{ Form::text('name', $model->name, ['class' => 'form-control']) }}
+                                            {{ Form::text('name', $model->name, ['class' => 'form-control', 'readonly' => true]) }}
                                         </div>
                                         <div class="form-group col">
                                             <label for="email">ელ-ფოსტა</label>
-                                            {{ Form::text('email', $model->email, ['class' => 'form-control']) }}
+                                            {{ Form::text('email', $model->email, ['class' => 'form-control', 'readonly' => true]) }}
                                         </div>
                                     </div>
 
@@ -59,42 +59,51 @@
                                         </div>
                                     @endif
 
-                                </div>
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="name">სამუშაოს აღწერილობა</label>
+                                            {{ Form::textarea('job_description', $model->job_description, ['class' => 'form-control', 'readonly' => 'true']) }}
+                                        </div>
 
-                                @if (auth()->user()->hasRole('director'))
-                                    <div class="form-group col">
-                                        <label for="email">ხელმოწერა</label>
-                                        <update-media class="mt-2" key="0" index="inter" each="1"
-                                            server="/users/uploads"
-                                            media_server="/users/uploads2/{{ $model->id ? $model->id : 'new' }}">
-                                        </update-media>
                                     </div>
-                                @endif
 
+                                </div>
                             </div>
 
-                            <hr />
+                            @if (auth()->user()->hasRole('director') || auth()->user()->hasRole('დირექტორი'))
+                                <div class="form-group col">
+                                    <label for="email">ხელმოწერა</label>
+                                    <update-media class="mt-2" key="0" index="inter" each="1"
+                                        server="/users/uploads"
+                                        media_server="/users/uploads2/{{ $model->id ? $model->id : 'new' }}">
+                                    </update-media>
+                                </div>
 
-                            <label for="name">როლები</label>
 
-                            <table class="table table-striped">
-                                <thead>
-                                    <th scope="col" width="1%"><input type="checkbox" name="all_permission"></th>
-                                    <th scope="col" width="20%">დასხელება</th>
-                                    <th scope="col" width="1%">Guard</th>
-                                </thead>
+                                <hr />
 
-                                @foreach ($roles as $role)
-                                    <tr>
-                                        <td>
-                                            {{ Form::checkbox('roles[]', $role->id) }}
-                                        </td>
-                                        <td>{{ $role->name }}</td>
-                                        <td>{{ $role->guard_name }}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
 
+                                <label for="name">როლები</label>
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th scope="col" width="1%"><input type="checkbox" name="all_permission">
+                                        </th>
+                                        <th scope="col" width="20%">დასხელება</th>
+                                        <th scope="col" width="1%">Guard</th>
+                                    </thead>
+
+                                    @foreach ($roles as $role)
+                                        <tr>
+                                            <td>
+                                                {{ Form::checkbox('roles[]', $role->id) }}
+                                            </td>
+                                            <td>{{ $role->name }}</td>
+                                            <td>{{ $role->guard_name }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            @endif
 
 
                         </div>
@@ -102,6 +111,19 @@
                         <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                             <div class="form-group"></div>
 
+                            @if ($model->getFirstMediaUrl('user-profile-images'))
+                                <div class="row d-flex justify-content-center align-items-center">
+                                    <img class="m-5" style="width: 200px"
+                                        src="{{ $model->getFirstMediaUrl('user-profile-images') }}" alt="">
+
+                                </div>
+                            @endif
+                            <div class="row d-flex justify-content-center">
+                                <p class="text-center">{{ $model->name }}</p>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <p class="text-center">{{ $model->position }}</p>
+                            </div>
                             <button onclick="location.href = '{{ route('dashboard') }}'" type="button"
                                 class="btn btn-danger  btn-block" style="margin-right: 5px;">
                                 <i class="far fa-window-close"></i> გასვლა
