@@ -297,7 +297,9 @@ export default {
         },
         handleClose(test) {
             alert(test[0].data);
-            showModal = false;
+            this.signatureDataUrl = test[0].data; // Store the signature data URL
+
+            this.showModal = false;
         },
         handleSave(signatureDataUrl) {
             this.signatureDataUrl = signatureDataUrl.data; // Store the signature data URL
