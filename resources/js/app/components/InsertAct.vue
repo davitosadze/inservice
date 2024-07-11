@@ -295,8 +295,8 @@ export default {
             console.log(createdAt < today);
             return createdAt < today;
         },
-        handleClose() {
-            alert("Gamarjobaaaaa");
+        handleClose(test) {
+            alert(test);
             showModal = false;
         },
         handleSave(signatureDataUrl) {
