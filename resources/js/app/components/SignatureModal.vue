@@ -76,8 +76,7 @@ export default {
         },
         closeAndSave() {
             const dataUrl = this.$refs.signaturePad.saveSignature();
-            this.$emit("save", dataUrl);
-            this.closeModal();
+            this.$emit("save", [dataUrl]);
         },
         closeModal() {
             this.$emit("close");
