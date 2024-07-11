@@ -89,7 +89,7 @@ export default {
             event.preventDefault(); // Prevent the default form submission behavior
 
             const dataUrl = this.$refs.signaturePad.saveSignature();
-            alert(dataUrl);
+            alert(dataUrl + "HELLO");
 
             this.$emit("save", dataUrl);
         },
