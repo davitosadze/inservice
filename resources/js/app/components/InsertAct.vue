@@ -152,7 +152,7 @@
                                     <SignatureModal
                                         :isVisible="showModal"
                                         :signatureDataUrl="signatureDataUrl"
-                                        @close="showModal = false"
+                                        @close="handleClose"
                                         @saveSignatureEmit="handleSave"
                                     />
 
@@ -298,9 +298,11 @@ export default {
             console.log(createdAt < today);
             return createdAt < today;
         },
+        handleClose() {
+            showModal = false;
+        },
         handleSave(signatureDataUrl) {
             this.signatureDataUrl = signatureDataUrl.data; // Store the signature data URL
-            this.showModal = false; // Close the modal
         },
         undo() {
             this.$refs.signaturePad.undoSignature();
