@@ -54,9 +54,12 @@
                                     <p class="card-text">{{ $response->performer?->name }}</p>
                                     <div class="row" role="group" aria-label="Button group">
 
+                                        @php
+                                            $act_id = $response->act ? $response->act?->id : 'new';
+                                        @endphp
                                         <div class="col-sm-6">
                                             @if (Auth::user()->can('აქტის ნახვა'))
-                                                <a href="{{ route('acts.edit', $response->act?->id) }}"
+                                                <a href="{{ route('acts.edit', $act_id) }}"
                                                     class="mr-2 btn btn-success">
                                                     აქტი
                                                 </a>
