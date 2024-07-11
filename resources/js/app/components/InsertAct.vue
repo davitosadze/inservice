@@ -296,7 +296,7 @@ export default {
             return createdAt < today;
         },
         handleClose(test) {
-            alert(test);
+            this.signatureDataUrl = test.data; // Store the signature data URL
             showModal = false;
         },
         handleSave(signatureDataUrl) {
