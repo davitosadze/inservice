@@ -295,12 +295,11 @@ export default {
             console.log(createdAt < today);
             return createdAt < today;
         },
-        handleClose(test) {
-            alert(test);
-            showModal = false;
+        handleClose() {
+            this.showModal = false;
         },
         handleSave(signatureDataUrl) {
-            this.signatureDataUrl = signatureDataUrl.data; // Store the signature data URL
+            this.signatureDataUrl = signatureDataUrl[0].data; // Store the signature data URL
         },
         undo() {
             this.$refs.signaturePad.undoSignature();
