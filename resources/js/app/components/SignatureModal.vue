@@ -28,7 +28,7 @@
                     ></VueSignaturePad>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" @click="saveSignature()">
+                    <a class="btn btn-primary" @click="saveSignature($event)">
                         შენახვა
                     </a>
 
@@ -86,7 +86,7 @@ export default {
             event.preventDefault(); // Prevent the default form submission behavior
 
             const dataUrl = this.$refs.signaturePad.saveSignature();
-            this.$emit("save", "1");
+            this.$emit("saveSignatureEmit", dataUrl);
         },
         clearSignature() {
             this.$refs.signaturePad.clearSignature();
