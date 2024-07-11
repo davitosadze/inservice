@@ -54,73 +54,70 @@
                                     <p class="card-text">{{ $response->performer?->name }}</p>
                                     <div class="row" role="group" aria-label="Button group">
 
-                                        @php
-                                            $act_id = $response->act ? $response->act?->id : 'new';
-                                        @endphp
-                                        <div class="col-sm-6">
-                                            @if (Auth::user()->can('აქტის ნახვა'))
-                                                <a href="{{ route('acts.edit', $act_id) }}"
-                                                    class="mr-2 btn btn-success">
-                                                    აქტი
-                                                </a>
-                                            @endif
-
-
-                                            @if (Auth::user()->can('რეაგირების ნახვა'))
-                                                <a href="{{ route('responses.show', $response->id) }}"
-                                                    class="btn btn-primary">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            @endif
-
-                                            @role('ინჟინერი')
-                                                @if (!$response->time)
-                                                    <a href="{{ route('responses.arrived', $response->id) }}"
-                                                        onclick="return confirm('ნამდვილად მიხვედით?')"
-                                                        class="ml-2 btn btn-success">
-                                                        <i class="fas fa-globe">მივედი</i>
+                                        @if ($response->act)
+                                            <div class="col-sm-6">
+                                                @if (Auth::user()->can('აქტის ნახვა'))
+                                                    <a href="{{ route('acts.edit', $response->act?->id) }}"
+                                                        class="mr-2 btn btn-success">
+                                                        აქტი
                                                     </a>
                                                 @endif
-                                            @endrole
+                                        @endif
 
+                                        @if (Auth::user()->can('რეაგირების ნახვა'))
+                                            <a href="{{ route('responses.show', $response->id) }}"
+                                                class="btn btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        @endif
 
-
-                                            @if (Auth::user()->can('რეაგირების რედაქტირება'))
-                                                <a href="{{ route('responses.edit', $response->id) }}"
-                                                    class="ml-2 btn btn-primary">
-                                                    <i class="fas fa-edit"></i>
+                                        @role('ინჟინერი')
+                                            @if (!$response->time)
+                                                <a href="{{ route('responses.arrived', $response->id) }}"
+                                                    onclick="return confirm('ნამდვილად მიხვედით?')"
+                                                    class="ml-2 btn btn-success">
+                                                    <i class="fas fa-globe">მივედი</i>
                                                 </a>
                                             @endif
-                                        </div>
-                                        <div class="col-sm-6" style="text-align: right;">
-                                            @if (Auth::user()->can('რეაგირების წაშლა'))
-                                                <form method="POST"
-                                                    action="{{ route('responses.destroy', $response->id) }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button style="text-align: right" type="button"
-                                                        class="btn btn-danger" onclick="confirmDelete(this)">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
+                                        @endrole
+
+
+
+                                        @if (Auth::user()->can('რეაგირების რედაქტირება'))
+                                            <a href="{{ route('responses.edit', $response->id) }}"
+                                                class="ml-2 btn btn-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                    <div class="col-sm-6" style="text-align: right;">
+                                        @if (Auth::user()->can('რეაგირების წაშლა'))
+                                            <form method="POST"
+                                                action="{{ route('responses.destroy', $response->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button style="text-align: right" type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete(this)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                </div>
+            @endforeach
 
-                </div>
-            @else
-                <!-- /.card-body -->
-                <div id="renderer" class="mt-2">
-                    <layout class="mt-2" :user='@json(auth()->user())'
-                        :additional='@json($additional)' :setting='@json($setting)'
-                        name="alter-table">
-                    </layout>
-                </div>
-            @endif
+        </div>
+    @else
+        <!-- /.card-body -->
+        <div id="renderer" class="mt-2">
+            <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)'
+                :setting='@json($setting)' name="alter-table">
+            </layout>
+        </div>
+        @endif
     </section>
 
 </x-app-layout>
