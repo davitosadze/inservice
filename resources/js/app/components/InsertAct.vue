@@ -308,9 +308,6 @@ export default {
         save() {
             const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
             this.signature = data;
-            console.log(this.signature);
-            console.log(isEmpty);
-            console.log(data);
         },
         $can(permissionName) {
             return (
@@ -318,11 +315,7 @@ export default {
             );
         },
         toggleFullScreen() {
-            // this.fullScreen = !this.fullScreen;
             this.showModal = true;
-            // var signature = this.$refs.signature.save();
-            // console.log(signature);
-            // this.signature = signature;
         },
         fetchLocations() {
             const locationsEndpoint = "/api/locations";
