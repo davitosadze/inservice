@@ -87,7 +87,7 @@ export default {
 
             const dataUrl = this.$refs.signaturePad.saveSignature();
 
-            this.$emit("saveSignatureEmit", [dataUrl]);
+            this.$emit("saveSignatureEmit", [1]);
             this.$emit("close");
         },
         clearSignature() {
