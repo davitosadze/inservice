@@ -76,8 +76,7 @@ export default {
         },
         closeAndSave() {
             const dataUrl = this.$refs.signaturePad.saveSignature();
-            this.$emit("save", [dataUrl]);
-            this.closeModal();
+            this.$emit("close", [dataUrl]);
         },
         closeModal() {
             this.$emit("close");
@@ -86,8 +85,7 @@ export default {
             event.preventDefault(); // Prevent the default form submission behavior
 
             const dataUrl = this.$refs.signaturePad.saveSignature();
-            this.$emit("save", [dataUrl]);
-            this.closeModal();
+            this.$emit("close", [dataUrl]);
         },
         clearSignature() {
             this.$refs.signaturePad.clearSignature();
