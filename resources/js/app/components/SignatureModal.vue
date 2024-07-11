@@ -28,9 +28,9 @@
                     ></VueSignaturePad>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" @click="saveSignature">
+                    <div class="btn btn-primary" @click="saveSignature">
                         შენახვა
-                    </button>
+                    </div>
 
                     <a class="btn btn-danger" @click="clearSignature">წაშლა</a>
                 </div>
