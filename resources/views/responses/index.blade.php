@@ -59,7 +59,7 @@
                                         @endphp
                                         <div class="col-sm-6">
                                             @if (Auth::user()->can('აქტის ნახვა'))
-                                                <a href="{{ route('acts.edit', $act_id) }}"
+                                                <a href="{{ route('acts.edit', ['act' => $act_id, 'response_id' => $response->id]) }}"
                                                     class="mr-2 btn btn-success">
                                                     აქტი
                                                 </a>
