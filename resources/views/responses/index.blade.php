@@ -38,20 +38,27 @@
                     </div>
                 </div>
             @endif
-            @if (app('request')->input('type') == 'pending')
+
+            @if (app('request')->input('type') != 'done')
+                <div class="mt-2 view-switcher">
+                    <button id="switchToGrid" class="btn active btn-sm btn-outline-success">გრიდი</button>
+                    <button id="switchToTable" class="btn btn-sm btn-outline-success ml-2">ცხრილი</button>
+                </div>
                 <hr>
-                <div class="row">
+                <div id="gridView" class="row">
                     @foreach ($responses as $response)
                         <div class="col-sm-6">
                             <div class="card">
                                 <h5
-                                    class="@if ($response->status == 1) rag-red @elseif($response->status == 2) rag-yellow @endif card-header">
-                                    {{ $response->id }}</h5>
+                                    class="@if ($response->time) rag-green-arrived @elseif ($response->status == 1) rag-red @elseif($response->status == 2) rag-yellow @elseif($response->time) rag-green-arrived @endif card-header">
+                                    <span class="left">{{ $response->id }}</span>
+                                    <span class="right">{{ $response->performer?->name }}</span>
+                                </h5>
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $response->purchaser?->name }}</h5>
                                     <p class="card-text">{{ $response->purchaser?->subj_address }}</p>
                                     <p class="card-text">{{ $response->purchaser?->subj_name }}</p>
-                                    <p class="card-text">{{ $response->performer?->name }}</p>
+
                                     <div class="row" role="group" aria-label="Button group">
 
                                         @php
@@ -105,6 +112,25 @@
                                                 </form>
                                             @endif
                                         </div>
+                                        <hr>
+                                        <div class="col-sm 12">
+                                            <div class="mt-2 card-footer">
+                                                <div class="left">
+                                                    <b>
+                                                        <p>შექმნის დრო:</p>
+                                                        <p>{{ \Carbon\Carbon::parse($response->created_at)->format('H:i / d.m.Y') }}
+                                                        </p>
+                                                    </b>
+                                                </div>
+                                                <div class="right">
+                                                    <b>
+                                                        <p>ადგილზე მისვლის დრო:</p>
+                                                        <p>{{ $response->time ? \Carbon\Carbon::parse($response->time)->format('H:i / d.m.Y') : '-' }}
+                                                        </p>
+                                                    </b>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -112,21 +138,37 @@
                     @endforeach
 
                 </div>
-            @else
-                <!-- /.card-body -->
-                <div id="renderer" class="mt-2">
-                    <layout class="mt-2" :user='@json(auth()->user())'
-                        :additional='@json($additional)' :setting='@json($setting)'
-                        name="alter-table">
-                    </layout>
-                </div>
             @endif
+            <!-- /.card-body -->
+            <div id="renderer" class="mt-2">
+                <layout class="mt-2" :user='@json(auth()->user())' :additional='@json($additional)'
+                    :setting='@json($setting)' name="alter-table">
+                </layout>
+            </div>
     </section>
 
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
 <script>
+    $('#renderer').hide();
+
+    $('#switchToGrid').click(function() {
+        $('#gridView').show();
+        $('#switchToGrid').addClass('active');
+        $('#switchToTable').removeClass('active');
+
+        $('#renderer').hide();
+    });
+
+    $('#switchToTable').click(function() {
+        $('#gridView').hide();
+        $('#switchToGrid').removeClass('active');
+        $('#switchToTable').addClass('active');
+
+        $('#renderer').show();
+    });
+
     let target = document.querySelector("button#create");
     target.addEventListener("click", function(e) {
         window.location.href = e.target.getAttribute("href")
@@ -138,6 +180,11 @@
         }
     }
     $(document).ready(function() {
+
+        if ("{{ app('request')->input('type') }}" == "done") {
+            $('#renderer').show();
+
+        }
 
         $("#export").click(function() {
             var fromDate = $("#fromDate").val();
@@ -180,6 +227,19 @@
     });
 </script>
 <style>
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-footer {
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .rag-red {
         background-color: #ec3339 !important;
         color: white;
@@ -187,5 +247,9 @@
 
     .rag-yellow {
         background-color: #fbb42f !important;
+    }
+
+    .rag-green-arrived {
+        background-color: #00c079 !important;
     }
 </style>

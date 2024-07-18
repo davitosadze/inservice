@@ -99,7 +99,8 @@
                                             @foreach ($additional['purchasers'] as $purchaser)
                                                 <option value='@json($purchaser)'
                                                     @selected($model->purchaser_id == $purchaser['id'])>
-                                                    {{ $purchaser['name'] }} / {{ $purchaser['subj_name'] }}
+                                                    {{ $purchaser['name'] }} / {{ $purchaser['subj_name'] }} /
+                                                    {{ $purchaser['subj_address'] }}
                                                 </option>
                                             @endforeach
                                         </select>
