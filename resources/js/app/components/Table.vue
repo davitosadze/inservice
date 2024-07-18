@@ -365,6 +365,7 @@ export default {
     },
     mounted() {
         this.rowClassRules = {
+            "rag-green-arrived": "data.time && data.status != 3",
             "rag-green": "data.status == 3",
             "rag-red": "data.status == 1",
             "rag-yellow": "data.status == 2",
@@ -550,6 +551,9 @@ export default {
 }
 .rag-yellow {
     background-color: #fbb22f80 !important;
+}
+.rag-green-arrived {
+    background-color: #00c079 !important;
 }
 .ag-header-cell-menu-button {
     display: none;
