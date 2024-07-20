@@ -35,6 +35,7 @@ class User extends Authenticatable implements HasMedia
         'position'
     ];
 
+    protected $appends = ["profile_image"];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -84,6 +85,16 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Invoice::class, "user_id");
     }
+
+    public function getProfileImageAttribute()
+    {
+        if ($this->media('user-profile-images')->first() === null) {
+            return;
+        }
+        return $this->getMedia('user-profile-images')->first()?->original_url;
+    }
+
+
 
     public function signature()
     {

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\Response;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class AppStatisticController extends Controller
 {
@@ -68,11 +70,32 @@ class AppStatisticController extends Controller
             ];
         }
 
+
+        $performers = User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
+            $query->whereIn('name', ['ინჟინერი']);
+        })->get();
+
+        $responsesByPerformer = [];
+        foreach ($performers as $performer) {
+            $perforjerObject["id"] = $performer->id;
+            $perforjerObject["name"] = $performer->name;
+            $perforjerObject["email"] = $performer->email;
+            $perforjerObject["profile_image"] = $performer->profile_image;
+            $responseCount = Response::whereBetween('created_at', [$from, $to])
+                ->where('performer_id', $performer->id)
+                ->count();
+            $perforjerObject["responses_count"] = $responseCount;
+
+            array_push($responsesByPerformer, $perforjerObject);
+        }
+
+
         $data = [
             "responsesDaily" => $responsesDaily,
             "responsesByName" => $responsesByName,
             "responsesBySphere" => $responsesBySphere,
-            "responsesByRegion" => $responsesByRegion
+            "responsesByRegion" => $responsesByRegion,
+            "responsesByPerformer" => $responsesByPerformer
         ];
 
         return response()->json($data, 200);
