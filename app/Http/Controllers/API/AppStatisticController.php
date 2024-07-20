@@ -71,7 +71,7 @@ class AppStatisticController extends Controller
         }
 
 
-        $performers = User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
+        $performers = User::whereHas('roles', function (Builder $query) {
             $query->whereIn('name', ['ინჟინერი']);
         })->get();
 
