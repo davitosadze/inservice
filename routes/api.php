@@ -23,12 +23,12 @@ use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\DashboardController;
 
+Route::get("app/statistics", [AppStatisticController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("users", UserController::class);
 
     Route::get("statistics", [StatisticController::class, 'statistics']);
-    Route::get("app/statistics", [AppStatisticController::class, 'index']);
 
     Route::apiResource("purchasers", PurchaserController::class);
     Route::apiResource("purchasers.special-attributes", SpecialAttributeController::class);
