@@ -365,7 +365,7 @@ export default {
     },
     mounted() {
         this.rowClassRules = {
-            "rag-green-arrived": "data.time && data.status != 3",
+            "rag-green-arrived": "data.status == 10",
             "rag-green": "data.status == 3",
             "rag-red": "data.status == 1",
             "rag-yellow": "data.status == 2",

@@ -50,7 +50,7 @@
                         <div class="col-sm-6">
                             <div class="card">
                                 <h5
-                                    class="@if ($response->time) rag-green-arrived @elseif ($response->status == 1) rag-red @elseif($response->status == 2) rag-yellow @elseif($response->time) rag-green-arrived @endif card-header">
+                                    class="@if ($response->status == 1) rag-red @elseif($response->status == 2) rag-yellow @elseif($response->status == 10) rag-green-arrived @endif card-header">
                                     <span class="left">{{ $response->id }}</span>
                                     <span class="right">{{ $response->performer?->name }}</span>
                                 </h5>

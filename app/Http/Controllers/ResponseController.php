@@ -63,18 +63,18 @@ class ResponseController extends Controller
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
             $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
-                ->where("status", 1)
+                ->whereIn("status", [1, 10])
                 ->where("performer_id", Auth::user()->id);
         } else {
             $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc');
         }
 
         if ($request->get("type") == "done") {
-            $responses = $responses->where("status", ">=", 3)
+            $responses = $responses->where("status", 3)
                 ->orWhere("status", 0)
                 ->get();
         } else {
-            $responses = $responses->whereIn("status", [1, 2])
+            $responses = $responses->whereIn("status", [1, 2, 10])
                 ->get();
         }
 
@@ -275,6 +275,7 @@ class ResponseController extends Controller
     {
         $response = Response::find($id);
         $response->time = Carbon::now();
+        $response->status = 10;
         $response->save();
         return back();
     }
