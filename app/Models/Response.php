@@ -25,7 +25,8 @@ class Response extends Model
         "system_one",
         "system_two",
         "status",
-        "device_type"
+        "device_type",
+        'on_repair'
     ];
 
     use HasFactory;

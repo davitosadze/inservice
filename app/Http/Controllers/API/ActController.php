@@ -50,6 +50,9 @@ class ActController extends Controller
 
                 if ($request->approve == 1) {
                     $response->status = 3;
+                } elseif ($request->on_repair == 1) {
+                    $response->status = 3;
+                    $response->on_repair = 1;
                 } else {
                     $response->status = 2;
                 }

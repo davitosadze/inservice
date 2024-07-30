@@ -30,10 +30,12 @@ class AppStatisticController extends Controller
         });
 
         foreach ($dates as $date) {
-            $responses = Response::whereDate('created_at', $date)->count();
+            $approvedResponses = Response::whereDate('created_at', $date)->where('status', 3)->count();
+            $onRepairResponses = Response::whereDate('created_at', $date)->where('on_repair', 1)->count();
             $responsesDaily[] = [
                 "date" => $date,
-                "count" => $responses
+                "approvedCount" => $approvedResponses,
+                "onRepairCount" => $onRepairResponses,
             ];
         }
 
@@ -81,10 +83,15 @@ class AppStatisticController extends Controller
             $perforjerObject["name"] = $performer->name;
             $perforjerObject["email"] = $performer->email;
             $perforjerObject["profile_image"] = $performer->profile_image;
-            $responseCount = Response::whereBetween('created_at', [$from, $to])
+            $nonApprovedResponses = Response::whereBetween('created_at', [$from, $to])
                 ->where('performer_id', $performer->id)
-                ->count();
-            $perforjerObject["responses_count"] = $responseCount;
+                ->where('status', '!=', 3)->count();
+
+            $approvedResponses = Response::whereBetween('created_at', [$from, $to])
+                ->where('performer_id', $performer->id)
+                ->where('status',  3)->count();
+            $perforjerObject["approved_responses_count"] = $approvedResponses;
+            $perforjerObject["non_approved_responses_count"] = $nonApprovedResponses;
 
             array_push($responsesByPerformer, $perforjerObject);
         }

@@ -27,40 +27,5 @@
         </div>
 
     </section>
-    @push('head')
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <style>
-            html,
-            body {
-                overflow: hidden;
-                width: 100%;
-                height: 100%;
-                -webkit-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
 
-            @media only screen and (orientation:landscape) {
-                body {
-                    -webkit-transform: rotate(0deg);
-                    -moz-transform: rotate(0deg);
-                    -ms-transform: rotate(0deg);
-                    -o-transform: rotate(0deg);
-                    transform: rotate(0deg);
-                }
-            }
-
-            @media only screen and (orientation:portrait) {
-                body {
-                    -webkit-transform: rotate(0deg);
-                    -moz-transform: rotate(0deg);
-                    -ms-transform: rotate(0deg);
-                    -o-transform: rotate(0deg);
-                    transform: rotate(0deg);
-                }
-            }
-        </style>
-    @endpush
 </x-app-layout>

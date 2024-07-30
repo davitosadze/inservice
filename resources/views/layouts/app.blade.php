@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'მთავარი') - {{ config('app.name', 'Inservice') }}</title>
@@ -76,6 +77,24 @@
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/vendors/lte-core.js') }}"></script>
     <script type="text/javascript">
+        window.addEventListener("orientationchange", function() {
+            alert(screen.orientation)
+            if (screen.orientation) {
+                screen.orientation.lock('portrait').catch(function() {
+                    alert('Orientation lock failed');
+                });
+            }
+        });
+
+        // Initial check to lock orientation
+        document.addEventListener('DOMContentLoaded', function() {
+            if (screen.orientation) {
+                screen.orientation.lock('portrait').catch(function() {
+                    console.log('Orientation lock failed');
+                });
+            }
+        });
+
         window.Laravel = {
             csrfToken: "{{ csrf_token() }}",
             jsPermissions: {!! auth()->check() ? auth()->user()->jsPermissions() : null !!}

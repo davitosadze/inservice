@@ -185,7 +185,7 @@
                     <button
                         :disabled="v$.$errors.length"
                         v-if="$can('აქტის რედაქტირება')"
-                        @click="send"
+                        @click="send($event, 'send')"
                         type=""
                         class="btn btn-primary btn-block"
                     >
@@ -199,7 +199,7 @@
                         <button
                             :disabled="v$.$errors.length"
                             v-if="$can('აქტის რედაქტირება') && this.model.id"
-                            @click="sendAndApprove"
+                            @click="send($event, 'approve')"
                             type=""
                             class="btn btn-success btn-block"
                         >
@@ -215,6 +215,16 @@
                             class="btn btn-danger btn-block"
                         >
                             <i class="fa fa-times"></i> დახარვეზება
+                        </button>
+
+                        <button
+                            :disabled="v$.$errors.length"
+                            v-if="$can('აქტის რედაქტირება') && this.model.id"
+                            @click="send($event, 'on_repair')"
+                            type=""
+                            class="btn btn-success btn-block"
+                        >
+                            <i class="far fa-paper-plane"></i> რემონტზე გადაცემა
                         </button>
                     </div>
                 </div>
@@ -379,33 +389,51 @@ export default {
                     console.error("Error fetching options:", error);
                 });
         },
-        send(e) {
-            e.preventDefault();
-            let action = document
+        send(event, type) {
+            event.preventDefault();
+
+            const actionUrl = document
                 .querySelector("form#render")
                 .getAttribute("action");
-            let token = document
-                .querySelector('meta[name="csrf-token"')
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content");
 
             this.v$.m.$touch();
+
             if (this.v$.m.$error) {
-                alert("Erroriaa");
+                alert("Validation error occurred");
+                return;
             }
 
             this.m.signature = this.signatureDataUrl;
 
+            if (type === "approve") {
+                this.m.approve = 1;
+            } else if (type === "on_repair") {
+                this.m.on_repair = 1;
+            }
+
             this.$http
-                .post(action, this.m, {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
+                .post(actionUrl, this.m, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
                 })
-                .then(async (response) => {
+                .then((response) => {
                     Util.useSwall(response).then((result) => {
-                        if (
-                            this.model.id == null &&
-                            response.data.success == true
-                        ) {
+                        if (!response.data.success) {
+                            response.data.errs.forEach((error) =>
+                                this.$toast.error(error, {
+                                    position: "top-right",
+                                    duration: 7000,
+                                })
+                            );
+                            return;
+                        }
+
+                        if (this.model.id == null && response.data.success) {
                             window.location.href = "/responses?type=pending";
                         } else if (result.value) {
                             window.location.replace(
@@ -415,20 +443,11 @@ export default {
                                 )
                             );
                         }
-
-                        if (!response.data.success) {
-                            response.data.errs.map((item) =>
-                                this.$toast.error(item, {
-                                    position: "top-right",
-                                    duration: 7000,
-                                })
-                            );
-                        }
                     });
                 })
-                .catch((e) => {
-                    Util.useSwall().then((result) => {
-                        this.$toast.error(e.response.statusText, {
+                .catch((error) => {
+                    Util.useSwall().then(() => {
+                        this.$toast.error(error.response.statusText, {
                             position: "top-right",
                             duration: 7000,
                         });
@@ -437,63 +456,7 @@ export default {
 
             return false;
         },
-        sendAndApprove(e) {
-            e.preventDefault();
-            let action = document
-                .querySelector("form#render")
-                .getAttribute("action");
-            let token = document
-                .querySelector('meta[name="csrf-token"')
-                .getAttribute("content");
 
-            this.v$.m.$touch();
-
-            this.m.approve = 1;
-            this.m.signature = this.signatureDataUrl;
-
-            this.$http
-
-                .post(action, this.m, {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": token,
-                })
-                .then(async (response) => {
-                    Util.useSwall(response).then((result) => {
-                        if (
-                            this.model.id == null &&
-                            response.data.success == true
-                        ) {
-                            window.location.href = "/responses?type=pending";
-                        } else if (result.value) {
-                            window.location.replace(
-                                this.setting.url.request.index.replace(
-                                    "api/",
-                                    ""
-                                )
-                            );
-                        }
-
-                        if (!response.data.success) {
-                            response.data.errs.map((item) =>
-                                this.$toast.error(item, {
-                                    position: "top-right",
-                                    duration: 7000,
-                                })
-                            );
-                        }
-                    });
-                })
-                .catch((e) => {
-                    Util.useSwall().then((result) => {
-                        this.$toast.error(e.response.statusText, {
-                            position: "top-right",
-                            duration: 7000,
-                        });
-                    });
-                });
-
-            return false;
-        },
         reject(e) {
             e.preventDefault();
 

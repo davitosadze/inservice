@@ -65,7 +65,7 @@
                                             $act_id = $response->act ? $response->act->id : 'new';
                                         @endphp
                                         <div class="col-sm-6">
-                                            @if (Auth::user()->can('აქტის ნახვა'))
+                                            @if (!Auth::user()->hasRole('ინჟინერი'))
                                                 <a href="{{ route('acts.edit', ['act' => $act_id, 'response_id' => $response->id]) }}"
                                                     class="mr-2 btn btn-success">
                                                     აქტი

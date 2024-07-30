@@ -26,27 +26,29 @@
                     <div class="invoice p-3 mb-3">
 
                         @auth
-                            {{-- @role('ინჟინერი') --}}
-                            <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ route('acts.edit', ['act' => $response->act ? $response->act->id : 'new', 'response_id' => $response->id]) }}"
-                                        class="btn btn-success btn-block mr-2">
-                                        <i class="far fa-paper-plane"></i>
-                                        @if ($response->act)
-                                            აქტის ნახვა
-                                        @else
-                                            აქტის შევსება
-                                        @endif
-                                    </a>
-
-                                    @if ($response->act)
-                                        <a href="{{ route('acts.export', $response->act->id) }}"
-                                            class="btn btn-success smaller-export-btn">
-                                            <i class="fas fa-file-export"></i>
+                            @if ((Auth::user()->hasRole('ინჟინერი') && $response->time) || !Auth::user()->hasRole('ინჟინერი'))
+                                <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('acts.edit', ['act' => $response->act ? $response->act->id : 'new', 'response_id' => $response->id]) }}"
+                                            class="btn btn-success btn-block mr-2">
+                                            <i class="far fa-paper-plane"></i>
+                                            @if ($response->act)
+                                                აქტის ნახვა
+                                            @else
+                                                აქტის შევსება
+                                            @endif
                                         </a>
-                                    @endif
+
+                                        @if ($response->act)
+                                            <a href="{{ route('acts.export', $response->act->id) }}"
+                                                class="btn btn-success smaller-export-btn">
+                                                <i class="fas fa-file-export"></i>
+                                            </a>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
+
 
 
 
@@ -55,6 +57,9 @@
                         @endauth
 
                         <p class="lead">კვლევის ობიექტი</p>
+                        @if ($response->on_repair)
+                            <p>(გადაცემულია რემონტზე)</p>
+                        @endif
                         <div class="form-group row">
                             <label for="staticEmail" class="col-sm-3 col-form-label"><b>კლიენტის სახელი:</b></label>
                             <label class="col-sm-9 col-form-label">{{ $response->name }}</label>
