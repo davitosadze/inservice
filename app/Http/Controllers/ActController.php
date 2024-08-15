@@ -14,9 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class ActController extends Controller
 {
 
-    public function index()
-    {
-    }
+    public function index() {}
     public function edit($id)
     {
 
@@ -49,10 +47,25 @@ class ActController extends Controller
 
         $model = Act::where('id', $id)->with(['location', 'deviceType', 'deviceBrand', 'response'])->first();
 
-        $signature = Media::where('model_type', 'App\Models\User')
-            ->where('model_id', Act::find($id)->response?->performer?->id)
-            ->first()->original_url;
+        $act = Act::find($id);
 
+        if ($act && $act->response && $act->response->performer) {
+            $performerId = $act->response->performer->id;
+
+            $media = Media::where('model_type', 'App\Models\User')
+                ->where('model_id', $performerId)
+                ->where('collection_name', 'credential')
+                ->first();
+
+            if ($media) {
+                $signature = $media->original_url;
+            } else {
+                //  
+                $signature = null;
+            }
+        } else {
+            $signature = null;
+        }
         $name = "აქტი#" . $model->id . ".pdf";
 
         $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model, "signature" => $signature]);
