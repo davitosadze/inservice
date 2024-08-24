@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\Response;
 use App\Models\System;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -17,8 +18,10 @@ class StatisticController extends Controller
     public function statistics(Request $request)
     {
 
-        $start_date = $request->get('start_date');
-        $end_date = $request->get('end_date');
+        $start_date = Carbon::parse($request->get('start_date'));
+        $end_date = Carbon::parse($request->get('end_date'))->endOfDay();
+
+
 
         $users = User::whereNotIn('email', ['user@gmail.com', 'g.zurabashvili@yahoo.com', 'giorgi@inservice.ge'])->get();
         $stats = array();
