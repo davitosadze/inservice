@@ -30,7 +30,7 @@ class AppStatisticController extends Controller
         });
 
         foreach ($dates as $date) {
-            $approvedResponses = Response::whereDate('created_at', $date)->where('status', 3)->count();
+            $approvedResponses = Response::whereDate('created_at', $date)->count();
             $onRepairResponses = Response::whereDate('created_at', $date)->where('on_repair', 1)->count();
             $responsesDaily[] = [
                 "date" => $date,
