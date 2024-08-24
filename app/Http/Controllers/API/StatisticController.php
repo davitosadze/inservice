@@ -19,7 +19,7 @@ class StatisticController extends Controller
     {
 
         $start_date = Carbon::parse($request->get('start_date'));
-        $end_date = Carbon::parse($request->get('end_date'))->endOfDay();
+        $end_date = Carbon::parse($request->get('end_date'));
 
 
 
