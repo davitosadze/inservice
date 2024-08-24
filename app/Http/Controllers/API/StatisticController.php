@@ -18,8 +18,8 @@ class StatisticController extends Controller
     public function statistics(Request $request)
     {
 
-        $start_date = $request->get('start_date');
-        $end_date = $request->get('end_date');
+        $start_date = Carbon::parse($request->get('start_date'));
+        $end_date = Carbon::parse($request->get('end_date'))->endOfDay();
 
 
 
