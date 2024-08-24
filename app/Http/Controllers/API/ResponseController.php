@@ -42,8 +42,10 @@ class ResponseController extends Controller
 
     public function export(Request $request)
     {
-        $from = Carbon::parse($request->from);
-        $to = Carbon::parse($request->to);
+        $from = Carbon::parse($request->from)->startOfDay();
+        $to = Carbon::parse($request->to)->endOfDay();
+
+
 
         $name = "რეაგირება";
         return Excel::download(new ResponseExport($from, $to), "" . $name . ".xlsx");
