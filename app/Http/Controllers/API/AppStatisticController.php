@@ -43,13 +43,16 @@ class AppStatisticController extends Controller
             DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', ''), '„', '') as nameFormatted"),
             DB::raw('COUNT(*) as count')
         )
-            ->whereBetween('created_at', [$from, $to])
+            ->whereDate('created_at', '>=', $from)
+            ->whereDate('created_at', '<=', $to)
+
             ->groupBy('nameFormatted')
             ->get();
 
         $responsesBySphere = Response::select('systems.name', DB::raw('count(responses.id) as total_responses'))
             ->join('systems', 'responses.system_one', '=', 'systems.id')
-            ->whereBetween('responses.created_at', [$from, $to])
+            ->whereDate('responses.created_at', '>=', $from)
+            ->whereDate('responses.created_at', '<=', $to)
             ->groupBy('systems.name')
             ->get();
 
@@ -62,7 +65,8 @@ class AppStatisticController extends Controller
 
         foreach ($regions as $location => $key) {
             $regionIds = Region::where('location', $location)->pluck('id');
-            $responseCount = Response::whereBetween('created_at', [$from, $to])
+            $responseCount = Response::whereDate('created_at', '>=', $from)
+                ->whereDate('created_at', '<=', $to)
                 ->whereIn('region_id', $regionIds)
                 ->count();
 
@@ -83,11 +87,13 @@ class AppStatisticController extends Controller
             $perforjerObject["name"] = $performer->name;
             $perforjerObject["email"] = $performer->email;
             $perforjerObject["profile_image"] = $performer->profile_image;
-            $nonApprovedResponses = Response::whereBetween('created_at', [$from, $to])
+            $nonApprovedResponses = Response::whereDate('created_at', '>=', $from)
+                ->whereDate('created_at', '<=', $to)
                 ->where('performer_id', $performer->id)
                 ->where('status', '!=', 3)->count();
 
-            $approvedResponses = Response::whereBetween('created_at', [$from, $to])
+            $approvedResponses = Response::whereDate('created_at', '>=', $from)
+                ->whereDate('created_at', '<=', $to)
                 ->where('performer_id', $performer->id)
                 ->where('status',  3)->count();
             $perforjerObject["approved_responses_count"] = $approvedResponses;
