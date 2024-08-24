@@ -55,7 +55,6 @@ class StatisticController extends Controller
             ->groupBy('nameFormatted')
             ->get();
 
-        return $responses;
 
         $responsesPercentage = $responses->map(function ($response) {
             $responsesDistincted = Response::select(
