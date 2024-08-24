@@ -48,8 +48,8 @@ class StatisticController extends Controller
             DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', ''), '„', '') as nameFormatted"),
             DB::raw('COUNT(*) as count')
         )
-            ->whereBetween('created_at', [$start_date, $end_date])
-            ->groupBy('nameFormatted')
+            ->whereDate('responses.created_at', '>=', $start_date)
+            ->whereDate('responses.created_at', '<=', $end_date)->groupBy('nameFormatted')
             ->get();
 
 
