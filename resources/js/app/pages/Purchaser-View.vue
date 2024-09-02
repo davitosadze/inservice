@@ -370,8 +370,8 @@ export default {
             this.fullScreenImageSrc = imageSrc;
         },
         fileProcessed(item, file) {
-            this.fetchPurchaserFiles();
-            this.fetchGalleryImages();
+            // this.fetchPurchaserFiles();
+            // this.fetchGalleryImages();
         },
         handleDateClicked(date) {
             this.isModalOnEdit = false;
