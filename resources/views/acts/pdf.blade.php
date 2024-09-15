@@ -238,7 +238,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->user?->manager_type == 1 ? '✓' : '' }}
+                    {{ $model->response?->performer?->manager_type == 1 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -262,7 +262,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->user?->manager_type == 2 ? '✓' : '' }}
+                    {{ $model->response?->performer?->manager_type == 2 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -307,7 +307,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->user?->manager_type == 3 ? '✓' : '' }}
+                    {{ $model->response?->performer?->manager_type == 3 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -342,7 +342,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->user?->manager_type == 4 ? '✓' : '' }}
+                    {{ $model->response?->performer?->manager_type == 4 ? '✓' : '' }}
                 </p>
             </td>
             <td

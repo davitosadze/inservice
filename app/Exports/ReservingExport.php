@@ -42,12 +42,12 @@ class ReservingExport extends DefaultValueBinder implements WithDrawings, FromVi
         $drawing = new Drawing();
         $drawing->setName('Logo');
         $drawing->setDescription('This is my logo');
-        $drawing->setPath('../public/inservice-logo.png');
-        $drawing->setWidth(80);
+        $drawing->setPath('../public/inservice-new.png');
+        $drawing->setWidth(200);
 
         $drawing->setCoordinates('H1');
-        $drawing->setOffsetX(17);
-        $drawing->setOffsetY(15);
+        $drawing->setOffsetX(-20);
+        $drawing->setOffsetY(30);
 
         return $drawing;
     }

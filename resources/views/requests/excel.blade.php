@@ -12,14 +12,14 @@
     }
 
     .total {
-        background-color: #ffd05a;
+        background-color: #A4CC65;
     }
 </style>
 
 @php
-    
+
     $agr = ['prices' => 0, 'calc' => 0, 'service_prices' => 0];
-    
+
     if (isset($model['category_attributes'])) {
         $agr = collect($model['category_attributes'])->reduce(function ($result, $item) {
             if ($result === null) {
@@ -29,17 +29,23 @@
                     'service_prices' => 0,
                 ];
             }
-    
+
             $result['prices'] += isset($item['pivot']['price']) ? $item['pivot']['price'] : 0;
             $result['calc'] += isset($item['pivot']['calc']) ? $item['pivot']['calc'] : 0;
             $result['service_prices'] += isset($item['pivot']['service_price']) ? $item['pivot']['service_price'] : 0;
-    
+
             return $result;
         });
     }
-    
-    $titles = [['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'], ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'], ['title' => 'მოგება :', 'key' => 'p3'], ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'], ['title' => 'დღგ :', 'key' => 'p5']];
-    
+
+    $titles = [
+        ['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'],
+        ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'],
+        ['title' => 'მოგება :', 'key' => 'p3'],
+        ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'],
+        ['title' => 'დღგ :', 'key' => 'p5'],
+    ];
+
     function initReporteValues($arr, $model, $indexer)
     {
         $i = 0;
@@ -50,15 +56,15 @@
                 $item['inputName'] = $indexer . (string) ($i + 1);
                 $item['value'] = isset($model[$item['inputName']]) ? isset($model[$item['inputName']]) : 0;
                 $i++;
-    
+
                 array_push($carry, $item);
-    
+
                 return $carry;
             },
             [],
         );
     }
-    
+
     function recurcive($initReporteValuesRes, $starter, &$titles, $index)
     {
         if (isset($initReporteValuesRes[$index])) {
@@ -66,24 +72,24 @@
                 'p1' => ($initReporteValuesRes[$index]['value'] * $starter) / 100,
                 'p2' => $starter + ($initReporteValuesRes[$index]['value'] * $starter) / 100,
             ];
-    
+
             $titles[$index]['percenters'] = $percentes;
             $nextPrice = $percentes['p2'];
-    
+
             $index = $index + 1;
-    
+
             return recurcive($initReporteValuesRes, $nextPrice, $titles, $index);
         } else {
             return $titles;
         }
     }
-    
+
     $initReporteValuesRes = initReporteValues($titles, $model, 'p');
     $starter = $agr['calc'];
     $index = 0;
-    
+
     $calculate = recurcive($initReporteValuesRes, $starter, $titles, $index);
-    
+
 @endphp
 
 
@@ -133,7 +139,7 @@
 <table style="width: 1200px;">
     <thead>
         <tr>
-            <th height="20" colspan="1" style="background-color: #ffd05a;" valign="center" align="center">#:</th>
+            <th height="20" colspan="1" style="background-color: #A4CC65;" valign="center" align="center">#:</th>
             <th colspan="4" style="background-color: #d6d5d5;" valign="center" align="center">დასახელება</th>
             <th colspan="2" style="background-color: #d6d5d5;" valign="center" align="center">აღწერა</th>
             <th colspan="2" style="background-color: #d6d5d5;" valign="center" align="center">ერთეული</th>
@@ -145,14 +151,14 @@
             <th style="background-color: #c2c2c2;" class="unit" colspan="2" valign="center" align="center">
                 მომსახურება
             </th>
-            <th style="background-color: #ffd05a;" colspan="1" valign="center" align="center">ჯამი</th>
+            <th style="background-color: #A4CC65;" colspan="1" valign="center" align="center">ჯამი</th>
         </tr>
     </thead>
     <tbody>
 
         @foreach ($model['category_attributes'] as $key => $item)
             <tr>
-                <td valign="center" style="background-color: #ffd05a;" height="20" colspan="1" align="center">
+                <td valign="center" style="background-color: #A4CC65;" height="20" colspan="1" align="center">
                     {{ $key + 1 }}</td>
                 <td valign="center" style="background-color: #d6d5d5;" colspan="4">{{ $item['pivot']['title'] }}</td>
                 <td valign="center" style="background-color: #d6d5d5;" colspan="2">{{ $item['name'] }}</td>
@@ -165,7 +171,7 @@
                 <td valign="center" style="background-color: #c2c2c2;" colspan="2" data-format="0.00">
                     {{ $item['pivot']['service_price'] }}
                 </td>
-                <td valign="center" style="background-color: #ffd05a;" colspan="1" data-format="0.00">
+                <td valign="center" style="background-color: #A4CC65;" colspan="1" data-format="0.00">
                     {{ $item['pivot']['calc'] }}</td>
             </tr>
         @endforeach

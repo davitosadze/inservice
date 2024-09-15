@@ -45,8 +45,8 @@
 
         header {
 
-            border-right: 5px solid #ffd05a;
-            border-left: 5px solid #ffd05a;
+            border-right: 5px solid #A4CC65;
+            border-left: 5px solid #A4CC65;
 
             padding: 10px 0;
             margin-bottom: 20px;
@@ -151,7 +151,7 @@
         table .no {
             color: #000;
             font-size: 1em;
-            background: #ffd05a;
+            background: #A4CC65;
         }
 
         table .desc {
@@ -165,7 +165,7 @@
         table .qty {}
 
         table .total {
-            background: #ffd05a;
+            background: #A4CC65;
             color: #000;
         }
 
@@ -210,7 +210,7 @@
 
         #notices {
             padding-left: 6px;
-            border-left: 5px solid #ffd05a;
+            border-left: 5px solid #A4CC65;
         }
 
         #notices .notice {
@@ -260,9 +260,9 @@
 <body style="padding:0.5cm;">
 
     @php
-        
+
         $agr = ['prices' => 0, 'calc' => 0, 'service_prices' => 0];
-        
+
         if (isset($model['category_attributes'])) {
             $agr = collect($model['category_attributes'])->reduce(function ($result, $item) {
                 if ($result === null) {
@@ -272,17 +272,25 @@
                         'service_prices' => 0,
                     ];
                 }
-        
+
                 $result['prices'] += isset($item['pivot']['price']) ? $item['pivot']['price'] : 0;
                 $result['calc'] += isset($item['pivot']['calc']) ? $item['pivot']['calc'] : 0;
-                $result['service_prices'] += isset($item['pivot']['service_price']) ? $item['pivot']['service_price'] : 0;
-        
+                $result['service_prices'] += isset($item['pivot']['service_price'])
+                    ? $item['pivot']['service_price']
+                    : 0;
+
                 return $result;
             });
         }
-        
-        $titles = [['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'], ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'], ['title' => 'მოგება :', 'key' => 'p3'], ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'], ['title' => 'დღგ :', 'key' => 'p5']];
-        
+
+        $titles = [
+            ['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'],
+            ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'],
+            ['title' => 'მოგება :', 'key' => 'p3'],
+            ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'],
+            ['title' => 'დღგ :', 'key' => 'p5'],
+        ];
+
         function initReporteValues($arr, $model, $indexer)
         {
             $i = 0;
@@ -293,15 +301,15 @@
                     $item['inputName'] = $indexer . (string) ($i + 1);
                     $item['value'] = isset($model[$item['inputName']]) ? $model[$item['inputName']] : 0;
                     $i++;
-        
+
                     array_push($carry, $item);
-        
+
                     return $carry;
                 },
                 [],
             );
         }
-        
+
         function recurcive($initReporteValuesRes, $starter, &$titles, $index)
         {
             if (isset($initReporteValuesRes[$index])) {
@@ -309,24 +317,24 @@
                     'p1' => ($initReporteValuesRes[$index]['value'] * $starter) / 100,
                     'p2' => $starter + ($initReporteValuesRes[$index]['value'] * $starter) / 100,
                 ];
-        
+
                 $titles[$index]['percenters'] = $percentes;
                 $nextPrice = $percentes['p2'];
-        
+
                 $index = $index + 1;
-        
+
                 return recurcive($initReporteValuesRes, $nextPrice, $titles, $index);
             } else {
                 return $titles;
             }
         }
-        
+
         $initReporteValuesRes = initReporteValues($titles, $model, 'p');
         $starter = isset($agr) ? $agr['calc'] : [];
         $index = 0;
-        
+
         $calculate = isset($agr) ? recurcive($initReporteValuesRes, $starter, $titles, $index) : [];
-        
+
     @endphp
 
     <header class="clearfix">
@@ -348,28 +356,12 @@
         </div>
 
 
-        {{-- <div id="company" style="width:43%; border: 1px solid #fff;">
-       
-       <div style="padding: 0 0.5em" class="clearfix">
-        <div style="float: left; width: 30%; padding: 0.5em 0">
-          <img style="max-width: 100%;"  src="{{url('/inservice-logo.png')}}">
-        </div>
-
-        <div style="float:right; width: 70%;">
-          <h2 class="name">INSERVICE  LLC</h2>
-          <div>Tel. : +995 322 242 12 12</div>
-          <div><a href="http://support.inservice.ge">Site : support.inservice.ge</a></div>
-          <div><a href="mailto:service@inservice.ge">Mail : service@inservice.ge</a></div>
-          <div>Georgia, Tbilisi, Chashnagiri st. 8 a</div>
-        </div>
-       </div>
-      </div> --}}
 
         <div id="company" style="width:45%; border: 1px solid #fff;">
 
             <div style="padding: 0 0.5em" class="clearfix">
-                <div style="float: left; width: 23%; ">
-                    <img style="max-width: 100%;" src="{{ url('/inservice-logo.png') }}">
+                <div style="float: left; width: 40%; ">
+                    <img style="margin-right:200px; max-width: 100%;" src="{{ url('/inservice-new.png') }}">
                 </div>
 
                 <div style="float:right; width: 77%;">
