@@ -123,6 +123,29 @@
                     </li>
                 @endif
 
+
+                @if (Auth::user()->can('სერვისის ნახვა'))
+                    @if (!Auth::user()->hasRole('ინჟინერი'))
+                        <li class="nav-item">
+                            <a href="{{ route('services.index', ['type' => 'done']) }}"
+                                class="nav-link  {{ request()->routeIs('services.*') && request()->query('type') == 'done' ? 'active' : '' }}">
+                                <i class="fab nav-icon fa-elementor"></i>
+                                <p>სერვისები</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
+                @if (Auth::user()->can('სერვისის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('services.index', ['type' => 'pending']) }}"
+                            class="nav-link {{ request()->routeIs('services.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <span>განსახილველი <br> სერვისები</span>
+                        </a>
+                    </li>
+                @endif
+
                 @if (Auth::user()->can('რეაგირების ნახვა'))
                     @if (!Auth::user()->hasRole('ინჟინერი'))
                         <li class="nav-item">

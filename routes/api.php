@@ -19,11 +19,22 @@ use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\PerformerController;
 use App\Http\Controllers\API\RegionController;
 use App\Http\Controllers\API\ResponseController;
+use App\Http\Controllers\API\ServiceActController;
+use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\APP\ActController as APPActController;
+use App\Http\Controllers\APP\ResponseController as APPResponseController;
+use App\Http\Controllers\APP\ServiceController as APPServiceController;
+use App\Http\Controllers\APP\UserController as APPUserController;
 use App\Http\Controllers\DashboardController;
 
 Route::get("app/statistics", [AppStatisticController::class, 'index']);
+
+Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
+    Route::post('login',  [APPUserController::class, 'login']);
+});
+
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("users", UserController::class);
@@ -61,6 +72,10 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::get('responses/export', [ResponseController::class, "export"])->name("responses.export");
     Route::apiResource('responses', ResponseController::class);
 
+    // Services
+    Route::get('services/export', [ServiceController::class, "export"])->name("services.export");
+    Route::apiResource('services', ServiceController::class);
+
     // Systems
     Route::apiResource('systems', SystemController::class);
     Route::get('systems/{id}/children', [SystemController::class, 'children']);
@@ -68,6 +83,11 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Acts
     Route::apiResource('acts', ActController::class);
     Route::post("acts/{act}/reject", [ActController::class, "reject"]);
+
+    // Service Acts
+    Route::apiResource('service-acts', ServiceActController::class);
+    Route::post("service-acts/{act}/reject", [ServiceActController::class, "reject"]);
+
 
     Route::apiResource("evaluations", EvaluationController::class);
 
@@ -78,4 +98,8 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("category-attributes", CategoryAttributeController::class);
 
     Route::delete("requests/destroy-attribute/{id}", [EvaluationController::class, 'destroy_attribute'])->name('requests.destroy_attribute');
+
+    // Application
+    Route::post('app/responses/{response}/attend ', [APPResponseController::class, 'arrived'])->name('app.acts.arrived');
+    Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
 });

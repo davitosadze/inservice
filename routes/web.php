@@ -23,6 +23,8 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PerformerController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\ServiceActController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SystemController;
 
 /*
@@ -79,6 +81,11 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("responses", ResponseController::class);
     Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
 
+    // Services
+    Route::resource("services", ServiceController::class);
+    Route::get("services/{service}/arrived", [ServiceController::class, 'arrived'])->name('services.arrived');
+
+
     // Regions
     Route::resource("regions", RegionController::class);
 
@@ -95,6 +102,9 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("acts", ActController::class);
     Route::get("acts/{id}/export", [ActController::class, "export"])->name('acts.export');
 
+    // Service Act
+    Route::resource("service-acts", ServiceActController::class);
+    Route::get("service-acts/{id}/export", [ServiceActController::class, "export"])->name('service-acts.export');
 
     // Performers
     Route::resource("performers", PerformerController::class);

@@ -15,5 +15,7 @@ class VerifyCsrfToken extends Middleware
         "api/uploadClientFiles",
         "/purchaser/*/files",
         "/uploadPurchaserGallery/*",
+        '/api/app/*',
+        'api/*'
     ];
 }

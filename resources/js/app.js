@@ -189,6 +189,14 @@ app.component(
 );
 
 app.component(
+    "insert-service-act",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'alter-table' */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/components/InsertServiceAct"
+        )
+    )
+);
+app.component(
     "report-table",
     defineAsyncComponent(() =>
         import(

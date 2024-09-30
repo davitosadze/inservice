@@ -1,7 +1,7 @@
 {
     "/js/vendors/lte-core.js": "/js/vendors/lte-core.js?id=87a77a5bf44d11cdc07956022aaf2e77",
     "/js/guest.js": "/js/guest.js?id=f75805b7ea69bfec692bfe3212760bdb",
-    "/js/app.js": "/js/app.js?id=2e9ff9cad847b2fab6e1d75fbe485583",
+    "/js/app.js": "/js/app.js?id=d615ad59a04212103370b656dac5cc0d",
     "/js/manifest.js": "/js/manifest.js?id=9d8c528c6edd63bbcad3eeeb33a9cbce",
     "/js/vendors/layout.js": "/js/vendors/layout.js?id=c74981f841aa3fae1e224525302a5e4e",
     "/js/vendors/insert.js": "/js/vendors/insert.js?id=fcf7a5e92cc983960e02d4ec88b0a2d0",
@@ -16,13 +16,13 @@
     "/js/vendors/dashboard.js": "/js/vendors/dashboard.js?id=ecf979acb84f4980a0f9157cd0edd638",
     "/js/vendors/invoice-edit.js": "/js/vendors/invoice-edit.js?id=b23f8f4fe0ea9179bf3ca5c23a61c698",
     "/js/vendors/modal.js": "/js/vendors/modal.js?id=f4836ff1c8c7b82a7d2946294f37d1b3",
-    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=e76018301726c71ef43b710fb4c1858a",
+    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=3fb7cfd057d44df121f47d9efdc579d5",
     "/js/vendors/report-table.js": "/js/vendors/report-table.js?id=f7026a54f45b8963aca9097b6a40c60b",
     "/js/vendors/tab.js": "/js/vendors/tab.js?id=652da258d9fcdffaea9fa18648a1cddf",
     "/js/vendors/input-alter.js": "/js/vendors/input-alter.js?id=590279461e271b3fa97bfaf7aae6505b",
     "/js/vendors/purchaser-single-attribute.js": "/js/vendors/purchaser-single-attribute.js?id=352e75739be03bc182b41573e59cd19b",
     "/css/vendors/lte-core.css": "/css/vendors/lte-core.css?id=be9d5cca40accc569b51e00858ecaa5b",
     "/css/app.css": "/css/app.css?id=44cb0d9e7ad0094e5874d97f2af21824",
-    "/css/guest.css": "/css/guest.css?id=6573233414429ebf34c1dc7560d52aaa",
+    "/css/guest.css": "/css/guest.css?id=c7109a8641dfd058a1b98f4581209933",
     "/js/vendor.js": "/js/vendor.js?id=638052af2cf984322e1dbaa68d3ad56d"
 }
