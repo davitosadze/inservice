@@ -29,7 +29,7 @@
                             @if ((Auth::user()->hasRole('ინჟინერი') && $service->time) || !Auth::user()->hasRole('ინჟინერი'))
                                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                                     <div class="d-flex justify-content-between">
-                                        <a href="{{ route('service-acts.edit', ['service_act' => $service->act ? $service->act->id : 'new', 'response_id' => $service->id]) }}"
+                                        <a href="{{ route('service-acts.edit', ['service_act' => $service->act ? $service->act->id : 'new', 'service_id' => $service->id]) }}"
                                             class="btn btn-success btn-block mr-2">
                                             <i class="far fa-paper-plane"></i>
                                             @if ($service->act)
