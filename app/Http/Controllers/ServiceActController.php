@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ServiceAct;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ServiceActController extends Controller
 {
@@ -60,7 +61,7 @@ class ServiceActController extends Controller
         }
         $name = "აქტი#" . $model->id . ".pdf";
 
-        $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('acts.pdf', ['model' => $model, "signature" => $signature]);
+        $pdf = PDF::setOptions(['isRemoteEnabled' => true, 'dpi' => 150, 'defaultFont' => 'sans-serif'])->loadView('service-acts.pdf', ['model' => $model, "signature" => $signature]);
 
 
         return $pdf->stream($name);

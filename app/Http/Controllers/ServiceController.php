@@ -132,10 +132,18 @@ class ServiceController extends Controller
 
 
             $model = Service::firstOrNew(['id' => $request->id]);
-
             $purchaser = json_decode($request->purchaser);
 
-            $model->fill($request->all());
+            $model->fill($request->except('device_type'));
+            if ($request->get('device_type')) {
+                $device_types = [];
+                foreach ($request->get('device_type') as $type_id) {
+                    $device_types[] = $type_id;
+                }
+                $model->device_type = json_encode($device_types);
+            }
+
+
             $model->purchaser_id = $purchaser->id;
 
 
@@ -192,9 +200,9 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Service $response)
+    public function show(Service $service)
     {
-        return view("services.view", compact('response'));
+        return view("services.view", compact('service'));
     }
 
     /**

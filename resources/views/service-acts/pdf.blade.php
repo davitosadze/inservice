@@ -225,7 +225,7 @@
             <td style="width:167pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
                 colspan="3">
                 <p class="inner-text">
-                    {{ $model->response?->name }}
+                    {{ $model->service?->name }}
                 </p>
             </td>
         </tr>
@@ -238,7 +238,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->performer?->manager_type == 1 ? '✓' : '' }}
+                    {{ $model->service?->performer?->manager_type == 1 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -249,7 +249,7 @@
             <td style="width:167pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
                 colspan="3">
                 <p class="inner-text">
-                    {{ $model->response?->subject_address }}
+                    {{ $model->service?->subject_address }}
                 </p>
             </td>
         </tr>
@@ -262,7 +262,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->performer?->manager_type == 2 ? '✓' : '' }}
+                    {{ $model->service?->performer?->manager_type == 2 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -273,7 +273,8 @@
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->device_type == 1 ? '✓' : '' }}
+                    {{ in_array('1', json_decode($model->service?->device_type, true)) ? '✓' : '' }}
+
                 </p>
             </td>
             <td
@@ -307,7 +308,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->performer?->manager_type == 3 ? '✓' : '' }}
+                    {{ $model->service?->performer?->manager_type == 3 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -318,7 +319,7 @@
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->device_type == 2 ? '✓' : '' }}
+                    {{ in_array('2', json_decode($model->service?->device_type, true)) ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -342,7 +343,7 @@
             <td
                 style="width:13pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->performer?->manager_type == 4 ? '✓' : '' }}
+                    {{ $model->service?->performer?->manager_type == 4 ? '✓' : '' }}
                 </p>
             </td>
             <td
@@ -353,7 +354,7 @@
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
-                    {{ $model->response?->device_type == 3 ? '✓' : '' }}
+                    {{ in_array('3', json_decode($model->service?->device_type, true)) == 3 ? '✓' : '' }}
                 </p>
             </td>
             <td style="width:221pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"
@@ -435,8 +436,8 @@
     <table style="padding:10pt;width: 100%">
 
         <tr>
-            <td>დამკვეთი: <b>{{ $model->response?->subject_name }}</b></td>
-            <td style="text-align: right">შემსრულებელი: <b>{{ $model->response?->performer?->name }}</b></td>
+            <td>დამკვეთი: <b>{{ $model->service?->subject_name }}</b></td>
+            <td style="text-align: right">შემსრულებელი: <b>{{ $model->service?->performer?->name }}</b></td>
         </tr>
         <tr>
             <td><b>{{ $model->position . ' , ' . $model->client_name }}</b></td>

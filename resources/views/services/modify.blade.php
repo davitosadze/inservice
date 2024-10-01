@@ -1,4 +1,4 @@
-@section('title', 'რეაგირებები')
+@section('title', 'სერვისები')
 <x-app-layout>
 
     <x-slot name="header">
@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">რეაგირება</h1>
+                        <h1 class="m-0">სერვისები</h1>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -33,7 +33,6 @@
 
     <!-- Main content -->
     <section class="content">
-
         {{ Form::model($model, ['route' => ['services.store', $model->id], 'id' => 'render']) }}
 
         <div id="renderer">
@@ -53,7 +52,7 @@
                             <div class="mb-3">
 
 
-
+                                <input type="hidden" name="id" value="{{ $model->id }}">
 
 
                                 <p class="lead">კვლევის ობიექტი</p>
@@ -62,22 +61,23 @@
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>მოწყობილობის დასახელება :</b></div>
                                     <div class="col-12">
-                                        <select name="device_type" class="form-control performer">
-                                            <option disabled selected>--- აირჩეთ ---</option>
+                                        <select multiple name="device_type[]" class="form-control performer">
+                                            <option disabled>--- აირჩეთ ---</option>
 
-
-                                            <option @selected($model->device_type == 1) value='1'>
+                                            <option @selected(in_array('1', json_decode($model->device_type, true))) value='1'>
                                                 კონდიცირება
                                             </option>
 
-                                            <option @selected($model->device_type == 2) value='2'>
+                                            <option @selected(in_array('2', json_decode($model->device_type, true))) value='2'>
                                                 ვენტილაცია
                                             </option>
 
-                                            <option @selected($model->device_type == 3) value='3'>
+                                            <option @selected(in_array('3', json_decode($model->device_type, true))) value='3'>
                                                 გათბობა
                                             </option>
                                         </select>
+
+
                                     </div>
 
                                 </div>
