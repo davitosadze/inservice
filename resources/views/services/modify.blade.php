@@ -63,18 +63,31 @@
                                     <div class="col-12">
                                         <select multiple name="device_type[]" class="form-control performer">
                                             <option disabled>--- აირჩეთ ---</option>
+                                            @if ($model->device_type)
+                                                <option @selected(in_array('1', json_decode($model->device_type, true))) value='1'>
+                                                    კონდიცირება
+                                                </option>
 
-                                            <option @selected(in_array('1', json_decode($model->device_type, true))) value='1'>
-                                                კონდიცირება
-                                            </option>
+                                                <option @selected(in_array('2', json_decode($model->device_type, true))) value='2'>
+                                                    ვენტილაცია
+                                                </option>
 
-                                            <option @selected(in_array('2', json_decode($model->device_type, true))) value='2'>
-                                                ვენტილაცია
-                                            </option>
+                                                <option @selected(in_array('3', json_decode($model->device_type, true))) value='3'>
+                                                    გათბობა
+                                                </option>
+                                            @else
+                                                <option value='1'>
+                                                    კონდიცირება
+                                                </option>
 
-                                            <option @selected(in_array('3', json_decode($model->device_type, true))) value='3'>
-                                                გათბობა
-                                            </option>
+                                                <option value='2'>
+                                                    ვენტილაცია
+                                                </option>
+
+                                                <option value='3'>
+                                                    გათბობა
+                                                </option>
+                                            @endif
                                         </select>
 
 
