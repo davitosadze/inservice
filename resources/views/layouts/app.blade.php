@@ -80,18 +80,14 @@
         window.addEventListener("orientationchange", function() {
             alert(screen.orientation)
             if (screen.orientation) {
-                screen.orientation.lock('portrait').catch(function() {
-                    alert('Orientation lock failed');
-                });
+                screen.orientation.lock('portrait').catch(function() {});
             }
         });
 
         // Initial check to lock orientation
         document.addEventListener('DOMContentLoaded', function() {
             if (screen.orientation) {
-                screen.orientation.lock('portrait').catch(function() {
-                    console.log('Orientation lock failed');
-                });
+                screen.orientation.lock('portrait').catch(function() {});
             }
         });
 

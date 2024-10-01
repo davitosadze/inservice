@@ -419,9 +419,7 @@ export default {
             this.$refs.signature.clear();
         },
 
-        exit() {
-            alert("Ha");
-        },
+        exit() {},
     },
 };
 </script>

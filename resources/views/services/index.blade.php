@@ -8,6 +8,13 @@
                     <div class="col-sm-6">
                         <h1 class="m-0">სერვისები</h1>
                     </div><!-- /.col -->
+                    @if (Auth::user()->hasRole('ინჟინერი'))
+                        <div class="col-sm-6 mt-2">
+                            <a class="btn btn-primary" href="{{ route('services.index') }}">სერვისები</a>
+                            <a class="btn ml-1  btn-outline-primary"
+                                href="{{ route('responses.index') }}">რეაგირებები</a>
+                        </div>
+                    @endif
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
