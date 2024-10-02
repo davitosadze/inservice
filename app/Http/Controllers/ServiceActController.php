@@ -42,12 +42,12 @@ class ServiceActController extends Controller
 
         $act = ServiceAct::find($id);
 
-        if ($act && $act->response && $act->response->performer) {
-            $performerId = $act->response->performer->id;
+        if ($act && $act->service && $act->service->performer) {
+            $performerId = $act->service->performer->id;
 
             $media = Media::where('model_type', 'App\Models\User')
                 ->where('model_id', $performerId)
-                ->where('collection_name', 'services-credential')
+                ->where('collection_name', 'credential')
                 ->first();
 
             if ($media) {
