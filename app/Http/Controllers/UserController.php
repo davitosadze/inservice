@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use File;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
-
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;

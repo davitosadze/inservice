@@ -241,7 +241,14 @@
                     </li>
                 @endif
 
-
+                {{-- @if (Auth::user()->can('isInter')) --}}
+                <li class="nav-item">
+                    <a href="{{ route('instructions.index') }}" class="nav-link">
+                        <i class="fas fa-wrench nav-icon"></i>
+                        <p>ინსტრუქციები</p>
+                    </a>
+                </li>
+                {{-- @endif --}}
                 @if (Auth::user()->can('isInter'))
                     <li class="nav-item">
                         <a href="" class="nav-link">

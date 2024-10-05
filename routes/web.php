@@ -19,6 +19,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceBrandController;
 use App\Http\Controllers\DeviceTypeController;
+use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PerformerController;
 use App\Http\Controllers\RegionController;
@@ -122,6 +123,8 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     Route::resource("categories", CategoryController::class);
     Route::resource("categories.category-attributes", CategoryAttributeController::class);
+
+    Route::resource("instructions", InstructionController::class);
 });
 
 require __DIR__ . '/auth.php';

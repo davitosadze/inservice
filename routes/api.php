@@ -15,6 +15,7 @@ use App\Http\Controllers\API\CategoryAttributeController;
 use App\Http\Controllers\API\ClientsController;
 use App\Http\Controllers\API\DeviceBrandController;
 use App\Http\Controllers\API\DeviceTypeController;
+use App\Http\Controllers\API\InstructionController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\PerformerController;
 use App\Http\Controllers\API\RegionController;
@@ -64,6 +65,8 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Locations
     Route::apiResource('locations', LocationController::class);
 
+    // Instructions
+    Route::apiResource('instructions', InstructionController::class);
 
     // Performers
     Route::apiResource('performers', PerformerController::class);
