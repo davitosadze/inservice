@@ -118,6 +118,8 @@ class InstructionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $instruction = Instruction::find($id);
+        $instruction->delete();
+        return back();
     }
 }

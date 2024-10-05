@@ -37,6 +37,7 @@
                                 <th scope="col">სახელი</th>
                                 <th scope="col">Slug</th>
                                 <th scope="col">ცვლილება</th>
+                                <th scope="col">წაშლა</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,6 +49,17 @@
                                     <td>{{ $instruction->slug }}</td>
                                     <td><a href="{{ route('instructions.edit', $instruction->id) }}"
                                             class="btn btn-info btn-sm">ცვლილება</a></td>
+                                    <td>
+                                        {{-- @if (auth()->user()->hasRole('director')) --}}
+                                        {!! Form::open([
+                                            'method' => 'DELETE',
+                                            'route' => ['instructions.destroy', $instruction->id],
+                                            'style' => 'display:inline',
+                                        ]) !!}
+                                        {!! Form::submit('წაშლა', ['class' => 'btn btn-danger btn-sm try-delete']) !!}
+                                        {!! Form::close() !!}
+                                        {{-- @endif --}}
+                                    </td>
                                 </tr>
                             @endforeach
 
