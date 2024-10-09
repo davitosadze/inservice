@@ -28,6 +28,7 @@ class Response extends Model
         "device_type",
         'on_repair'
     ];
+    protected $appends = ["formatted_name"];
 
     use HasFactory;
 
@@ -65,5 +66,10 @@ class Response extends Model
     public function systemTwo()
     {
         return $this->belongsTo(System::class, "system_two");
+    }
+
+    public function getFormattedNameAttribute()
+    {
+        return preg_replace('/[^\p{L}]+/u', '', $this->name);
     }
 }

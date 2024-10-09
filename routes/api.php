@@ -24,13 +24,12 @@ use App\Http\Controllers\API\ServiceActController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
-use App\Http\Controllers\APP\ActController as APPActController;
 use App\Http\Controllers\APP\ResponseController as APPResponseController;
 use App\Http\Controllers\APP\ServiceController as APPServiceController;
 use App\Http\Controllers\APP\UserController as APPUserController;
-use App\Http\Controllers\DashboardController;
 
 Route::get("app/statistics", [AppStatisticController::class, 'index']);
+Route::get('app/purchaser-names', [PurchaserController::class, "purchaserNames"]);
 
 Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
     Route::post('login',  [APPUserController::class, 'login']);
@@ -45,7 +44,9 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("purchasers", PurchaserController::class);
     Route::apiResource("purchasers.special-attributes", SpecialAttributeController::class);
 
+    // Clients
     Route::apiResource("clients", ClientsController::class);
+
     Route::post("uploadClientFiles", [ClientsController::class, 'uploadClientFiles']);
     Route::delete("deleteClientFiles/{media_id}", [ClientsController::class, 'deleteClientFiles']);
     Route::post("updateClientFiles/{media_id}", [ClientsController::class, 'updateClientFiles']);
@@ -66,7 +67,12 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource('locations', LocationController::class);
 
     // Instructions
-    Route::apiResource('instructions', InstructionController::class);
+    Route::get('/instructions', [InstructionController::class, 'index']);
+    Route::get('/instructions/{id}', [InstructionController::class, 'show']);
+    Route::post('/instructions', [InstructionController::class, 'storeOrUpdate']);
+    Route::put('/instructions/{id}', [InstructionController::class, 'storeOrUpdate']);
+
+
 
     // Performers
     Route::apiResource('performers', PerformerController::class);

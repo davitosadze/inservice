@@ -26,6 +26,16 @@ class PurchaserController extends Controller
         return response(Purchaser::whereNot('single', 1)->get());
     }
 
+
+    public function purchaserNames()
+    {
+        $purchasers = Purchaser::all();
+        $formattedNames = [];
+        foreach ($purchasers as $purchaser) {
+            $formattedNames[] = $purchaser->formatted_name;
+        }
+        return response()->json(array_values(array_unique($formattedNames)));
+    }
     /**
      * Store a newly created resource in storage.
      *

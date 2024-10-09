@@ -189,6 +189,24 @@ app.component(
 );
 
 app.component(
+    "tree-form",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'alter-table' */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/components/TreeForm"
+        )
+    )
+);
+
+app.component(
+    "tree-node",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'alter-table' */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/components/TreeNode"
+        )
+    )
+);
+
+app.component(
     "insert-service-act",
     defineAsyncComponent(() =>
         import(

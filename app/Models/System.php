@@ -18,5 +18,11 @@ class System extends Model
     {
         return $this->hasMany(System::class, "parent_id");
     }
+    public function responses()
+    {
+        return $this->hasMany(Response::class, 'system_one'); // Adjust the foreign key if needed
+    }
+
+
     use HasFactory;
 }

@@ -11,7 +11,18 @@ class Instruction extends Model implements HasMedia
 {
     protected $fillable = [
         'name',
-        'slug'
+        "description",
+        "parent_id"
     ];
     use HasFactory, InteractsWithMedia;
+
+    public function parent()
+    {
+        return $this->belongsTo(Instruction::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Instruction::class, 'parent_id');
+    }
 }

@@ -1,7 +1,7 @@
 {
     "/js/vendors/lte-core.js": "/js/vendors/lte-core.js?id=87a77a5bf44d11cdc07956022aaf2e77",
     "/js/guest.js": "/js/guest.js?id=f75805b7ea69bfec692bfe3212760bdb",
-    "/js/app.js": "/js/app.js?id=d615ad59a04212103370b656dac5cc0d",
+    "/js/app.js": "/js/app.js?id=df5e33ede697395ed7ef3e25db8b9567",
     "/js/manifest.js": "/js/manifest.js?id=9d8c528c6edd63bbcad3eeeb33a9cbce",
     "/js/vendors/layout.js": "/js/vendors/layout.js?id=c74981f841aa3fae1e224525302a5e4e",
     "/js/vendors/insert.js": "/js/vendors/insert.js?id=fcf7a5e92cc983960e02d4ec88b0a2d0",
@@ -16,7 +16,7 @@
     "/js/vendors/dashboard.js": "/js/vendors/dashboard.js?id=ecf979acb84f4980a0f9157cd0edd638",
     "/js/vendors/invoice-edit.js": "/js/vendors/invoice-edit.js?id=b23f8f4fe0ea9179bf3ca5c23a61c698",
     "/js/vendors/modal.js": "/js/vendors/modal.js?id=f4836ff1c8c7b82a7d2946294f37d1b3",
-    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=3fb7cfd057d44df121f47d9efdc579d5",
+    "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=9cef6688d72ab73916c91d6bb8212bff",
     "/js/vendors/report-table.js": "/js/vendors/report-table.js?id=f7026a54f45b8963aca9097b6a40c60b",
     "/js/vendors/tab.js": "/js/vendors/tab.js?id=652da258d9fcdffaea9fa18648a1cddf",
     "/js/vendors/input-alter.js": "/js/vendors/input-alter.js?id=590279461e271b3fa97bfaf7aae6505b",

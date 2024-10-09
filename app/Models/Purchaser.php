@@ -25,6 +25,12 @@ class Purchaser extends Model implements HasMedia
         "subj_address" => ""
     ];
 
+    protected $appends = ["formatted_name"];
+
+    public function getFormattedNameAttribute()
+    {
+        return preg_replace('/[^\p{L}]+/u', '', $this->name);
+    }
 
     public function specialAttributes()
     {

@@ -17,7 +17,7 @@ class InstructionController extends Controller
      */
     public function index()
     {
-        $instructions = Instruction::orderBy('id', 'desc')->get();
+        $instructions = Instruction::where('parent_id', NULL)->orderBy('id', 'desc')->get();
         return view('instructions.index', compact('instructions'));
     }
 
@@ -43,14 +43,7 @@ class InstructionController extends Controller
             'name' => [
                 'required',
                 Rule::unique('instructions')->ignore($request->id, 'id')
-            ],
-
-            'slug' => [
-                'required',
-                Rule::unique('instructions')->ignore($request->id, 'id')
-            ],
-
-
+            ]
         ]);
 
         if ($validator->fails()) {
@@ -89,8 +82,7 @@ class InstructionController extends Controller
      */
     public function edit($id)
     {
-        $model = Instruction::firstOrNew(['id' => $id]);
-
+        $model = Instruction::with('children')->firstOrNew(['id' => $id]);
         if (!$model['id'] && $id != 'new') {
             abort(404);
         }
