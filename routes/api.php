@@ -31,6 +31,9 @@ use App\Http\Controllers\APP\UserController as APPUserController;
 Route::get("app/statistics", [AppStatisticController::class, 'index']);
 Route::get('app/purchaser-names', [PurchaserController::class, "purchaserNames"]);
 
+Route::get('/instructions', [InstructionController::class, 'index']);
+Route::get('/instructions/{id}', [InstructionController::class, 'show']);
+
 Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
     Route::post('login',  [APPUserController::class, 'login']);
 });
@@ -67,8 +70,6 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource('locations', LocationController::class);
 
     // Instructions
-    Route::get('/instructions', [InstructionController::class, 'index']);
-    Route::get('/instructions/{id}', [InstructionController::class, 'show']);
     Route::post('/instructions', [InstructionController::class, 'storeOrUpdate']);
     Route::put('/instructions/{id}', [InstructionController::class, 'storeOrUpdate']);
 
