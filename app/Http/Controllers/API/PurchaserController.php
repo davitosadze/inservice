@@ -29,7 +29,7 @@ class PurchaserController extends Controller
 
     public function purchaserNames()
     {
-        $purchasers = Purchaser::all();
+        $purchasers = Purchaser::whereNot('single', 1)->get();
         $formattedNames = [];
         foreach ($purchasers as $purchaser) {
             $formattedNames[] = $purchaser->formatted_name;
