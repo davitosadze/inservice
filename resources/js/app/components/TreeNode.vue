@@ -1,34 +1,52 @@
 <template>
-    <div class="card p-3 mb-3 shadow-sm border border-light">
-        <div class="mb-3">
-            <label class="form-label">დასახელება</label>
-            <input
-                type="text"
-                v-model="node.name"
-                class="form-control"
-                placeholder="მიუთითეთ დასახელება"
-            />
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">აღწერა</label>
-            <QuillEditor
-                ref="quillEditor"
-                v-model="node.description"
-                :content="node.description"
-                contentType="html"
-                @text-change="updateDescription"
-                theme="snow"
-                :style="{ minHeight: '100px', maxHeight: '200px' }"
-            />
-        </div>
-
-        <div v-if="depth < 8">
+    <div
+        :class="['card p-3 mb-3 shadow-sm border']"
+        :style="{
+            backgroundColor: depthColors[depth - 1] || '#f1f1f1', // Fallback color
+            marginLeft: depth * 5 + 'px',
+            borderColor: depthBorders[depth - 1] || '#ddd', // Light border for each depth
+        }"
+    >
+        <div class="d-flex align-items-start mb-3">
+            <!-- Title Input -->
+            <div class="flex-grow-1 me-3">
+                <label class="form-label">დასახელება</label>
+                <input
+                    type="text"
+                    v-model="node.name"
+                    class="form-control"
+                    :style="{
+                        backgroundColor: depth === 0 ? '#0056b3' : 'white',
+                        color: depth === 0 ? 'white' : 'black',
+                    }"
+                    placeholder="მიუთითეთ დასახელება"
+                />
+            </div>
+            <!-- Added Gap using ms-3 (margin-start) -->
             <div
-                v-for="(child, index) in node.children"
-                :key="index"
-                class="ms-3"
+                class="flex-grow-1 ml-2 ms-3"
+                v-if="node.children.length === 0"
             >
+                <label class="form-label">აღწერა</label>
+                <QuillEditor
+                    ref="quillEditor"
+                    v-model="node.description"
+                    :content="node.description"
+                    contentType="html"
+                    @text-change="updateDescription"
+                    theme="snow"
+                    :style="{
+                        minHeight: '100px',
+                        maxHeight: '200px',
+                        backgroundColor: '#fff',
+                    }"
+                />
+            </div>
+        </div>
+
+        <!-- Children rendering -->
+        <div v-if="depth < 8">
+            <div v-for="(child, index) in node.children" :key="index">
                 <tree-node
                     :node="child"
                     :depth="depth + 1"
@@ -37,20 +55,20 @@
                 />
             </div>
 
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between mt-3">
                 <button
                     type="button"
-                    class="btn btn-primary"
+                    class="btn btn-success"
                     @click="addChild()"
                 >
-                    <i class="bi bi-plus-square"></i> შვილობილის დამატება
+                    <i class="bi bi-plus-square"></i> +
                 </button>
                 <button
                     type="button"
                     class="btn btn-danger"
                     @click="$emit('remove-node')"
                 >
-                    <i class="bi bi-trash"></i> შვილობილის წაშლა
+                    <i class="bi bi-trash"></i> -
                 </button>
             </div>
         </div>
@@ -68,6 +86,30 @@ export default {
     },
     components: {
         QuillEditor,
+    },
+    data() {
+        return {
+            depthColors: [
+                "#f8f9fa", // depth 1
+                "#e9ecef", // depth 2
+                "#dee2e6", // depth 3
+                "#ced4da", // depth 4
+                "#adb5bd", // depth 5
+                "#6c757d", // depth 6
+                "#495057", // depth 7
+                "#343a40", // depth 8
+            ],
+            depthBorders: [
+                "#dee2e6", // depth 1 - light gray
+                "#d6d8db", // depth 2
+                "#c8ccd0", // depth 3
+                "#bfc3c7", // depth 4
+                "#a9aeb3", // depth 5
+                "#909499", // depth 6
+                "#7b7f84", // depth 7
+                "#62666b", // depth 8
+            ],
+        };
     },
     methods: {
         addChild() {
@@ -91,9 +133,8 @@ export default {
 
 <style scoped>
 .card {
-    transition: transform 0.2s;
-}
-.card:hover {
-    transform: scale(1.02);
+    /* Remove hover scale effect */
+    transition: none;
+    border: 5px solid black;
 }
 </style>

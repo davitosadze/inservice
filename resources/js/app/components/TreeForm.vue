@@ -83,10 +83,10 @@ export default {
 </script>
 
 <style scoped>
-.card {
+/* .card {
     transition: transform 0.2s;
 }
 .card:hover {
     transform: scale(1.02);
-}
+} */
 </style>
