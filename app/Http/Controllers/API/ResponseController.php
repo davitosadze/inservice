@@ -25,7 +25,7 @@ class ResponseController extends Controller
                 ->whereIn("status", [1, 10])
                 ->where("performer_id", Auth::user()->id);
         } else {
-            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc');
+            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo'])->orderBy('id', 'desc');
         }
 
         if ($request->get("type") == "done") {

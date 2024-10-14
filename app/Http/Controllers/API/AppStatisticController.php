@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Region;
 use App\Models\Response;
+use App\Models\Service;
 use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
@@ -32,16 +33,38 @@ class AppStatisticController extends Controller
         $responsesBySphere = $this->getResponsesBySphere($from, $to, $purchaser);
         $responsesByRegion = $this->getResponsesByRegion($from, $to, $purchaser);
         $responsesByPerformer = $this->getResponsesByPerformer($from, $to, $purchaser);
+        $responsesAndServicesCount = $this->getResponsesAndServicesCount($from, $to, $purchaser);
 
         $data = [
             "responsesDaily" => $responsesDaily,
             "responsesByName" => $responsesByName,
             "responsesBySphere" => $responsesBySphere,
             "responsesByRegion" => $responsesByRegion,
-            "responsesByPerformer" => $responsesByPerformer
+            "responsesByPerformer" => $responsesByPerformer,
+            "responsesAndServicesCount" => $responsesAndServicesCount
         ];
 
         return response()->json($data, 200);
+    }
+
+    private function getResponsesAndServicesCount($from, $to, $purchaser)
+    {
+
+        $responsesQuery = Response::whereBetween('created_at', [$from, $to])
+            ->where('status', 3)->get();
+
+        $responseCount = $purchaser ? $responsesQuery->where('formatted_name', $purchaser)->count() : $responsesQuery->count();
+
+
+        $servicesQuery = Service::whereBetween('created_at', [$from, $to])
+            ->where('status', 3)->get();
+
+        $serviceCount = $purchaser ? $servicesQuery->where('formatted_name', $purchaser)->count() : $servicesQuery->count();
+
+        return [
+            "approvedResponses" => $responseCount,
+            "approvedServices" => $serviceCount,
+        ];
     }
 
     private function getDailyResponsesCount($dates, $purchaser)
