@@ -8,6 +8,7 @@
                     <h5 class="modal-title">
                         {{ this.file.file.name }}
                     </h5>
+
                     <button
                         type="button"
                         class="close"
@@ -18,6 +19,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <p class="modal-description">
+                        კომენტარი: {{ this.file.file.comment }}
+                    </p>
                     <button
                         type="button"
                         class="btn btn-primary"

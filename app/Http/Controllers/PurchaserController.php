@@ -104,6 +104,7 @@ class PurchaserController extends Controller
                         'file' => [
                             'id' => $media->id,
                             'name' => $media->file_name,
+                            'comment' => $media->getCustomProperty('comment'),
                             'size' => $media->size,
                             'type' => $media->mime_type,
                         ],

@@ -24,12 +24,14 @@ use App\Http\Controllers\API\ServiceActController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\APP\MediaController;
 use App\Http\Controllers\APP\ResponseController as APPResponseController;
 use App\Http\Controllers\APP\ServiceController as APPServiceController;
 use App\Http\Controllers\APP\UserController as APPUserController;
 
 Route::get("app/statistics", [AppStatisticController::class, 'index']);
 Route::get('app/purchaser-names', [PurchaserController::class, "purchaserNames"]);
+Route::post('app/upload-media', [MediaController::class, "uploadMedia"]);
 
 Route::get('/instructions', [InstructionController::class, 'index']);
 Route::get('/instructions/{id}', [InstructionController::class, 'show']);
