@@ -62,6 +62,10 @@ class ActController extends Controller
 
                 $model->fill($request->except(['location_id', 'device_type_id', 'device_brand_id']));
 
+                if ($request->get('is_mobile')) {
+                    $model->is_mobile = 1;
+                }
+
                 $locationId = $request->get('location_id');
                 if (is_numeric($locationId)) {
                     $model->location_id = $locationId;
@@ -80,6 +84,8 @@ class ActController extends Controller
                         $model->device_type_id = $deviceType->id;
                     }
                 }
+
+
 
                 if ($request->has('device_brand_id')) {
                     $deviceBrandId = $request->get('device_brand_id');
@@ -102,6 +108,7 @@ class ActController extends Controller
                 if (!$model->user) {
                     $model->user()->associate(auth()->user());
                 }
+
 
                 $model->save();
 

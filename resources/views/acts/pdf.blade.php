@@ -451,6 +451,8 @@
             <td>
                 @if ($model->updated_at < \Carbon\Carbon::parse('2024-05-30'))
                     <img style="" src="{{ $model->signature }}" width="30%" alt="">
+                @elseif($model->is_mobile)
+                    <img src="{{ $model->signature }}" style="width:20%;margin-top:20px;!important" alt="">
                 @else
                     <img style="margin-top:-50px; margin-left:60px; transform: rotate(-90deg)"
                         src="{{ $model->signature }}" width="10%" alt="">

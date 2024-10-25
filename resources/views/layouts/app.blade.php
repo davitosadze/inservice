@@ -78,7 +78,7 @@
     <script src="{{ mix('js/vendors/lte-core.js') }}"></script>
     <script type="text/javascript">
         window.addEventListener("orientationchange", function() {
-            alert(screen.orientation)
+
             if (screen.orientation) {
                 screen.orientation.lock('portrait').catch(function() {});
             }

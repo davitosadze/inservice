@@ -2,9 +2,9 @@
     <div
         :class="['card p-3 mb-3 shadow-sm border']"
         :style="{
-            backgroundColor: depthColors[depth - 1] || '#f1f1f1', // Fallback color
+            backgroundColor: depthColors[depth - 1] || '#f1f1f1',
             marginLeft: depth * 5 + 'px',
-            borderColor: depthBorders[depth - 1] || '#ddd', // Light border for each depth
+            borderColor: depthBorders[depth - 1] || '#ddd',
         }"
     >
         <div class="d-flex align-items-start mb-3">
@@ -37,7 +37,6 @@
                     theme="snow"
                     :style="{
                         minHeight: '100px',
-                        maxHeight: '200px',
                         backgroundColor: '#fff',
                     }"
                 />
@@ -133,7 +132,6 @@ export default {
 
 <style scoped>
 .card {
-    /* Remove hover scale effect */
     transition: none;
     border: 5px solid black;
 }

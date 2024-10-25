@@ -24,6 +24,7 @@ use App\Http\Controllers\API\ServiceActController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\APP\ExpoNotificationController;
 use App\Http\Controllers\APP\MediaController;
 use App\Http\Controllers\APP\ResponseController as APPResponseController;
 use App\Http\Controllers\APP\ServiceController as APPServiceController;
@@ -42,6 +43,11 @@ Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
 
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+
+    // APP
+    Route::post('app/notifications/subscribe', [ExpoNotificationController::class, "subscribe"]);
+
+
     Route::apiResource("users", UserController::class);
 
     Route::get("statistics", [StatisticController::class, 'statistics']);

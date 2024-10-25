@@ -17,6 +17,7 @@ class ServiceAct extends Model
         'additional_information',
         'signature',
         'uuid',
+        'is_mobile',
 
     ];
 

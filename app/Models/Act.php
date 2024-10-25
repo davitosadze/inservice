@@ -21,6 +21,8 @@ class Act extends Model
         'additional_information',
         'signature',
         'uuid',
+        'is_mobile',
+
 
     ];
 

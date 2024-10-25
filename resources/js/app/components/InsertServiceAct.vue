@@ -76,28 +76,19 @@
                                     >ხელმოწერა</label
                                 >
                                 <div v-if="!fullScreen">
-                                    <!-- <vueSignature
-                                        class="border non-full-screen"
-                                        ref="signature"
-                                        :defaultUrl="this.signature"
-                                        :sigOption="option"
-                                        :w="'400px'"
-                                        :h="'200px'"
-                                    ></vueSignature> -->
-
                                     <img
-                                        :class="
+                                        :class="[
                                             isCreatedBeforeToday()
                                                 ? 'signature-image-old'
-                                                : 'signature-image'
-                                        "
+                                                : 'signature-image',
+                                            isMobile === 1 ? 'is-mobile' : '',
+                                        ]"
                                         v-if="signatureDataUrl"
                                         :src="signatureDataUrl"
                                         alt="Signature"
                                     />
                                     <SignatureModal
                                         :isVisible="showModal"
-                                        :signatureDataUrl="signatureDataUrl"
                                         @close="handleClose"
                                         @saveSignatureEmit="handleSave"
                                     />
@@ -436,6 +427,13 @@ export default {
     width: 10%;
     margin-left: 50px;
 }
+.is-mobile {
+    transform: rotate(0) !important;
+    width: 40% !important;
+    width: 20% !important;
+    margin-left: 0px !important;
+}
+
 .non-full-screen {
     display: inline;
     transform: rotate(-90deg);

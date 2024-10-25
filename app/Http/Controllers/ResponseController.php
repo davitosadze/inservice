@@ -10,6 +10,8 @@ use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use ExpoSDK\Expo;
+use ExpoSDK\ExpoMessage;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -149,10 +151,6 @@ class ResponseController extends Controller
                 $model->user()->associate(auth()->user());
             }
 
-            if (!$model->id) {
-                $model->status = 1;
-            }
-
             if ($model->status == 2) {
                 $model->status = 3;
                 $model->act()->update([
@@ -160,6 +158,26 @@ class ResponseController extends Controller
                     "inventory_code" => $request->get("inventory_number"),
                     "uuid" => $request->get("requisites"),
                 ]);
+            }
+
+            if (!$model->id) {
+                $model->status = 1;
+                $model->save();
+
+                if ($model->performer?->expo_token) {
+                    $messages = [
+                        new ExpoMessage([
+                            'title' => 'რეაგირება',
+                            'body' => 'თქვენ მიიღეთ ახალი სამუშაო',
+                            'to' => $model->performer?->expo_token,
+                            'data' => [
+                                'url' => 'responses',
+                                'id' => $model->id,
+                            ]
+                        ]),
+                    ];
+                    (new Expo())->send($messages)->push();
+                }
             }
 
             $model->save();

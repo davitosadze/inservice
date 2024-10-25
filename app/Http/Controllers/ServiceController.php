@@ -9,6 +9,8 @@ use App\Models\Service;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use ExpoSDK\Expo;
+use ExpoSDK\ExpoMessage;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -151,9 +153,7 @@ class ServiceController extends Controller
                 $model->user()->associate(auth()->user());
             }
 
-            if (!$model->id) {
-                $model->status = 1;
-            }
+
 
             if ($model->status == 2) {
                 $model->status = 3;
@@ -162,6 +162,24 @@ class ServiceController extends Controller
                     "inventory_code" => $request->get("inventory_number"),
                     "uuid" => $request->get("requisites"),
                 ]);
+            }
+            if (!$model->id) {
+                $model->status = 1;
+                $model->save();
+                if ($model->performer?->expo_token) {
+                    $messages = [
+                        new ExpoMessage([
+                            'title' => 'სერვისი',
+                            'body' => 'თქვენ მიიღეთ ახალი სამუშაო',
+                            'to' => $model->performer?->expo_token,
+                            'data' => [
+                                'url' => 'services',
+                                'id' => $model->id,
+                            ]
+                        ]),
+                    ];
+                    (new Expo())->send($messages)->push();
+                }
             }
 
             $model->save();
