@@ -61,7 +61,7 @@ class ServiceActController extends Controller
 
                 $model->fill($request->except(['location_id']));
 
-                if ($request->get('is_mobile')) {
+                if ($request->has('is_mobile')) {
                     $model->is_mobile = 1;
                 } else {
                     $model->is_mobile = 0;
