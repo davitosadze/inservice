@@ -188,6 +188,7 @@ export default {
             showModal: false,
             fullScreen: false,
             signatureDataUrl: this.model.signature,
+            isMobile: this.model.is_mobile,
             option: {
                 penColor: "rgb(0, 0, 0)",
                 backgroundColor: "rgb(255,255,255)",
