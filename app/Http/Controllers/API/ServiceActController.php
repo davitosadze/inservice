@@ -63,8 +63,9 @@ class ServiceActController extends Controller
 
                 if ($request->get('is_mobile')) {
                     $model->is_mobile = 1;
+                } else {
+                    $model->is_mobile = 0;
                 }
-
                 $locationId = $request->get('location_id');
                 if (is_numeric($locationId)) {
                     $model->location_id = $locationId;
