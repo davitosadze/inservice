@@ -62,7 +62,7 @@ class ActController extends Controller
 
                 $model->fill($request->except(['location_id', 'device_type_id', 'device_brand_id']));
 
-                if ($request->has('is_mobile')) {
+                if ($request->get('is_mobile') == true) {
                     $model->is_mobile = 1;
                 } else {
                     $model->is_mobile = 0;
