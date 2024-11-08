@@ -10,11 +10,12 @@ class CalendarController extends Controller
 {
     public function events($purchaser_id)
     {
-        $events = CalendarEvent::where("purchaser_id", $purchaser_id)->get();
+        $events = CalendarEvent::where("purchaser_id", $purchaser_id)->with('response')->get();
         $modifiedEvents = [];
 
         foreach ($events as $event) {
-            $content = "შინაარსი: " . $event->response?->content . "<br><br>" . "გამოსწორების მიზეზი: " . $event->response?->job_description;
+
+            $content = "შინაარსი: " . $event->response?->content . "<br><br>" . "გამოსწორების მიზეზი: " .         $event->response?->act ? $event->response?->act?->note  : $event->response?->job_description;
 
             $modifiedEvent = [
                 "title" => $event->title,
