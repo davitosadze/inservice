@@ -172,7 +172,7 @@
                             <div
                                 v-for="subject in subjects"
                                 :key="subject.id"
-                                class="col-md-3"
+                                class="col-md-4"
                             >
                                 <file-pond
                                     @activatefile="onActivateFile"
@@ -195,6 +195,91 @@
                                 @close="closeModal"
                             ></file-actions-modal>
                         </div>
+
+                        <!-- Folder Structure -->
+
+                        <div class="container files mt-5">
+                            <h4>დამატებითი ფაილები:</h4>
+                            <hr />
+                            <div
+                                v-for="(locations, date) in folderStructure"
+                                :key="date"
+                                class="mb-4"
+                            >
+                                <h3
+                                    @click="toggleLocations(date)"
+                                    class="btn btn-primary w-100 text-left p-3 rounded-pill d-flex align-items-center justify-content-between"
+                                    :aria-expanded="
+                                        isDateSelected(date).toString()
+                                    "
+                                    :aria-controls="'locations-' + date"
+                                >
+                                    <i class="fas fa-calendar-day mr-2"></i
+                                    >{{ date }}
+                                    <i
+                                        v-if="isDateSelected(date)"
+                                        class="fas fa-chevron-up"
+                                    ></i>
+                                    <i v-else class="fas fa-chevron-down"></i>
+                                </h3>
+
+                                <!-- Locations shown when a date is clicked -->
+                                <div
+                                    v-show="isDateSelected(date)"
+                                    :id="'locations-' + date"
+                                    class="ml-4 mt-2"
+                                >
+                                    <div
+                                        v-for="(files, location) in locations"
+                                        :key="location"
+                                        class="mb-2"
+                                    >
+                                        <button
+                                            @click="toggleFiles(location)"
+                                            class="btn btn-outline-primary w-100 text-left d-flex align-items-center p-3 rounded-pill"
+                                        >
+                                            <i class="fas fa-folder mr-2"></i
+                                            >{{ location }}
+                                            <i
+                                                v-if="
+                                                    isLocationSelected(location)
+                                                "
+                                                class="fas fa-chevron-up ml-auto"
+                                            ></i>
+                                            <i
+                                                v-else
+                                                class="fas fa-chevron-down ml-auto"
+                                            ></i>
+                                        </button>
+
+                                        <!-- Files shown when a location is clicked -->
+                                        <div
+                                            v-show="
+                                                isLocationSelected(location)
+                                            "
+                                            class="ml-4 mt-2"
+                                        >
+                                            <div
+                                                v-for="file in files"
+                                                :key="file.file_name"
+                                                class="mb-2"
+                                            >
+                                                <button
+                                                    @click="openImage(file)"
+                                                    class="btn btn-link w-100 text-left d-flex align-items-center"
+                                                >
+                                                    <i
+                                                        class="fas fa-image mr-2"
+                                                    ></i
+                                                    >{{ file.file_name }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Folder Structure -->
                     </div>
                 </div>
             </div>
@@ -246,6 +331,7 @@ export default {
     },
     mounted() {
         this.fetchEvents();
+        this.fetchFolderStructure();
 
         this.v$.model.$touch();
     },
@@ -271,6 +357,11 @@ export default {
             isFullScreenOpen: false,
             fullScreenImageSrc: "",
             selectBuilder: [],
+            // Folder Structure
+            folderStructure: {},
+            selectedDate: null,
+            selectedLocation: null,
+            selectedImage: null,
         };
     },
     watch: {},
@@ -287,6 +378,38 @@ export default {
     methods: {
         handleFilePondInit(pond) {},
         handleFilePondInitGallery(pond) {},
+
+        async fetchFolderStructure() {
+            try {
+                const response = await fetch("/api/folders/" + this.m.id);
+                const data = await response.json();
+                this.folderStructure = data;
+            } catch (error) {
+                console.error("Error fetching folder structure:", error);
+            }
+        },
+
+        toggleLocations(date) {
+            this.selectedDate = this.selectedDate === date ? null : date;
+            this.selectedLocation = null;
+        },
+
+        isDateSelected(date) {
+            return this.selectedDate === date;
+        },
+
+        toggleFiles(location) {
+            this.selectedLocation =
+                this.selectedLocation === location ? null : location;
+        },
+
+        isLocationSelected(location) {
+            return this.selectedLocation === location;
+        },
+
+        openImage(file) {
+            window.open(file.file_url, "_blank");
+        },
 
         initializeSubjects() {
             this.subjects = [
@@ -317,15 +440,15 @@ export default {
                         ? this.purchaserFiles.technicalDocumentationFiles
                         : [],
                 },
-                {
-                    id: 4,
-                    name: "Additional Information",
-                    geo_name: "დამატებითი ინფორმაცია/ფაილები",
-                    ref: "additionalInformationPond",
-                    files: this.purchaserFiles
-                        ? this.purchaserFiles.additionalInformationFiles
-                        : [],
-                },
+                // {
+                //     id: 4,
+                //     name: "Additional Information",
+                //     geo_name: "დამატებითი ინფორმაცია/ფაილები",
+                //     ref: "additionalInformationPond",
+                //     files: this.purchaserFiles
+                //         ? this.purchaserFiles.additionalInformationFiles
+                //         : [],
+                // },
             ];
         },
         fetchAfterDelete() {
@@ -430,6 +553,11 @@ export default {
 </script>
 <style scoped>
 @import "../../../../node_modules/qalendar/dist/style.css";
+
+.container.files {
+    max-height: 500px;
+    overflow: scroll;
+}
 
 .carousel__item {
     width: 40%;
