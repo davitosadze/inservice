@@ -20,6 +20,7 @@ class FolderController extends Controller
             $location = $item->getCustomProperty('location', 'ლოკაციის გარეშე');
             $fileName = $item->file_name;
             $fileUrl = $item->getUrl();
+            $fileUrl = preg_replace('/\d{4}-\d{2}-\d{2}/', $date, $fileUrl);
 
             if (!array_key_exists($date, $dates)) {
                 $dates[$date] = [];
@@ -33,6 +34,8 @@ class FolderController extends Controller
                 'file_name' => $fileName,
                 'file_url'  => $fileUrl,
             ];
+
+            // return response()->json($item, 200);
         }
 
         return response()->json($dates, 200);
