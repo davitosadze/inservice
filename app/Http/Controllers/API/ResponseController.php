@@ -21,16 +21,17 @@ class ResponseController extends Controller
     {
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
-            $responses = Response::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
+            $responses = Response::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')
                 ->whereIn("status", [1, 10])
                 ->where("performer_id", Auth::user()->id);
+        } elseif (Auth::user()->roles->contains('name', 'ტექნიკური მენეჯერი - შეზღუდული')) {
+            $responses = Response::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')->where("user_id", Auth::user()->id);;
         } else {
-            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo'])->orderBy('id', 'desc');
+            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc');
         }
 
         if ($request->get("type") == "done") {
-            $responses = $responses->where("status", 3)
-                ->orWhere("status", 0)
+            $responses = $responses->whereIn('status', [0, 3])
                 ->get();
         } else {
             $responses = $responses->whereIn("status", [1, 2, 10])

@@ -48,6 +48,9 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Folders
     Route::get('folders/{id}', [FolderController::class, 'getFolders']);
 
+    // Delete File
+    Route::post('/delete-file', [FolderController::class, 'deleteFile']);
+
 
     // APP
     Route::post('app/notifications/subscribe', [ExpoNotificationController::class, "subscribe"]);

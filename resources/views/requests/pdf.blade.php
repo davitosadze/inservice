@@ -261,9 +261,9 @@
       </script>
 
     @php
-        
+
         $agr = ['prices' => 0, 'calc' => 0, 'service_prices' => 0];
-        
+
         if (isset($model['category_attributes'])) {
             $agr = collect($model['category_attributes'])->reduce(function ($result, $item) {
                 if ($result === null) {
@@ -273,17 +273,25 @@
                         'service_prices' => 0,
                     ];
                 }
-        
+
                 $result['prices'] += isset($item['pivot']['evaluation_price']) ? $item['pivot']['evaluation_price'] : 0;
                 $result['calc'] += isset($item['pivot']['evaluation_calc']) ? $item['pivot']['evaluation_calc'] : 0;
-                $result['service_prices'] += isset($item['pivot']['evaluation_service_price']) ? $item['pivot']['evaluation_service_price'] : 0;
-        
+                $result['service_prices'] += isset($item['pivot']['evaluation_service_price'])
+                    ? $item['pivot']['evaluation_service_price']
+                    : 0;
+
                 return $result;
             });
         }
-        
-        $titles = [['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'], ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'], ['title' => 'მოგება :', 'key' => 'p3'], ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'], ['title' => 'დღგ :', 'key' => 'p5']];
-        
+
+        $titles = [
+            ['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'],
+            ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'],
+            ['title' => 'მოგება :', 'key' => 'p3'],
+            ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'],
+            ['title' => 'დღგ :', 'key' => 'p5'],
+        ];
+
         function initReporteValues($arr, $model, $indexer)
         {
             $i = 0;
@@ -294,15 +302,15 @@
                     $item['inputName'] = $indexer . (string) ($i + 1);
                     $item['value'] = isset($model[$item['inputName']]) ? $model[$item['inputName']] : 0;
                     $i++;
-        
+
                     array_push($carry, $item);
-        
+
                     return $carry;
                 },
                 [],
             );
         }
-        
+
         function recurcive($initReporteValuesRes, $starter, &$titles, $index)
         {
             if (isset($initReporteValuesRes[$index])) {
@@ -310,18 +318,18 @@
                     'p1' => specNum(($initReporteValuesRes[$index]['value'] * $starter) / 100),
                     'p2' => specNum($starter + specNum(($initReporteValuesRes[$index]['value'] * $starter) / 100)),
                 ];
-        
+
                 $titles[$index]['percenters'] = $percentes;
                 $nextPrice = $percentes['p2'];
-        
+
                 $index = $index + 1;
-        
+
                 return recurcive($initReporteValuesRes, $nextPrice, $titles, $index);
             } else {
                 return $titles;
             }
         }
-        
+
         function specNum($num)
         {
             if (!$num) {
@@ -330,13 +338,13 @@
             $number = round(floatval($num) * 100) / 100;
             return floatval($number);
         }
-        
+
         $initReporteValuesRes = initReporteValues($titles, $model, 'p');
         $starter = isset($agr) ? $agr['calc'] : [];
         $index = 0;
-        
+
         $calculate = isset($agr) ? recurcive($initReporteValuesRes, $starter, $titles, $index) : [];
-        
+
     @endphp
 
     <header class="clearfix">
@@ -409,8 +417,8 @@
                 <th style="width: 17%;" class="desc">აღწერა</th>
                 <th class="desc">ერთეული</th>
                 <th class="unit">რაოდენობა</th>
-                <th class="unit">ფასი</th>
-                <th class="unit">მომსახურება</th>
+                <th class="unit">მასალის ფასი</th>
+                <th class="unit">მომსახურების ფასი</th>
                 <th class="total">ჯამი</th>
             </tr>
 

@@ -412,8 +412,8 @@
                 <th style="width: 17%;" class="desc">აღწერა</th>
                 <th class="desc">ერთეული</th>
                 <th class="unit">რაოდენობა</th>
-                <th class="unit">ფასი</th>
-                <th class="unit">მომსახურება</th>
+                <th class="unit">მასალის ფასი</th>
+                <th class="unit">მომსახურების ფასი</th>
                 <th class="total">ჯამი</th>
             </tr>
 

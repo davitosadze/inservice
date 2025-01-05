@@ -262,16 +262,22 @@
                                             <div
                                                 v-for="file in files"
                                                 :key="file.file_name"
-                                                class="mb-2"
+                                                class="mb-2 d-flex align-items-center"
                                             >
                                                 <button
                                                     @click="openImage(file)"
-                                                    class="btn btn-link w-100 text-left d-flex align-items-center"
+                                                    class="btn btn-link text-left flex-grow-1 d-flex align-items-center"
                                                 >
                                                     <i
                                                         class="fas fa-image mr-2"
                                                     ></i
                                                     >{{ file.file_name }}
+                                                </button>
+                                                <button
+                                                    @click="deleteFile(file)"
+                                                    class="btn btn-danger ml-2"
+                                                >
+                                                    წაშლა
                                                 </button>
                                             </div>
                                         </div>
@@ -511,6 +517,33 @@ export default {
             this.isModalVisible = true;
             this.isModalOnEdit = true;
         },
+        async deleteFile(file) {
+            try {
+                const userConfirmed = confirm(
+                    `დარწმუნებული ხართ რომ გინდათ ფაილის წაშლა: ${file.file_name}?`
+                );
+                if (!userConfirmed) {
+                    return;
+                }
+
+                const response = await fetch(`/api/delete-file`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ fileName: file.file_name }),
+                });
+                if (response.ok) {
+                    alert(`File ${file.file_name} deleted successfully.`);
+                    console.log(`File ${file.file_name} deleted successfully.`);
+                } else {
+                    console.error("Failed to delete file.");
+                }
+            } catch (error) {
+                console.error("Error deleting file:", error);
+            }
+        },
+
         handleDeleteEvent(event_id) {
             const isConfirmed = window.confirm(
                 "Are you sure you want to delete this event?"

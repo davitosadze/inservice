@@ -21,11 +21,11 @@ class ServiceController extends Controller
     {
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
-            $responses = Service::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
+            $responses = Service::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')
                 ->whereIn("status", [1, 10])
                 ->where("performer_id", Auth::user()->id);
         } else {
-            $responses = Service::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc');
+            $responses = Service::with(['user', 'purchaser', 'region',  'performer'])->orderBy('id', 'desc');
         }
 
         if ($request->get("type") == "done") {
