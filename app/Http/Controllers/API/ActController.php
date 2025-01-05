@@ -135,6 +135,15 @@ class ActController extends Controller
     }
 
 
+    public function changeStatus($id)
+    {
+        $response = ModelsResponse::find($id);
+        $response->status = 2;
+        $response->save();
+        return response()->json(["success" => true]);
+    }
+
+
     public function destroy($id)
     {
         //
@@ -164,14 +173,6 @@ class ActController extends Controller
             $result['errs'][0] = $response->message();
             return response()->json($result);
         }
-    }
-
-    public function changeStatus($id)
-    {
-        $response = ModelsResponse::find($id);
-        $response->status = 2;
-        $response->save();
-        return response()->json(["success" => true]);
     }
 
     public function reject($id)
