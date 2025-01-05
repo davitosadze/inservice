@@ -22,7 +22,7 @@ class ServiceController extends Controller
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
             $responses = Service::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')
-                ->whereIn("status", [1, 10])
+                ->whereIn("status", [1, 5, 10])
                 ->where("performer_id", Auth::user()->id);
         } else {
             $responses = Service::with(['user', 'purchaser', 'region',  'performer'])->orderBy('id', 'desc');
@@ -33,7 +33,7 @@ class ServiceController extends Controller
                 ->orWhere("status", 0)
                 ->get();
         } else {
-            $responses = $responses->whereIn("status", [1, 2, 10])
+            $responses = $responses->whereIn("status", [1, 2, 5, 10])
                 ->get();
         }
 
