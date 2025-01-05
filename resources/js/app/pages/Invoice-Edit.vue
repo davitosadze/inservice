@@ -152,9 +152,11 @@
                                         <th style="width: 20%">აღწერა</th>
                                         <th>ერთეული</th>
                                         <th>რაოდენობა</th>
-                                        <th style="text-align: center">ფასი</th>
                                         <th style="text-align: center">
-                                            ხელ.ფასი
+                                            მასალის ფასი
+                                        </th>
+                                        <th style="text-align: center">
+                                            მომსახურების ფასი
                                         </th>
                                         <th>ჯამი</th>
                                         <th>ქმედება</th>

@@ -52,6 +52,8 @@ class ServiceActController extends Controller
                 } elseif ($request->on_repair == 1) {
                     $service->status = 3;
                     $service->on_repair = 1;
+                } elseif ($request->change_status) {
+                    $service->status = 2;
                 } else {
                     if (!$request->get('is_app')) {
                         $service->status = 2;
