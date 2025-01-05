@@ -107,7 +107,6 @@ class ResponseController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-
             'subject_name' => ['required'],
             'subject_address' => ['required'],
             'region_id' => ['required'],

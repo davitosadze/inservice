@@ -534,8 +534,8 @@ export default {
                     body: JSON.stringify({ fileName: file.file_name }),
                 });
                 if (response.ok) {
-                    alert(`File ${file.file_name} deleted successfully.`);
-                    console.log(`File ${file.file_name} deleted successfully.`);
+                    this.fetchFolderStructure();
+                    alert(`ფაილი ${file.file_name} წარმატებით წაიშალა.`);
                 } else {
                     console.error("Failed to delete file.");
                 }
