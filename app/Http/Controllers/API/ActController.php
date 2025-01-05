@@ -135,7 +135,7 @@ class ActController extends Controller
     }
 
 
-    public function changeStatus($id)
+    public function changeStatusNew($id)
     {
         $response = ModelsResponse::find($id);
         $response->status = 2;
