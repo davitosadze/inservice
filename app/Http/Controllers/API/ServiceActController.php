@@ -109,10 +109,11 @@ class ServiceActController extends Controller
     }
 
 
-    public function changeStatus(ServiceAct $act)
+    public function changeStatus($id)
     {
-        $act->status = 2;
-        $act->save();
+        $service = Service::find($id);
+        $service->status = 2;
+        $service->save();
         return response()->json(["success" => true]);
     }
     public function destroy($id)

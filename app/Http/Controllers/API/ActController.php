@@ -166,10 +166,11 @@ class ActController extends Controller
         }
     }
 
-    public function changeStatus(Act $act)
+    public function changeStatus($id)
     {
-        $act->status = 2;
-        $act->save();
+        $response = ModelsResponse::find($id);
+        $response->status = 2;
+        $response->save();
         return response()->json(["success" => true]);
     }
 
