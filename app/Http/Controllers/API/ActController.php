@@ -54,9 +54,6 @@ class ActController extends Controller
                     $response->status = 3;
                     $response->on_repair = 1;
                 } else {
-                    if (!$request->get('is_app')) {
-                        $response->status = 2;
-                    }
                 }
 
                 $response->save();
