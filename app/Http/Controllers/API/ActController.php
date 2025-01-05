@@ -56,6 +56,8 @@ class ActController extends Controller
                 } else {
                     if (!$request->get('is_app')) {
                         $response->status = 2;
+                    } else {
+                        $response->status = 5;
                     }
                 }
 

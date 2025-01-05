@@ -55,6 +55,8 @@ class ServiceActController extends Controller
                 } else {
                     if (!$request->get('is_app')) {
                         $service->status = 2;
+                    } else {
+                        $service->status = 5;
                     }
                 }
 

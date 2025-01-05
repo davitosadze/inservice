@@ -57,7 +57,7 @@
                         <div class="col-sm-6">
                             <div class="card">
                                 <h5
-                                    class="@if ($service->status == 1) rag-red @elseif($service->status == 2) rag-yellow @elseif($service->status == 10) rag-green-arrived @endif card-header">
+                                    class="@if ($service->status == 1) rag-red @elseif($service->status == 2) rag-yellow @elseif($service->status == 10 || $service->status == 5) rag-green-arrived @endif card-header">
                                     <span class="left">{{ $service->id }}</span>
                                     <span class="right">{{ $service->performer?->name }}</span>
                                 </h5>
