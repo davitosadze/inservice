@@ -53,8 +53,6 @@ class ActController extends Controller
                 } elseif ($request->on_repair == 1) {
                     $response->status = 3;
                     $response->on_repair = 1;
-                } elseif ($request->change_status) {
-                    $response->status = 2;
                 } else {
                     if (!$request->get('is_app')) {
                         $response->status = 2;
@@ -166,6 +164,13 @@ class ActController extends Controller
             $result['errs'][0] = $response->message();
             return response()->json($result);
         }
+    }
+
+    public function changeStatus(Act $act)
+    {
+        $act->status = 2;
+        $act->save();
+        return response()->json(["success" => true]);
     }
 
     public function reject($id)

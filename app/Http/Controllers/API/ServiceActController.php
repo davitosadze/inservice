@@ -52,8 +52,6 @@ class ServiceActController extends Controller
                 } elseif ($request->on_repair == 1) {
                     $service->status = 3;
                     $service->on_repair = 1;
-                } elseif ($request->change_status) {
-                    $service->status = 2;
                 } else {
                     if (!$request->get('is_app')) {
                         $service->status = 2;
@@ -111,6 +109,12 @@ class ServiceActController extends Controller
     }
 
 
+    public function changeStatus(ServiceAct $act)
+    {
+        $act->status = 2;
+        $act->save();
+        return response()->json(["success" => true]);
+    }
     public function destroy($id)
     {
         //

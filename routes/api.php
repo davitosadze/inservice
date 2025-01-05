@@ -109,10 +109,12 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Acts
     Route::apiResource('acts', ActController::class);
     Route::post("acts/{act}/reject", [ActController::class, "reject"]);
+    Route::post("acts/{act}/change-status", [ActController::class, "chengeStatus"]);
 
     // Service Acts
     Route::apiResource('service-acts', ServiceActController::class);
     Route::post("service-acts/{act}/reject", [ServiceActController::class, "reject"]);
+    Route::post("service-acts/{act}/change-status", [ServiceActController::class, "changeStatus"]);
 
 
     Route::apiResource("evaluations", EvaluationController::class);
