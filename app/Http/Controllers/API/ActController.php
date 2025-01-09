@@ -187,7 +187,7 @@ class ActController extends Controller
         try {
 
             $act = Act::find($id);
-            $act->response->status = 0;
+            $act->response->status = 1;
 
 
             if ($act->response->save()) {

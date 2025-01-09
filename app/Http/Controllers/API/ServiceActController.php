@@ -159,7 +159,7 @@ class ServiceActController extends Controller
         try {
 
             $act = ServiceAct::find($id);
-            $act->service->status = 0;
+            $act->service->status = 1;
 
 
             if ($act->service->save()) {
