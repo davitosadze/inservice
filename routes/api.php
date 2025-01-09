@@ -31,7 +31,7 @@ use App\Http\Controllers\APP\ServiceController as APPServiceController;
 use App\Http\Controllers\APP\UserController as APPUserController;
 use App\Http\Controllers\FolderController;
 
-Route::get("app/statistics", [AppStatisticController::class, 'index']);
+Route::post("app/statistics", [AppStatisticController::class, 'index']);
 Route::get('app/purchaser-names', [PurchaserController::class, "purchaserNames"]);
 Route::post('app/upload-media', [MediaController::class, "uploadMedia"]);
 
