@@ -23,6 +23,11 @@ class ActController extends Controller
         return response(Act::orderBy('id', 'desc')->get()->toArray());
     }
 
+    public function show(Act $act)
+    {
+        return response()->json($act, 200);
+    }
+
     public function store(Request $request)
     {
 
@@ -182,7 +187,7 @@ class ActController extends Controller
         try {
 
             $act = Act::find($id);
-            $act->response->status = 1;
+            $act->response->status = 0;
 
 
             if ($act->response->save()) {

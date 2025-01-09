@@ -22,6 +22,11 @@ class ServiceActController extends Controller
         return response(ServiceAct::orderBy('id', 'desc')->get()->toArray());
     }
 
+    public function show(ServiceAct $service_act)
+    {
+        return response()->json($service_act, 200);
+    }
+
     public function store(Request $request)
     {
 
@@ -154,7 +159,7 @@ class ServiceActController extends Controller
         try {
 
             $act = ServiceAct::find($id);
-            $act->service->status = 1;
+            $act->service->status = 0;
 
 
             if ($act->service->save()) {
