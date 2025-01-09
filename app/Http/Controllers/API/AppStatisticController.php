@@ -19,7 +19,7 @@ class AppStatisticController extends Controller
     {
         $from = Carbon::parse($request->get('from'));
         $to = Carbon::parse($request->get('to'))->endOfDay();
-        $purchaser = $request->get('name');
+        $purchasers = $request->get('names');
 
         if (!$from || !$to) {
             return response()->json(['error' => 'Invalid date range'], 400);
@@ -28,12 +28,13 @@ class AppStatisticController extends Controller
         $dates = collect();
         $from->toPeriod($to)->forEach(fn($date) => $dates->push($date->toDateString()));
 
-        $responsesDaily = $this->getDailyResponsesCount($dates, $purchaser);
-        $responsesByName = $this->getResponsesByName($from, $to, $purchaser);
-        $responsesBySphere = $this->getResponsesBySphere($from, $to, $purchaser);
-        $responsesByRegion = $this->getResponsesByRegion($from, $to, $purchaser);
-        $responsesByPerformer = $this->getResponsesByPerformer($from, $to, $purchaser);
-        $responsesAndServicesCount = $this->getResponsesAndServicesCount($from, $to, $purchaser);
+        $arr = array();
+        $responsesDaily = $this->getDailyResponsesCount($dates, $purchasers);
+        $responsesByName = array_values($this->getResponsesByName($from, $to, $purchasers));
+        $responsesBySphere = $this->getResponsesBySphere($from, $to, $purchasers);
+        $responsesByRegion = $this->getResponsesByRegion($from, $to, $purchasers);
+        $responsesByPerformer = $this->getResponsesByPerformer($from, $to, $purchasers);
+        $responsesAndServicesCount = $this->getResponsesAndServicesCount($from, $to, $purchasers);
 
         $data = [
             "responsesDaily" => $responsesDaily,
@@ -67,14 +68,14 @@ class AppStatisticController extends Controller
         ];
     }
 
-    private function getDailyResponsesCount($dates, $purchaser)
+    private function getDailyResponsesCount($dates, $purchasers)
     {
-        return $dates->map(function ($date) use ($purchaser) {
+        return $dates->map(function ($date) use ($purchasers) {
             $approvedResponses = Response::whereDate('created_at', $date)->where('status', 3)->get();
             $onRepairResponses = Response::whereDate('created_at', $date)->where('on_repair', 1)->get();
 
-            $approvedCount = $purchaser ? $approvedResponses->where('formatted_name', $purchaser)->count() : $approvedResponses->count();
-            $onRepairCount = $purchaser ? $onRepairResponses->where('formatted_name', $purchaser)->count() : $onRepairResponses->count();
+            $approvedCount = $purchasers ? $approvedResponses->whereIn('formatted_name', $purchasers)->count() : $approvedResponses->count();
+            $onRepairCount = $purchasers ? $onRepairResponses->where('formatted_name', $purchasers)->count() : $onRepairResponses->count();
 
             return [
                 "date" => $date,
@@ -84,7 +85,7 @@ class AppStatisticController extends Controller
         })->toArray();
     }
 
-    private function getResponsesByName($from, $to, $purchaser)
+    private function getResponsesByName($from, $to, $purchasers)
     {
         $responsesByName = Response::select(
             DB::raw("REGEXP_REPLACE(name, '[\" .,\'“„]', '') as nameFormatted"),
@@ -93,11 +94,13 @@ class AppStatisticController extends Controller
             ->whereBetween('created_at', [$from, $to])
             ->groupBy('nameFormatted')
             ->get();
+        $responsesByName = $responsesByName->toArray();
 
-        return $purchaser ? $responsesByName->where('nameFormatted', $purchaser) : $responsesByName;
+        // Filter by purchasers if necessary
+        return $purchasers ? collect($responsesByName)->whereIn('nameFormatted', $purchasers)->toArray() : $responsesByName;
     }
 
-    private function getResponsesBySphere($from, $to, $purchaser)
+    private function getResponsesBySphere($from, $to, $purchasers)
     {
         $responsesBySphere = [];
         $systems = System::where('parent_id', NULL)->get();
@@ -107,7 +110,7 @@ class AppStatisticController extends Controller
                 ->where('system_one', $system->id)
                 ->get();
 
-            $responseCount = $purchaser ? $responsesQuery->where('formatted_name', $purchaser)->count() : $responsesQuery->count();
+            $responseCount = $purchasers ? $responsesQuery->whereIn('formatted_name', $purchasers)->count() : $responsesQuery->count();
 
             if ($responseCount) {
                 $responsesBySphere[] = [
@@ -120,7 +123,7 @@ class AppStatisticController extends Controller
         return $responsesBySphere;
     }
 
-    private function getResponsesByRegion($from, $to, $purchaser)
+    private function getResponsesByRegion($from, $to, $purchasers)
     {
         $regions = [
             "აღმოსავლეთ საქართველო" => "east",
@@ -135,7 +138,7 @@ class AppStatisticController extends Controller
                 ->whereIn('region_id', $regionIds)
                 ->get();
 
-            $responseCount = $purchaser ? $responsesQuery->where('formatted_name', $purchaser)->count() : $responsesQuery->count();
+            $responseCount = $purchasers ? $responsesQuery->whereIn('formatted_name', $purchasers)->count() : $responsesQuery->count();
 
             $responsesByRegion[] = [
                 "name" => $location,
@@ -146,7 +149,7 @@ class AppStatisticController extends Controller
         return $responsesByRegion;
     }
 
-    private function getResponsesByPerformer($from, $to, $purchaser)
+    private function getResponsesByPerformer($from, $to, $purchasers)
     {
         $performers = User::whereHas('roles', function (Builder $query) {
             $query->whereIn('name', ['ინჟინერი']);
@@ -161,8 +164,8 @@ class AppStatisticController extends Controller
                 "profile_image" => $performer->profile_image,
             ];
 
-            $nonApprovedResponsesCount = $this->getResponseCount($from, $to, $performer->id, '!=', 3, $purchaser);
-            $approvedResponsesCount = $this->getResponseCount($from, $to, $performer->id, '=', 3, $purchaser);
+            $nonApprovedResponsesCount = $this->getResponseCount($from, $to, $performer->id, '!=', 3, $purchasers);
+            $approvedResponsesCount = $this->getResponseCount($from, $to, $performer->id, '=', 3, $purchasers);
 
             $performerObject["approved_responses_count"] = $approvedResponsesCount;
             $performerObject["non_approved_responses_count"] = $nonApprovedResponsesCount;
@@ -173,13 +176,13 @@ class AppStatisticController extends Controller
         return $responsesByPerformer;
     }
 
-    private function getResponseCount($from, $to, $performerId, $operator, $status, $purchaser)
+    private function getResponseCount($from, $to, $performerId, $operator, $status, $purchasers)
     {
         $responsesQuery = Response::whereBetween('created_at', [$from, $to])
             ->where('performer_id', $performerId)
             ->where('status', $operator, $status)
             ->get();
 
-        return $purchaser ? $responsesQuery->where('formatted_name', $purchaser)->count() : $responsesQuery->count();
+        return $purchasers ? $responsesQuery->whereIn('formatted_name', $purchasers)->count() : $responsesQuery->count();
     }
 }
