@@ -75,7 +75,7 @@ class AppStatisticController extends Controller
             $onRepairResponses = Response::whereDate('created_at', $date)->where('on_repair', 1)->get();
 
             $approvedCount = $purchasers ? $approvedResponses->whereIn('formatted_name', $purchasers)->count() : $approvedResponses->count();
-            $onRepairCount = $purchasers ? $onRepairResponses->where('formatted_name', $purchasers)->count() : $onRepairResponses->count();
+            $onRepairCount = $purchasers ? $onRepairResponses->whereIn('formatted_name', $purchasers)->count() : $onRepairResponses->count();
 
             return [
                 "date" => $date,
