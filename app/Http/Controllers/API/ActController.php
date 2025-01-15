@@ -23,9 +23,10 @@ class ActController extends Controller
         return response(Act::orderBy('id', 'desc')->get()->toArray());
     }
 
-    public function show(Act $act)
+    public function show($response_id)
     {
-        return response()->json($act, 200);
+        $response = ModelsResponse::find($response_id);
+        return response()->json($response->act, 200);
     }
 
     public function store(Request $request)

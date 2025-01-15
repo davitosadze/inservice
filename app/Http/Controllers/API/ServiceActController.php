@@ -22,9 +22,10 @@ class ServiceActController extends Controller
         return response(ServiceAct::orderBy('id', 'desc')->get()->toArray());
     }
 
-    public function show(ServiceAct $service_act)
+    public function show($service_id)
     {
-        return response()->json($service_act, 200);
+        $service = Service::find($service_id);
+        return response()->json($service->act, 200);
     }
 
     public function store(Request $request)
