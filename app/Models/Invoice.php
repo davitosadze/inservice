@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Invoice extends Model
 {
@@ -23,6 +24,7 @@ class Invoice extends Model
         "p5",
         "uuid",
         "parent_uuid",
+        "warranty_period",
         "title"
     ];
 
@@ -38,13 +40,15 @@ class Invoice extends Model
     protected $appends = [
         'special',
         'purchaser',
-        'category_attributes'
+        'category_attributes',
+        'full_price'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
 
     public function purchaser()
     {
@@ -54,6 +58,13 @@ class Invoice extends Model
     public function getPurchaserAttribute()
     {
         return $this->purchaser()->first() ?? null;
+    }
+
+    public function getFullPriceAttribute()
+    {
+        return DB::table('attributables')
+            ->where('attributable_id', $this->id)
+            ->sum('calc') . " ლარი";
     }
 
     public function category_attributes()

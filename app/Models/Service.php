@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,6 +30,7 @@ class Service extends Model
         'on_repair'
     ];
     use HasFactory;
+    protected $appends = ["job_time"];
 
     public function act()
     {
@@ -53,5 +55,11 @@ class Service extends Model
     public function performer()
     {
         return $this->belongsTo(User::class, "performer_id");
+    }
+
+    public function getJobTimeAttribute()
+    {
+        $diff = Carbon::parse($this->time)->diff($this->updated_at);
+        return  $diff->format('%h საათი და %i წუთი');
     }
 }

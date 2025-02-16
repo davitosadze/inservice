@@ -14,25 +14,20 @@
 
                         <a href="{{ route('dashboard') }}" class="nav-link">
                             <i class="fa fa-home nav-icon"></i>
-                            <p>მიმოხილვა</p>
+                            <p>მთავარი</p>
                         </a>
 
                     </li>
                 @endif
                 <li class="nav-item menu-is-opening menu-open">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            ძირითადი
-                        </p>
-                    </a>
+
                     <ul class="nav nav-treeview">
                         @if (Auth::user()->can('მასალის ნახვა'))
                             <li class="nav-item">
                                 <a href="{{ route('categories.index') }}"
                                     class="nav-link {{ request()->routeIs('categories.*') ? ' active' : '' }}">
                                     <i class="fab nav-icon fa-elementor"></i>
-                                    <p>მასალები</p>
+                                    <p>გასაყიდი პროდუქციის <br> და სერვისების ბაზა</p>
                                 </a>
                             </li>
                         @endif
@@ -59,7 +54,7 @@
                                 <a href="{{ route('purchasers.index') }}"
                                     class="nav-link {{ request()->routeIs('purchasers.*') ? ' active' : '' }}">
                                     <i class="fab nav-icon fa-elementor"></i>
-                                    <p>მყიდველები</p>
+                                    <p>მომსახურე ობიექტები</p>
                                 </a>
                             </li>
                         @endif
@@ -68,7 +63,7 @@
                                 <a href="{{ route('reports.index') }}"
                                     class="nav-link {{ request()->routeIs('reports.*') ? ' active' : '' }}">
                                     <i class="fab nav-icon fa-elementor"></i>
-                                    <p>დეფექტურები</p>
+                                    <p>დეფექტური აქტები</p>
                                 </a>
                             </li>
                         @endif
@@ -130,7 +125,7 @@
                             <a href="{{ route('services.index', ['type' => 'done']) }}"
                                 class="nav-link  {{ request()->routeIs('services.*') && request()->query('type') == 'done' ? 'active' : '' }}">
                                 <i class="fab nav-icon fa-elementor"></i>
-                                <p>სერვისები</p>
+                                <p>გეგმიური სამუშაოების <br> არქივი</p>
                             </a>
                         </li>
                     @endif
@@ -141,7 +136,7 @@
                         <a href="{{ route('services.index', ['type' => 'pending']) }}"
                             class="nav-link {{ request()->routeIs('services.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
-                            <span>განსახილველი <br> სერვისები</span>
+                            <span>აქტიური გეგმიური <br> სამუშაოები</span>
                         </a>
                     </li>
                 @endif
@@ -152,7 +147,7 @@
                             <a href="{{ route('responses.index', ['type' => 'done']) }}"
                                 class="nav-link  {{ request()->routeIs('responses.*') && request()->query('type') == 'done' ? 'active' : '' }}">
                                 <i class="fab nav-icon fa-elementor"></i>
-                                <p>რეაგირებები</p>
+                                <p>რეაგირებების არქივი</p>
                             </a>
                         </li>
                     @endif
@@ -163,7 +158,7 @@
                         <a href="{{ route('responses.index', ['type' => 'pending']) }}"
                             class="nav-link {{ request()->routeIs('responses.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
-                            <span>განსახილველი <br> რეაგირებები</span>
+                            <span>აქტიური რეაგირებები</span>
                         </a>
                     </li>
                 @endif

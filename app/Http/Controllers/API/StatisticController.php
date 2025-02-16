@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Evaluation;
 use App\Models\Invoice;
 use App\Models\Response;
+use App\Models\Service;
 use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,6 +18,8 @@ class StatisticController extends Controller
 {
     public function statistics(Request $request)
     {
+
+
 
         $start_date = Carbon::parse($request->get('start_date'))->startOfDay();
         $end_date = Carbon::parse($request->get('end_date'))->endOfDay();
@@ -83,6 +86,31 @@ class StatisticController extends Controller
 
         $systems = System::where("parent_id", NULL)->orderBy('id', 'desc')->get();
 
+
+        $approvedServices = Service::where('status', 3)->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)->count();
+
+        $approvedResponses = Response::where('status', 3)->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)->count();
+
+        $invoices = Invoice::with(['category_attributes'])
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->get()
+            ->toArray();
+
+
+        $fullPrice = 0;
+        foreach ($invoices as $model) {
+            foreach ($model["category_attributes"] as $key => $item) {
+                $fullPrice += number_format($item['pivot']['calc'], 2, '.', '');
+            }
+        }
+
+
+        $stats["approvedServices"] = $approvedServices;
+        $stats["approvedResponses"] = $approvedResponses;
+        $stats["invoiceFullPrice"] = $fullPrice;
 
         $stats["responses"] = $responses;
         $stats["responsesPercentage"] = $responsesPercentage;

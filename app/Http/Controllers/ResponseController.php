@@ -44,6 +44,7 @@ class ResponseController extends Controller
                 ['field' => "purchaser_subj_name", 'headerName' => 'ობიექტის სახ.', "valueGetter" => 'data.purchaser.subj_name'],
 
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
+                ['field' => "job_time", 'headerName' => 'დრო'],
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
             ],
             'model' => 'responses',

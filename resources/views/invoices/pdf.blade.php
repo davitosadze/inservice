@@ -399,6 +399,9 @@
                     @endif
 
                     <span style="font-weight: 700; color: green;">(ინვოისი ძალაშია 7 დღე)
+                        <br>
+                        საგარანტიო ვადა: {{ $model['warranty_period'] }} თვე
+
                 </div>
                 {{-- <div ><span style="font-weight: 700;">ინვოისი აქტიურია ერთი კვირის განმავლობაში</span></div> --}}
 

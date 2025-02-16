@@ -38,6 +38,7 @@ class InvoiceController extends Controller
                 ['field' => "purchaser_address", 'headerName' => 'ობიექტის მისამართი.', "valueGetter" => 'data.purchaser.subj_address'],
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
+                ['headerName' => 'ჯამი', "valueGetter" => "data.full_price"],
             ],
             'model' => "invoices",
             'url' => [

@@ -58,6 +58,33 @@
                             <label
                                 class="col-sm-3 col-form-label"
                                 for="formGroupExampleInput"
+                                >ტექნიკური მომსახურებისთვის საჭირო დრო:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 col-form-label"
+                                    >{{ model.technical_time }} წთ</label
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >წმენდითი მომსახურებისთვის საჭირო დრო:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <label class="col-sm-3 col-form-label"
+                                    >{{ model.cleaning_time }} წთ</label
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
                                 >აღწერა:</label
                             >
 
@@ -123,6 +150,7 @@
                                 :src="fullScreenImageSrc"
                             />
                         </div>
+
                         <div class="row">
                             <div class="col">
                                 <!-- Scrollable object with items from events -->

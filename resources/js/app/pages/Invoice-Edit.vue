@@ -136,7 +136,26 @@
                         <i class="fas fa-shield-alt"></i> დამატება
                     </button>
                     <!-- /.row -->
+
+                    <div class="row">
+                        <div
+                            class="col text-end d-flex align-items-center justify-content-end"
+                        >
+                            <label for="count" class="mr-2"
+                                >საგარანტიო ვადა:
+                            </label>
+                            <input
+                                type="number"
+                                id="count"
+                                class="form-control form-control-sm w-auto"
+                                v-model="v$.model.$model.warranty_period"
+                                style="max-width: 80px"
+                            />
+                        </div>
+                    </div>
+
                     <hr />
+
                     <!-- Table row -->
                     <div class="row">
                         <div class="col-12 table-responsive">
@@ -410,6 +429,7 @@ export default {
             },
             model: {
                 title: { required },
+                warranty_period: { required },
                 purchaser: {
                     name: { required },
                     subj_name: { required },

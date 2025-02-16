@@ -43,6 +43,12 @@ class ServiceController extends Controller
                 ['field' => "purchaser_subj_name", 'headerName' => 'ობიექტის სახ.', "valueGetter" => 'data.purchaser.subj_name'],
 
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
+
+                ['field' => "technical_time", "valueGetter" =>  'data.purchaser.technical_time', 'headerName' => 'გეგმიური მომსახურების დრო წთ-ში'],
+                ['field' => "cleaning_time", "valueGetter" =>  'data.purchaser.cleaning_time', 'headerName' => 'გეგმიური წმენდის დრო წთ-ში'],
+                ['field' => "job_time", 'headerName' => 'ფაქტიურად დახარჯული დრო'],
+
+
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
             ],
             'model' => 'services',

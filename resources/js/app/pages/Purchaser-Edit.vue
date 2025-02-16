@@ -52,6 +52,35 @@
                                 placeholder=""
                             />
                         </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >ტექნიკური მომსახურებისთვის საჭირო დრო
+                                (წთ):</label
+                            >
+                            <input
+                                v-model="model.technical_time"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >წმენდითი მომსახურებისთვის საჭირო დრო
+                                (წთ):</label
+                            >
+                            <input
+                                v-model="model.cleaning_time"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
                         <div class="form-group">
                             <label for="formGroupExampleInput">აღწერა:</label>
                             <ckeditor

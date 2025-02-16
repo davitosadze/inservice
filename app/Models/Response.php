@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,7 +29,7 @@ class Response extends Model
         "device_type",
         'on_repair'
     ];
-    protected $appends = ["formatted_name"];
+    protected $appends = ["formatted_name", "job_time"];
 
     use HasFactory;
 
@@ -71,5 +72,11 @@ class Response extends Model
     public function getFormattedNameAttribute()
     {
         return preg_replace('/[^\p{L}]+/u', '', $this->name);
+    }
+
+    public function getJobTimeAttribute()
+    {
+        $diff = Carbon::parse($this->time)->diff($this->updated_at);
+        return  $diff->format('%h საათი და %i წუთი');
     }
 }

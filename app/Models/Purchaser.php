@@ -16,7 +16,9 @@ class Purchaser extends Model implements HasMedia
         "subj_name",
         "subj_address",
         "identification_num",
-        "description"
+        "description",
+        "technical_time",
+        "cleaning_time"
     ];
 
     protected $attributes = [

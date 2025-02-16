@@ -47,7 +47,7 @@ class ServiceController extends Controller
 
 
 
-        $name = "რეაგირება";
+        $name = "სერვისი";
         return Excel::download(new ResponseExport($from, $to), "" . $name . ".xlsx");
     }
 

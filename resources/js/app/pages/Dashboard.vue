@@ -15,7 +15,7 @@
                 :options="evaluation_options"
                 :data="evaluations"
             /> -->
-            <GChart
+            <!-- <GChart
                 type="PieChart"
                 :options="invoice_options"
                 :data="invoices"
@@ -24,7 +24,48 @@
                 type="PieChart"
                 :options="response_options"
                 :data="responses"
-            />
+            /> -->
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                დასრულებული გეგმიური სამუშაოები
+                            </h5>
+                            <h3 class="card-text">
+                                {{ this.approvedServices }}
+                            </h3>
+                            <a href="#" class="btn btn-primary"
+                                >გეგმიური სამუშაო</a
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">დასრულებული რეაგირებები</h5>
+                            <h3 class="card-text">
+                                {{ this.approvedResponses }}
+                            </h3>
+                            <a href="#" class="btn btn-primary">რეაგირება</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">ინვოისების ღირებულება</h5>
+                            <h3 class="card-text">
+                                {{ this.invoiceFullPrice }}
+                            </h3>
+                            <a href="#" class="btn btn-primary">ლარი</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="card mt-5 card-primary card-outline card-tabs">
                 <div class="card-body">
@@ -74,6 +115,9 @@ export default {
             systems: [],
             responses: [],
             invoices: [],
+            approvedServices: 0,
+            invoiceFullPrice: 0,
+            approvedResponses: 0,
         };
     },
     components: { Datepicker, GChart },
@@ -99,7 +143,10 @@ export default {
             window.axios.get("/api/statistics", { params }).then((res) => {
                 statistics = res.data;
                 this.systems = statistics.systems;
-                console.log(this.systems);
+                this.approvedServices = statistics.approvedServices;
+                this.approvedResponses = statistics.approvedResponses;
+                this.invoiceFullPrice = statistics.invoiceFullPrice;
+
                 this.loading = false;
                 statistics.customers.map((i) => {
                     this.evaluations.push([i.name, i.evaluations]);

@@ -205,7 +205,7 @@
 
                             <div class="form-group">
                                 <label for="formGroupExampleInput">შინაარსი:</label>
-                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
+                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control']) }}
 
                             </div>
                             @if ($model->id && $model->status >= 2)
