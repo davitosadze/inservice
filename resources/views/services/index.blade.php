@@ -62,9 +62,9 @@
                                     <span class="right">{{ $service->performer?->name }}</span>
                                 </h5>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $service->purchaser?->name }}</h5>
-                                    <p class="card-text">{{ $service->purchaser?->subj_address }}</p>
-                                    <p class="card-text">{{ $service->purchaser?->subj_name }}</p>
+                                    <h5 class="card-title">{{ $service->name }}</h5>
+                                    <p class="card-text">{{ $service->subject_address }}</p>
+                                    <p class="card-text">{{ $service->subject_name }}</p>
 
                                     <div class="row" role="group" aria-label="Button group">
 

@@ -61,9 +61,9 @@
                                     <span class="right">{{ $response->performer?->name }}</span>
                                 </h5>
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $response->purchaser?->name }}</h5>
-                                    <p class="card-text">{{ $response->purchaser?->subj_address }}</p>
-                                    <p class="card-text">{{ $response->purchaser?->subj_name }}</p>
+                                    <h5 class="card-title">{{ $response->name }}</h5>
+                                    <p class="card-text">{{ $response->subject_address }}</p>
+                                    <p class="card-text">{{ $response->subject_name }}</p>
 
                                     <div class="row" role="group" aria-label="Button group">
 

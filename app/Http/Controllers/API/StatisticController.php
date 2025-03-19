@@ -87,15 +87,16 @@ class StatisticController extends Controller
         $systems = System::where("parent_id", NULL)->orderBy('id', 'desc')->get();
 
 
-        $approvedServices = Service::where('status', 3)->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)->count();
+        $approvedServices = Service::where('status', 3)
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->count();
 
-        $approvedResponses = Response::where('status', 3)->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)->count();
+        $approvedResponses = Response::where('status', 3)
+            ->whereBetween('created_at', [$start_date, $end_date])
+            ->count();
 
         $invoices = Invoice::with(['category_attributes'])
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->whereYear('created_at', Carbon::now()->year)
+            ->whereBetween('created_at', [$start_date, $end_date])
             ->get()
             ->toArray();
 

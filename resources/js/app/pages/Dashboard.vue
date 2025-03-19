@@ -59,7 +59,7 @@
                         <div class="card-body">
                             <h5 class="card-title">ინვოისების ღირებულება</h5>
                             <h3 class="card-text">
-                                {{ this.invoiceFullPrice }}
+                                {{ parseFloat(invoiceFullPrice).toFixed(2) }}
                             </h3>
                             <a href="#" class="btn btn-primary">ლარი</a>
                         </div>

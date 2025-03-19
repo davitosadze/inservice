@@ -62,9 +62,9 @@ class Invoice extends Model
 
     public function getFullPriceAttribute()
     {
-        return DB::table('attributables')
+        return number_format(DB::table('attributables')
             ->where('attributable_id', $this->id)
-            ->sum('calc') . " ლარი";
+            ->sum('calc'), 2) . " ლარი";
     }
 
     public function category_attributes()
