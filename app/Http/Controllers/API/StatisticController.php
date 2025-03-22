@@ -50,7 +50,7 @@ class StatisticController extends Controller
             $stats["customers"][] = $userObject;
         }
 
-        $responses = Response::select(
+        $responses = Response::whereNotNull('purchaser_id')->select(
             DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', ''), '„', '') as nameFormatted"),
             DB::raw('COUNT(*) as count')
         )
@@ -60,7 +60,7 @@ class StatisticController extends Controller
 
 
         $responsesPercentage = $responses->map(function ($response) {
-            $responsesDistincted = Response::select(
+            $responsesDistincted = Response::whereNotNull('purchaser_id')->select(
                 DB::raw("DISTINCT name"),
                 DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', ''), '„', '') as nameFormatted")
             )->where(DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', ''), '„', '')"), $response->nameFormatted)
@@ -71,7 +71,7 @@ class StatisticController extends Controller
             $data = [$response->nameFormatted];
 
             foreach ($systems as $system) {
-                $count = Response::where('system_one', $system->id)
+                $count = Response::whereNotNull('purchaser_id')->where('system_one', $system->id)
                     ->where(DB::raw("REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '\"', ''), '.', ''), '''', ''), ',', ''), '“', ''), '„', '')"), $response->nameFormatted)
                     ->count();
 

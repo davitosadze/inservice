@@ -73,7 +73,7 @@ class ServiceActController extends Controller
 
                 if ($request->get('is_app')) {
                     $model->is_mobile = 1;
-                } else {
+                } elseif ($model->is_mobile !== 1) {
                     $model->is_mobile = 0;
                 }
 

@@ -140,7 +140,6 @@ class ServiceController extends Controller
 
 
             $model = Service::firstOrNew(['id' => $request->id]);
-            $purchaser = json_decode($request->purchaser);
 
             $model->fill($request->except('device_type'));
             if ($request->get('device_type')) {
@@ -152,7 +151,7 @@ class ServiceController extends Controller
             }
 
 
-            $model->purchaser_id = $purchaser->id;
+
 
 
             if (!$model->user) {
@@ -190,16 +189,22 @@ class ServiceController extends Controller
 
             $model->save();
 
-            // $calendarModel = CalendarEvent::firstOrNew(['response_id' => $model->id]);
+            if ($request->purchaser) {
+                $purchaser = json_decode($request->purchaser);
+                $model->purchaser_id = $purchaser->id;
 
-            // $calendarModel->fill([
-            //     "title" => "რეაგირება",
-            //     "reason" => $request->job_description,
-            //     "content" => $request->content,
-            //     "purchaser_id" => $purchaser->id,
-            //     "response_id" => $model->id,
-            //     "date" => Carbon::now()
-            // ])->save();
+                $calendarModel = CalendarEvent::firstOrNew(['response_id' => $model->id]);
+
+                $calendarModel->fill([
+                    "title" => "რეაგირება",
+                    "reason" => $request->job_description,
+                    "content" => $request->content,
+                    "purchaser_id" => $purchaser->id,
+                    "response_id" => $model->id,
+                    "date" => Carbon::now()
+                ])->save();
+            }
+
 
 
             DB::commit();

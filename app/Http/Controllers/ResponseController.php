@@ -141,10 +141,8 @@ class ResponseController extends Controller
 
             $model = Response::firstOrNew(['id' => $request->id]);
 
-            $purchaser = json_decode($request->purchaser);
 
             $model->fill($request->all());
-            $model->purchaser_id = $purchaser->id;
 
             if (!$request->get('system_two')) {
                 $model->system_two = NULL;
@@ -187,14 +185,20 @@ class ResponseController extends Controller
 
             $calendarModel = CalendarEvent::firstOrNew(['response_id' => $model->id]);
 
-            $calendarModel->fill([
-                "title" => "რეაგირება",
-                "reason" => $request->job_description,
-                "content" => $request->content,
-                "purchaser_id" => $purchaser->id,
-                "response_id" => $model->id,
-                "date" => Carbon::now()
-            ])->save();
+            if ($request->purchaser) {
+                $purchaser = json_decode($request->purchaser);
+                $model->purchaser_id = $purchaser->id;
+                $calendarModel->fill([
+                    "title" => "რეაგირება",
+                    "reason" => $request->job_description,
+                    "content" => $request->content,
+                    // "purchaser_id" => $purchaser->id,
+                    "response_id" => $model->id,
+                    "date" => Carbon::now()
+                ])->save();
+            }
+
+
 
 
             DB::commit();
