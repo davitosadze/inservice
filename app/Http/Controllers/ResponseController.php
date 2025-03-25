@@ -187,18 +187,27 @@ class ResponseController extends Controller
 
             if ($request->purchaser) {
                 $purchaser = json_decode($request->purchaser);
-                $model->purchaser_id = $purchaser->id;
-                $calendarModel->fill([
-                    "title" => "რეაგირება",
-                    "reason" => $request->job_description,
-                    "content" => $request->content,
-                    // "purchaser_id" => $purchaser->id,
-                    "response_id" => $model->id,
-                    "date" => Carbon::now()
-                ])->save();
+            } else {
+                $purchaser = Purchaser::create([
+                    "name" => $request->name,
+                    "subj_name" => $request->subject_name,
+                    "subj_address" => $request->subject_address,
+                    "identification_num" => $request->identification_num,
+                    "single" => 1
+                ]);
             }
 
+            $model->purchaser_id = $purchaser->id;
+            $model->save();
 
+            $calendarModel->fill([
+                "title" => "რეაგირება",
+                "reason" => $request->job_description,
+                "content" => $request->content,
+                "purchaser_id" => $purchaser->id,
+                "response_id" => $model->id,
+                "date" => Carbon::now()
+            ])->save();
 
 
             DB::commit();

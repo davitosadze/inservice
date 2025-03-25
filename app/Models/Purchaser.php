@@ -20,7 +20,7 @@ class Purchaser extends Model implements HasMedia
         "description",
         "technical_time",
         "cleaning_time",
-        "is_hidden"
+        "single"
     ];
 
     protected $attributes = [

@@ -23,7 +23,7 @@ class PurchaserController extends Controller
     public function index()
     {
         //
-        return response(Purchaser::whereNot('single', 1)->where('is_hidden', 0)->get());
+        return response(Purchaser::whereNot('single', 1)->get());
     }
 
 

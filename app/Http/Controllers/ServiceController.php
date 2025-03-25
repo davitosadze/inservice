@@ -198,7 +198,7 @@ class ServiceController extends Controller
                     "subj_name" => $request->subject_name,
                     "subj_address" => $request->subject_address,
                     "identification_num" => $request->identification_num,
-                    "is_hidden" => 1
+                    "single" => 1
                 ]);
             }
 
@@ -258,7 +258,7 @@ class ServiceController extends Controller
             abort(404);
         }
         $additional = [
-            'purchasers' => Purchaser::whereNot('single', 1)->where('is_hidden', 0)->get()->toArray(),
+            'purchasers' => Purchaser::whereNot('single', 1)->get()->toArray(),
             'performers' =>  User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
                 $query->whereIn('name', ['ინჟინერი']);
             })->get()->toArray(),
