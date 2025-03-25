@@ -18,6 +18,7 @@ use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 
 class ServiceController extends Controller
 {
@@ -191,21 +192,29 @@ class ServiceController extends Controller
 
             if ($request->purchaser) {
                 $purchaser = json_decode($request->purchaser);
-                $model->purchaser_id = $purchaser->id;
-
-                $calendarModel = CalendarEvent::firstOrNew(['response_id' => $model->id]);
-
-                $calendarModel->fill([
-                    "title" => "რეაგირება",
-                    "reason" => $request->job_description,
-                    "content" => $request->content,
-                    "purchaser_id" => $purchaser->id,
-                    "response_id" => $model->id,
-                    "date" => Carbon::now()
-                ])->save();
+            } else {
+                $purchaser = Purchaser::create([
+                    "name" => $request->name,
+                    "subj_name" => $request->subject_name,
+                    "subj_address" => $request->subject_address,
+                    "identification_num" => $request->identification_num,
+                    "is_hidden" => 1
+                ]);
             }
 
+            $model->purchaser_id = $purchaser->id;
+            $model->save();
 
+            // $calendarModel = CalendarEvent::firstOrNew(['response_id' => $model->id]);
+
+            // $calendarModel->fill([
+            //     "title" => "რეაგირება",
+            //     "reason" => $request->job_description,
+            //     "content" => $request->content,
+            //     "purchaser_id" => $purchaser->id,
+            //     "response_id" => $model->id,
+            //     "date" => Carbon::now()
+            // ])->save();
 
             DB::commit();
 
@@ -249,7 +258,7 @@ class ServiceController extends Controller
             abort(404);
         }
         $additional = [
-            'purchasers' => Purchaser::whereNot('single', 1)->get()->toArray(),
+            'purchasers' => Purchaser::whereNot('single', 1)->where('is_hidden', 0)->get()->toArray(),
             'performers' =>  User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
                 $query->whereIn('name', ['ინჟინერი']);
             })->get()->toArray(),

@@ -6,6 +6,68 @@
 
                 <div class="invoice p-3 mb-3">
                     <div style="">
+                        <form @submit.prevent="registerClient">
+                            <div class="form-group row">
+                                <!-- Email Input -->
+                                <div class="col-md-4">
+                                    <label for="email" class="col-form-label"
+                                        ><b>იმეილი:</b></label
+                                    >
+                                    <input
+                                        id="email"
+                                        class="form-control"
+                                        type="email"
+                                        placeholder="შეიყვანეთ იმეილი"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Password Input -->
+                                <div class="col-md-3">
+                                    <label for="password" class="col-form-label"
+                                        ><b>პაროლი:</b></label
+                                    >
+                                    <input
+                                        id="password"
+                                        v-model="password"
+                                        class="form-control"
+                                        type="password"
+                                        placeholder="შეიყვანეთ პაროლი"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Confirm Password Input -->
+                                <div class="col-md-3">
+                                    <label
+                                        for="confirm_password"
+                                        class="col-form-label"
+                                        ><b>გაიმეორეთ პაროლი:</b></label
+                                    >
+                                    <input
+                                        id="confirm_password"
+                                        v-model="confirmPassword"
+                                        class="form-control"
+                                        type="password"
+                                        placeholder="გაიმეორეთ პაროლი"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success w-100"
+                                    >
+                                        შენახვა
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr />
+
                         <div class="form-group row">
                             <label
                                 for="staticEmail"
@@ -476,6 +538,9 @@ export default {
             selector: "",
             step: false,
             keys: [],
+            email: "",
+            password: "",
+            confirmPassword: "",
 
             selectBuilder: [],
         };
@@ -551,6 +616,32 @@ export default {
         },
     },
     methods: {
+        async registerClient() {
+            if (this.password !== this.confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    "/api/registerClient/" + this.model.id,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            email: this.email,
+                            password: this.password,
+                        }),
+                    }
+                );
+
+                const result = await response.json();
+                alert("Form submitted successfully!");
+            } catch (error) {
+                console.error("Error submitting form:", error);
+                alert("Something went wrong!");
+            }
+        },
         findSpecialAtribute(res) {
             if (res == "new") {
                 let action = document

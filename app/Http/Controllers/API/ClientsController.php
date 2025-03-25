@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\ClientExpense;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
@@ -169,6 +170,32 @@ class ClientsController extends Controller
             $result['errs'][0] = $response->message();
             return response()->json($result);
         }
+    }
+
+
+    public function registerClient(Request $request, $client_id)
+    {
+
+        $client = Client::find($client_id);
+        $validatedData = $request->validate([
+            'email' => ['required', 'email', Rule::unique('users')->ignore($request->id)],
+            'password' => ['required', 'min:6'],
+        ]);
+
+        $user = User::updateOrCreate(
+            ['id' => $client->user_id ? $client->user_id : ""],
+            [
+                'name' => $client->client_name,
+                'email' => $validatedData['email'],
+                'password' => bcrypt($validatedData['password']),
+            ]
+        );
+
+        $client->fill([
+            "user_id" => $user->id
+        ])->save();
+
+        return response()->json(['message' => 'მონაცემები განახლდა წარმატებით', 'user' => $user], 200);
     }
 
 

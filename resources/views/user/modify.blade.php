@@ -49,19 +49,19 @@
                                             {{ Form::text('position', $model->position, ['class' => 'form-control']) }}
                                         </div>
                                     </div>
-                                    @if (auth()->user()->hasRole('director'))
-                                        <div class="form-row">
-                                            <div class="form-group col">
-                                                <label for="name">პაროლი</label>
-                                                <input type="hidden" name="id" value="{{ $model->id }}">
-                                                {{ Form::text('inter_password', $model->inter_password, ['class' => 'form-control']) }}
-                                            </div>
-                                            <div class="form-group col">
-                                                <label for="email">გაიმეორეთ პაროლი</label>
-                                                {{ Form::text('inter_password_confirmation', null, ['class' => 'form-control']) }}
-                                            </div>
+                                    {{-- @if (auth()->user()->hasRole('director')) --}}
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="name">პაროლი</label>
+                                            <input type="hidden" name="id" value="{{ $model->id }}">
+                                            {{ Form::text('inter_password', $model->inter_password, ['class' => 'form-control']) }}
                                         </div>
-                                    @endif
+                                        <div class="form-group col">
+                                            <label for="email">გაიმეორეთ პაროლი</label>
+                                            {{ Form::text('inter_password_confirmation', null, ['class' => 'form-control']) }}
+                                        </div>
+                                    </div>
+                                    {{-- @endif --}}
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="name">სამუშაოს აღწერილობა</label>

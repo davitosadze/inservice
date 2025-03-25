@@ -67,7 +67,7 @@ class ClientsController extends Controller
     {
         $model = Client::with(['expenses' => function ($query) {
             $query->with('media');
-        }])->firstOrNew(['id' => $id]);
+        }], "user")->firstOrNew(['id' => $id]);
         // return $model;
         $this->authorize('view', $model);
 
@@ -97,7 +97,7 @@ class ClientsController extends Controller
     {
         $model = Client::with(['expenses' => function ($query) {
             $query->with('media');
-        }])->firstOrNew(['id' => $id]);
+        }])->with('user')->firstOrNew(['id' => $id]);
         // return $model;
         $this->authorize('view', $model);
 

@@ -51,13 +51,13 @@ class AppStatisticController extends Controller
     private function getResponsesAndServicesCount($from, $to, $purchaser)
     {
 
-        $responsesQuery = Response::whereNotNull('purchaser_id')->whereBetween('created_at', [$from, $to])
+        $responsesQuery = Response::whereBetween('created_at', [$from, $to])
             ->where('status', 3)->get();
 
         $responseCount = $purchaser ? $responsesQuery->where('formatted_name', $purchaser)->count() : $responsesQuery->count();
 
 
-        $servicesQuery = Service::whereNotNull('purchaser_id')->whereBetween('created_at', [$from, $to])
+        $servicesQuery = Service::whereBetween('created_at', [$from, $to])
             ->where('status', 3)->get();
 
         $serviceCount = $purchaser ? $servicesQuery->where('formatted_name', $purchaser)->count() : $servicesQuery->count();
@@ -71,8 +71,8 @@ class AppStatisticController extends Controller
     private function getDailyResponsesCount($dates, $purchasers)
     {
         return $dates->map(function ($date) use ($purchasers) {
-            $approvedResponses = Response::whereNotNull('purchaser_id')->whereDate('created_at', $date)->where('status', 3)->get();
-            $onRepairResponses = Response::whereNotNull('purchaser_id')->whereDate('created_at', $date)->where('on_repair', 1)->get();
+            $approvedResponses = Response::whereDate('created_at', $date)->where('status', 3)->get();
+            $onRepairResponses = Response::whereDate('created_at', $date)->where('on_repair', 1)->get();
 
             $approvedCount = $purchasers ? $approvedResponses->whereIn('formatted_name', $purchasers)->count() : $approvedResponses->count();
             $onRepairCount = $purchasers ? $onRepairResponses->whereIn('formatted_name', $purchasers)->count() : $onRepairResponses->count();
@@ -87,7 +87,7 @@ class AppStatisticController extends Controller
 
     private function getResponsesByName($from, $to, $purchasers)
     {
-        $responsesByName = Response::whereNotNull('purchaser_id')->select(
+        $responsesByName = Response::select(
             DB::raw("REGEXP_REPLACE(name, '[\" .,\'“„]', '') as nameFormatted"),
             DB::raw('COUNT(*) as count')
         )
@@ -106,7 +106,7 @@ class AppStatisticController extends Controller
         $systems = System::where('parent_id', NULL)->get();
 
         foreach ($systems as $system) {
-            $responsesQuery = Response::whereNotNull('purchaser_id')->whereBetween('created_at', [$from, $to])
+            $responsesQuery = Response::whereBetween('created_at', [$from, $to])
                 ->where('system_one', $system->id)
                 ->get();
 
@@ -134,7 +134,7 @@ class AppStatisticController extends Controller
         foreach ($regions as $location => $key) {
             $regionIds = Region::where('location', $location)->pluck('id');
 
-            $responsesQuery = Response::whereNotNull('purchaser_id')->whereBetween('created_at', [$from, $to])
+            $responsesQuery = Response::whereBetween('created_at', [$from, $to])
                 ->whereIn('region_id', $regionIds)
                 ->get();
 
@@ -178,7 +178,7 @@ class AppStatisticController extends Controller
 
     private function getResponseCount($from, $to, $performerId, $operator, $status, $purchasers)
     {
-        $responsesQuery = Response::whereNotNull('purchaser_id')->whereBetween('created_at', [$from, $to])
+        $responsesQuery = Response::whereBetween('created_at', [$from, $to])
             ->where('performer_id', $performerId)
             ->where('status', $operator, $status)
             ->get();

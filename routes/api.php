@@ -73,6 +73,8 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post("addClientExpense/{client_id}", [ClientsController::class, 'addClientExpense']);
     Route::delete("deleteClientExpense/{expense_id}", [ClientsController::class, 'deleteClientExpense']);
 
+    Route::post("registerClient/{client_id}", [ClientsController::class, 'registerClient']);
+
     // Regions
     Route::apiResource('regions', RegionController::class);
 
