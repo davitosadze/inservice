@@ -454,7 +454,7 @@ export default {
             showModal: false,
             selector: "",
             step: false,
-            minPayment: 100,
+            minPayment: 0,
             markup: 0,
             discountPercentage: 0,
             calculatorType: "0",
