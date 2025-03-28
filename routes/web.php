@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActController;
+use App\Http\Controllers\Api\ClientStatisticController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CalendarController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\DeviceTypeController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\PerformerController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ResponseController;
@@ -42,6 +44,7 @@ use App\Http\Controllers\SystemController;
 
 
 Route::middleware(['auth', 'has_permission'])->group(function () {
+
 
 
     Route::get("/dashboard", [DashboardController::class, 'index'])->name('dashboard');
@@ -114,6 +117,10 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     // Systems
     Route::resource("systems", SystemController::class);
+
+    // Options
+    Route::get("options", [OptionController::class, "index"])->name("options.index");
+    Route::post("options", [OptionController::class, "store"])->name("options.store");
 
 
     Route::get("evaluations/pdf/{id}", [EvaluationController::class, 'pdf'])->name('evaluations.pdf');

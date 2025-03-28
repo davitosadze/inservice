@@ -254,6 +254,96 @@
                     <!-- /.row -->
                     <hr />
 
+                    <h3>კალკულატორი</h3>
+                    <hr />
+                    <div class="overflow-x-auto">
+                        <table
+                            class="table-auto border-collapse border border-gray-400 w-full"
+                        >
+                            <thead>
+                                <tr class="bg-gray-200">
+                                    <th class="border border-gray-400 p-2">
+                                        ტიპი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        შესასყიდი მასალის ფასი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        ფასნამატი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        გასაყიდი ჯამი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        ფასდაკლება პროცენტულად (არაუმეტეს 7%)
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        ფასდაკლების თანხა
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        საბოლოო გასაყიდი ფასი
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select
+                                            v-model="calculatorType"
+                                            id="calculatorType"
+                                            class="form-control"
+                                        >
+                                            <option value="0">
+                                                ფინანსური ოპერაცია რომლის დროსაც
+                                                დღგ-ს ვითვლით (მასალა)
+                                            </option>
+                                            <option value="1">
+                                                ფინანსური ოპერაცია რომლის დროსაც
+                                                მხოლოდ დღგ-ს ვიხდით (მეწარმე)
+                                            </option>
+                                            <option value="2">
+                                                ფინანსური ოპერაცია რომლის დროსაც
+                                                საშემოსავლოს და დღგ-ს ვიხდით
+                                                (ფიზ. პირი)
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td
+                                        class="border border-gray-400 p-2 bg-gray-300"
+                                    >
+                                        <input
+                                            type="number"
+                                            v-model.number="minPayment"
+                                            class="w-full text-center"
+                                        />
+                                    </td>
+                                    <td
+                                        class="border border-gray-400 p-2 bg-gray-300"
+                                    >
+                                        {{ priceIncrease }}
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        {{ sellSum }}
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        <input
+                                            type="number"
+                                            v-model.number="discountPercentage"
+                                            @input="validateDiscount"
+                                            class="w-full text-center"
+                                        />
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        {{ discountAmount }}
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        {{ finalPrice }} ლარი
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <!-- /.row -->
                     <hr />
 
@@ -358,10 +448,16 @@ export default {
     },
     data() {
         return {
+            num1: 0,
+            num2: 0,
+            result: null,
             showModal: false,
             selector: "",
             step: false,
-
+            minPayment: 100,
+            markup: 0,
+            discountPercentage: 0,
+            calculatorType: "0",
             agr: {},
             m: {},
             c: [],
@@ -441,6 +537,46 @@ export default {
         return validateRule;
     },
     computed: {
+        finalPrice() {
+            return (
+                Number(this.sellSum) -
+                Number(this.sellSum * (this.discountPercentage / 100))
+            ).toFixed(2);
+        },
+        withAdditionalCosts() {
+            let extraPercentage = 0;
+
+            if (this.calculatorType === "1") {
+                extraPercentage = 18;
+            } else if (this.calculatorType === "2") {
+                extraPercentage = 47.5;
+            }
+
+            if (this.calculatorType === "0") {
+                return this.minPayment;
+            }
+
+            return this.minPayment + (this.minPayment * extraPercentage) / 100;
+        },
+
+        priceIncrease() {
+            return (
+                this.minPayment
+                    ? this.withAdditionalCosts *
+                      (this.additional.price_increase / 100)
+                    : 0
+            ).toFixed(2);
+        },
+        sellSum() {
+            return (
+                Number(this.withAdditionalCosts) + Number(this.priceIncrease)
+            ).toFixed(2);
+        },
+        discountAmount() {
+            return Number(
+                this.sellSum * (this.discountPercentage / 100)
+            ).toFixed(2);
+        },
         attributeJoinedTree: (app) => (item) => {
             return item.category_id
                 ? app.additional.categories.find(
@@ -499,6 +635,18 @@ export default {
         },
     },
     methods: {
+        validateDiscount() {
+            const maxDiscount = this.calculatorType === "0" ? 7 : 15;
+            if (this.discountPercentage > maxDiscount) {
+                this.discountPercentage = maxDiscount;
+                alert(
+                    "პროცენტულობა არ უნდა იყოს " + maxDiscount + "% -ზე მეტი"
+                );
+            }
+        },
+        addNumbers() {
+            this.result = parseFloat(this.num1) + parseFloat(this.num2);
+        },
         recurcive(arr, price, index = 0) {
             if (arr[index] != undefined) {
                 this.calculator.percenters[index].p1 = this.specNum(

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Purchaser;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
@@ -14,6 +15,8 @@ class ClientsController extends Controller
      */
     public function index()
     {
+
+
         $this->authorize('viewAny', Client::class);
 
         $additional = [];
@@ -101,7 +104,7 @@ class ClientsController extends Controller
         // return $model;
         $this->authorize('view', $model);
 
-        $additional = [];
+        $additional = ["purchasers" => Purchaser::whereNot('single', 1)->get()->pluck('formatted_name')->unique()->values()];
         $setting = [
 
             'columns' => [['field' => "client_name"]],

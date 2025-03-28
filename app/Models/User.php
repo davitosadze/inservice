@@ -86,6 +86,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Invoice::class, "user_id");
     }
 
+    public function client()
+    {
+        return $this->hasOne(Client::class, "user_id");
+    }
+
     public function getProfileImageAttribute()
     {
         if ($this->media('user-profile-images')->first() === null) {

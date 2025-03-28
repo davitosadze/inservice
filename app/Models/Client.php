@@ -28,7 +28,9 @@ class Client extends Model implements HasMedia
         "guarantee_start_date",
         "guarantee_end_date",
         "unique_id",
-        "user_id"
+        "user_id",
+        "toggles",
+        "purchaser"
     ];
 
     protected $attributes = [
@@ -86,7 +88,8 @@ class Client extends Model implements HasMedia
     }
 
     protected $casts = [
-        "created_at" => "datetime:m/d/Y h:i:s"
+        "created_at" => "datetime:m/d/Y h:i:s",
+        "toggles" => "array"
     ];
 
     public function user()

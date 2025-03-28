@@ -13,6 +13,7 @@ use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
 use App\Http\Controllers\API\ClientsController;
+use App\Http\Controllers\Api\ClientStatisticController;
 use App\Http\Controllers\API\DeviceBrandController;
 use App\Http\Controllers\API\DeviceTypeController;
 use App\Http\Controllers\API\InstructionController;
@@ -38,6 +39,8 @@ Route::post('app/upload-media', [MediaController::class, "uploadMedia"]);
 Route::get('/instructions', [InstructionController::class, 'index']);
 Route::get('/instructions/{id}', [InstructionController::class, 'show']);
 
+
+
 Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
     Route::post('login',  [APPUserController::class, 'login']);
 });
@@ -60,11 +63,14 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::get("statistics", [StatisticController::class, 'statistics']);
 
+
     Route::apiResource("purchasers", PurchaserController::class);
     Route::apiResource("purchasers.special-attributes", SpecialAttributeController::class);
 
     // Clients
+    Route::get("clients/statistics", [ClientStatisticController::class, 'index']);
     Route::apiResource("clients", ClientsController::class);
+    Route::post("clients/registerClient/{client_id}", [ClientsController::class, 'registerClient']);
 
     Route::post("uploadClientFiles", [ClientsController::class, 'uploadClientFiles']);
     Route::delete("deleteClientFiles/{media_id}", [ClientsController::class, 'deleteClientFiles']);
@@ -73,7 +79,6 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post("addClientExpense/{client_id}", [ClientsController::class, 'addClientExpense']);
     Route::delete("deleteClientExpense/{expense_id}", [ClientsController::class, 'deleteClientExpense']);
 
-    Route::post("registerClient/{client_id}", [ClientsController::class, 'registerClient']);
 
     // Regions
     Route::apiResource('regions', RegionController::class);

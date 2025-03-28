@@ -11,6 +11,8 @@ use Illuminate\Http\Response;
 use Exception;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -113,56 +115,61 @@ class ClientsController extends Controller
 
     public function store(Request $request)
     {
-
         $result = ['status' => Response::HTTP_FORBIDDEN, 'success' => false, 'errs' => [], 'result' => [], 'statusText' => ""];
 
         $response = $request->id ? Gate::inspect('update', Client::find($request->id)) : Gate::inspect('create', Client::class);
         if ($response->allowed()) {
 
             $validator = Validator::make($request->all(), [
-
-                // 'client_name' => [
-                //     'required'
-                // ],
-
+                // Add validation rules
+                'toggles' => 'nullable|array', // Ensure toggles is an array
             ]);
 
             if ($validator->fails()) {
-
                 $result['errs'] = $validator->errors()->all();
                 $result['statusText'] = 'შეცდომა, მონაცემების განახლებისას';
-
                 return response()->json($result);
-            };
+            }
 
             try {
-
+                // Fetch existing model or create new one
                 $model = Client::firstOrNew(['id' => $request->id]);
-                $model->fill($request->all());
+
+                // Fill model with request data
+                $model->fill($request->except('toggles')); // Exclude toggles from mass assignment
+                $model->toggles = $request->has('toggles') ? $request->toggles : []; // Save as JSON
+
+                // Save model
                 $model->save();
 
-                foreach ($request->expenses as $item) {
-                    if ($item["id"]) {
-                        $expense = ClientExpense::find($item["id"]);
-                        $expense->amount = $item["amount"];
-                        $expense->save();
-                    }
-                    if (!$model->expenses()->where('uuid', $item["uuid"])->count()) {
-                        $expense = new ClientExpense();
-                        $expense->amount = $item["amount"];
-                        $expense->uuid = $item["uuid"];
-                        $model->expenses()->save($expense);
+                // Save expenses if available
+                if ($request->has('expenses')) {
+                    foreach ($request->expenses as $item) {
+                        if (isset($item["id"]) && $item["id"]) {
+                            $expense = ClientExpense::find($item["id"]);
+                            if ($expense) {
+                                $expense->amount = $item["amount"];
+                                $expense->save();
+                            }
+                        }
+                        if (!$model->expenses()->where('uuid', $item["uuid"])->count()) {
+                            $expense = new ClientExpense();
+                            $expense->amount = $item["amount"];
+                            $expense->uuid = $item["uuid"];
+                            $model->expenses()->save($expense);
+                        }
                     }
                 }
 
+                // Prepare successful response
                 $result = Arr::prepend($result, true, 'success');
                 $result = Arr::prepend($result, $model, 'result');
                 $result = Arr::prepend($result, Response::HTTP_CREATED, 'status');
                 $result = Arr::prepend($result, 'მონაცემები განახლდა წარმატებით', 'statusText');
             } catch (Exception $e) {
-
-                $result = Arr::prepend($result, 'შეცდომა, მონაცემების განახლებისას', 'statusText');
-                $result = Arr::prepend($result, Arr::prepend($result['errs'], 'გაურკვეველი შეცდომა! ' . $e->getMessage()), 'errs');
+                // Handle exception
+                $result['statusText'] = 'შეცდომა, მონაცემების განახლებისას';
+                $result['errs'][] = 'გაურკვეველი შეცდომა! ' . $e->getMessage();
             }
 
             return response()->json($result, Response::HTTP_CREATED);
@@ -173,27 +180,33 @@ class ClientsController extends Controller
     }
 
 
+
     public function registerClient(Request $request, $client_id)
     {
 
         $client = Client::find($client_id);
+
         $validatedData = $request->validate([
-            'email' => ['required', 'email', Rule::unique('users')->ignore($request->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($client->user_id)],
             'password' => ['required', 'min:6'],
         ]);
 
+
         $user = User::updateOrCreate(
-            ['id' => $client->user_id ? $client->user_id : ""],
+            ['id' => $client->user_id ? $client->user_id : null],
             [
                 'name' => $client->client_name,
                 'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']),
+                'password' => $validatedData["password"],
             ]
         );
 
-        $client->fill([
-            "user_id" => $user->id
-        ])->save();
+        // Assign "კლიენტი" role if not already assigned
+        if (!$user->hasRole('კლიენტი')) {
+            $user->assignRole('კლიენტი');
+        }
+
+        $client->update(['user_id' => $user->id]);
 
         return response()->json(['message' => 'მონაცემები განახლდა წარმატებით', 'user' => $user], 200);
     }

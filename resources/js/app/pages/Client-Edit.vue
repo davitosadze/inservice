@@ -15,6 +15,7 @@
                                     >
                                     <input
                                         id="email"
+                                        v-model="email"
                                         class="form-control"
                                         type="email"
                                         placeholder="შეიყვანეთ იმეილი"
@@ -66,14 +67,98 @@
                             </div>
                         </form>
 
+                        <div class="form-group row">
+                            <label for="branchs" class="col-sm-3 col-form-label"
+                                >ფილიალები:</label
+                            >
+                            <div class="col-sm-9">
+                                <select
+                                    class="form-control"
+                                    v-model="this.model.purchaser"
+                                >
+                                    <option
+                                        :key="branch"
+                                        :value="branch"
+                                        v-for="branch in branchs"
+                                    >
+                                        {{ branch }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.incidents_by_numbers"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >დაფიქსირებული ინციდენტების რაოდენობა
+                                    რიცხვების მიხედვით</label
+                                >
+                            </div>
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="
+                                        toggles.incidents_closed_with_reaction
+                                    "
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >რეაგირებით ჩახურული და რემონტზე
+                                    გადაცემული</label
+                                >
+                            </div>
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.incidents_by_fields"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >დაფიქსირებული ინციდენტები სფეროების
+                                    მიხედვით</label
+                                >
+                            </div>
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.incidents_by_branches"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >დაფიქსირებული ინციდენტები ფილიალების
+                                    მიხედვით</label
+                                >
+                            </div>
+                            <div class="col-sm-3 mt-2">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.incidents_by_regions"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >დაფიქსირებული ინციდენტები რეგიონის
+                                    მიხედვით</label
+                                >
+                            </div>
+                        </div>
+
                         <hr />
 
-                        <div class="form-group row">
-                            <label
-                                for="staticEmail"
-                                class="col-sm-3 col-form-label"
-                                ><b>დასახელება :</b></label
-                            >
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.client_name"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >დასახელება :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
                                     class="form-control"
@@ -83,268 +168,318 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput2"
-                                >საიდენტიფიკაციო კოდი :</label
-                            >
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.identification_code"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >საიდენტიფიკაციო კოდი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
+                                    class="form-control"
+                                    type="text"
                                     v-model="model.identification_code"
-                                    type="text"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >იურიდიული მისამართი :</label
-                            >
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.legal_address"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >იურიდიული მისამართი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
+                                    class="form-control"
+                                    type="text"
                                     v-model="model.legal_address"
-                                    type="text"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >მომსახურების შიდა სახელი :</label
-                            >
 
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.service_name"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >მომსახურების შიდა სახელი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
+                                    class="form-control"
+                                    type="text"
                                     v-model="model.service_name"
-                                    type="text"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კონტრაქტის მომსახურების ტიპი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contract_service_type"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >კონტრაქტის მომსახურების ტიპი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
+                                    class="form-control"
+                                    type="text"
                                     v-model="model.contract_service_type"
-                                    type="text"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კონტრაქტის დაწყების თარიღი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contract_start_date"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >კონტრაქტის დაწყების თარიღი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
+                                    class="form-control"
+                                    type="date"
                                     v-model="model.contract_start_date"
-                                    type="date"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კონტრაქტის დასრულების თარიღი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contract_end_date"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >კონტრაქტის დასრულების თარიღი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
-                                    v-model="model.contract_end_date"
-                                    type="date"
                                     class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
+                                    type="date"
+                                    v-model="model.contract_end_date"
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კონტრაქტის პერიოდი / დღე :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contractPeriod"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >კონტრაქტის პერიოდი / დღე :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <span>{{ contractPeriod }}</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კონტრაქტის ნარჩენი დღეები :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.daysLeft"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >კონტრაქტის ნარჩენი დღეები :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <span>{{ daysLeft }}</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კონტრაქტის სტატუსი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contractStatus"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >კონტრაქტის სტატუსი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 {{ contractStatus }}
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >გარანტიის დაწყების თარიღი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.guarantee_start_date"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >გარანტიის დაწყების თარიღი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
                                     v-model="model.guarantee_start_date"
                                     type="date"
                                     class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >გარანტიის დასრულების თარიღი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.guarantee_end_date"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >გარანტიის დასრულების თარიღი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
                                     v-model="model.guarantee_end_date"
                                     type="date"
                                     class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >გარანტიის პერიოდი / დღე :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.guaranteePeriod"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >გარანტიის პერიოდი / დღე :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <span>{{ guaranteePeriod }}</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >გარანტიის ნარჩენი დღეები :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.daysLeftGuarantee"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >გარანტიის ნარჩენი დღეები :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <span>{{ daysLeftGuarantee }}</span>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >გარანტიის სტატუსი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.guaranteeStatus"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >გარანტიის სტატუსი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 {{ guaranteeStatus }}
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >კლიენტის მაიდენთიფიცირებელი კოდი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.client_identification_code"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >კლიენტის მაიდენთიფიცირებელი კოდი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
                                     v-model="model.client_identification_code"
                                     type="text"
                                     class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >საკონტაქტო პირი :</label
-                            >
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contact_name"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >საკონტაქტო პირი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
+                                    class="form-control"
+                                    type="text"
                                     v-model="model.contact_name"
-                                    type="text"
-                                    class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
                                 />
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label
-                                class="col-sm-3 col-form-label"
-                                for="formGroupExampleInput"
-                                >საკონტაქტო პირის ნომერი :</label
-                            >
-
+                        <div class="form-group row align-items-center">
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.contact_number"
+                                    class="mr-2"
+                                />
+                                <label class="col-form-label font-weight-medium"
+                                    >საკონტაქტო პირის ნომერი :</label
+                                >
+                            </div>
                             <div class="col-sm-9">
                                 <input
-                                    v-model="model.contact_number"
-                                    type="text"
                                     class="form-control"
-                                    id="formGroupExampleInput"
-                                    placeholder=""
+                                    type="text"
+                                    v-model="model.contact_number"
                                 />
                             </div>
                         </div>
@@ -503,6 +638,9 @@ import { required, maxLength } from "@vuelidate/validators";
 import FileUpload from "vue-upload-component";
 import { ref } from "vue";
 import UploadComponent from "../components/UploadComponent.vue";
+import "select2/dist/css/select2.css";
+import $ from "jquery";
+import "select2";
 
 export default {
     props: ["user", "model", "setting", "additional"],
@@ -520,6 +658,9 @@ export default {
         this.m = this.attributeInit;
     },
     mounted() {
+        console.log(this.additional);
+        this.initializeSelect2();
+
         if (!this.can("კლიენტის რედაქტირება")) {
             console.log(this.setting.url.request);
             let redirect = this.setting.url.request.show.replace(
@@ -538,14 +679,55 @@ export default {
             selector: "",
             step: false,
             keys: [],
-            email: "",
+            email: this.model?.user?.email || "",
             password: "",
             confirmPassword: "",
 
+            branchs: this.additional.purchasers,
+            selectedBranchs: [],
+
             selectBuilder: [],
+            toggles: {
+                client_name: this.model.toggles?.client_name,
+                identification_code: this.model.toggles?.identification_code,
+                legal_address: this.model.toggles?.legal_address,
+                service_name: this.model.toggles?.service_name,
+                contract_service_type:
+                    this.model.toggles?.contract_service_type,
+                contract_start_date: this.model.toggles?.contract_start_date,
+                contract_end_date: this.model.toggles?.contract_end_date,
+                contractPeriod: this.model.toggles?.contractPeriod,
+                daysLeft: this.model.toggles?.daysLeft,
+                contractStatus: this.model.toggles?.contractStatus,
+                guarantee_start_date: this.model.toggles?.guarantee_start_date,
+                guarantee_end_date: this.model.toggles?.guarantee_end_date,
+                guaranteePeriod: this.model.toggles?.guaranteePeriod,
+                daysLeftGuarantee: this.model.toggles?.daysLeftGuarantee,
+                guaranteeStatus: this.model.toggles?.guaranteeStatus,
+                client_identification_code:
+                    this.model.toggles?.client_identification_code,
+                contact_name: this.model.toggles?.contact_name,
+                contact_number: this.model.toggles?.contact_number,
+                incidents_by_numbers: this.model.toggles?.incidents_by_numbers,
+                incidents_closed_with_reaction:
+                    this.model.toggles?.incidents_closed_with_reaction,
+                incidents_by_fields: this.model.toggles?.incidents_by_fields,
+                incidents_by_branches:
+                    this.model.toggles?.incidents_by_branches,
+                incidents_by_regions: this.model.toggles?.incidents_by_regions,
+            },
         };
     },
-    watch: {},
+    watch: {
+        // Watch for any changes in the selected service and reflect them in the select2 dropdown
+        selectedService(newValue) {
+            $("#branchs").val(newValue).trigger("change");
+        },
+    },
+    beforeDestroy() {
+        // Clean up select2 when the component is destroyed
+        $("#branchs").select2("destroy");
+    },
     validations() {
         return {
             model: {},
@@ -616,6 +798,13 @@ export default {
         },
     },
     methods: {
+        initializeSelect2() {
+            $("#branchs").select2();
+
+            this.$nextTick(() => {
+                $("#branchs").val(this.selectedService).trigger("change");
+            });
+        },
         async registerClient() {
             if (this.password !== this.confirmPassword) {
                 alert("Passwords do not match!");
@@ -624,7 +813,7 @@ export default {
 
             try {
                 const response = await fetch(
-                    "/api/registerClient/" + this.model.id,
+                    "/api/clients/registerClient/" + this.model.id,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -636,10 +825,9 @@ export default {
                 );
 
                 const result = await response.json();
-                alert("Form submitted successfully!");
+                alert("წარმატებით განახლდა!");
             } catch (error) {
-                console.error("Error submitting form:", error);
-                alert("Something went wrong!");
+                alert("პრობლემა განახლების დროს!");
             }
         },
         findSpecialAtribute(res) {
@@ -782,8 +970,13 @@ export default {
                 .querySelector('meta[name="csrf-token"')
                 .getAttribute("content");
 
+            let formData = {
+                ...this.model,
+                toggles: this.toggles,
+            };
+
             this.$http
-                .post(action, this.model, {
+                .post(action, formData, {
                     "Content-Type": "multipart/form-data",
                     "X-CSRF-TOKEN": token,
                 })

@@ -11,6 +11,7 @@ use App\Models\Purchaser;
 
 use App\Exports\InvoiceExport;
 use App\Exports\ReservingExport;
+use App\Models\Option;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
@@ -137,7 +138,8 @@ class InvoiceController extends Controller
 
         $additional = [
             'purchasers' => Purchaser::where('single', '!=', 1)->with(['specialAttributes'])->get()->toArray(),
-            'categories' => Category::with(['category_attributes.category'])->get()->toArray()
+            'categories' => Category::with(['category_attributes.category'])->get()->toArray(),
+            'price_increase' => Option::first() ? Option::first()->price_increase : 0
         ];
         $setting = [
             'url' => [

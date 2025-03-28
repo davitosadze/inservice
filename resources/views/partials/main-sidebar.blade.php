@@ -246,7 +246,7 @@
                 {{-- @endif --}}
                 @if (Auth::user()->can('isInter'))
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="{{ route('options.index') }}" class="nav-link">
                             <i class="fas fa-wrench nav-icon"></i>
                             <p>პარამეტრები</p>
                         </a>
