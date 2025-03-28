@@ -254,6 +254,45 @@
                     <!-- /.row -->
                     <hr />
 
+                    <!-- /.row -->
+                    <hr />
+
+                    <!-- this row will not appear when printing -->
+                    <div class="row no-print">
+                        <div class="col-12">
+                            <a rel="" @click="exit" class="btn btn-warning mr-1"
+                                >გასვლა</a
+                            >
+                            <a
+                                rel=""
+                                target="_blank"
+                                @click="(e) => remove(e, model, true)"
+                                class="btn btn-danger"
+                                >წაშლა</a
+                            >
+
+                            <button
+                                :disabled="v$.m.$invalid || v$.model.$invalid"
+                                @click="send"
+                                type="button"
+                                class="btn btn-success float-right"
+                            >
+                                <i class="far fa-credit-card"></i> შენახვა
+                            </button>
+                            <button
+                                :disabled="v$.m.$invalid || v$.model.$invalid"
+                                @click="(e) => gadawera(e, model, true)"
+                                type="button"
+                                class="btn btn-primary float-right"
+                                style="margin-right: 5px"
+                            >
+                                <i class="far fa-copy"></i> გადაწერა
+                            </button>
+                        </div>
+                    </div>
+
+                    <hr />
+
                     <h3>კალკულატორი</h3>
                     <hr />
                     <div class="overflow-x-auto">
@@ -342,43 +381,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <!-- /.row -->
-                    <hr />
-
-                    <!-- this row will not appear when printing -->
-                    <div class="row no-print">
-                        <div class="col-12">
-                            <a rel="" @click="exit" class="btn btn-warning mr-1"
-                                >გასვლა</a
-                            >
-                            <a
-                                rel=""
-                                target="_blank"
-                                @click="(e) => remove(e, model, true)"
-                                class="btn btn-danger"
-                                >წაშლა</a
-                            >
-
-                            <button
-                                :disabled="v$.m.$invalid || v$.model.$invalid"
-                                @click="send"
-                                type="button"
-                                class="btn btn-success float-right"
-                            >
-                                <i class="far fa-credit-card"></i> შენახვა
-                            </button>
-                            <button
-                                :disabled="v$.m.$invalid || v$.model.$invalid"
-                                @click="(e) => gadawera(e, model, true)"
-                                type="button"
-                                class="btn btn-primary float-right"
-                                style="margin-right: 5px"
-                            >
-                                <i class="far fa-copy"></i> გადაწერა
-                            </button>
-                        </div>
                     </div>
                 </div>
                 <!-- /.invoice -->
