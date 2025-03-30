@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("purchasers.special-attributes", SpecialAttributeController::class);
 
     // Clients
-    Route::post("clients/statistics", [ClientStatisticController::class, 'index']);
+    Route::get("clients/statistics", [ClientStatisticController::class, 'index']);
     Route::apiResource("clients", ClientsController::class);
     Route::post("clients/registerClient/{client_id}", [ClientsController::class, 'registerClient']);
 
