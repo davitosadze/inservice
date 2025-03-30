@@ -30,7 +30,7 @@ class ClientStatisticController extends Controller
 
         $client = auth()->user()->client;
 
-        $branches = Purchaser::get()->filter(function ($purchaser) use ($client) {
+        $branchs = Purchaser::get()->filter(function ($purchaser) use ($client) {
             return $purchaser->formatted_name === $client->purchaser;
         })->map(function ($branch) {
             return [
@@ -42,7 +42,7 @@ class ClientStatisticController extends Controller
         })->values();
 
 
-        $purchasers = $request->get("branches") ? $request->get("branches") : $branches->pluck('id');
+        $purchasers = $request->get("branchs") ? $request->get("branchs") : $branchs->pluck('id');
 
 
         $responsesDaily = $this->getDailyResponsesCount($dates, $purchasers);
@@ -61,7 +61,7 @@ class ClientStatisticController extends Controller
             "nonApproved" => $nonApproved,
             "calendar" => $calendar,
 
-            "branches" => $branches
+            "branchs" => $branchs
         ];
 
         return response()->json($data, 200);
