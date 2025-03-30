@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 
 class ClientStatisticController extends Controller
 {
+
+    public function me()
+    {
+        $user = auth()->user();
+        $client = auth()->user()->client;
+
+        return response()->json(["user" => $user], 200);
+    }
+
     public function index(Request $request)
     {
 
@@ -60,8 +69,8 @@ class ClientStatisticController extends Controller
             "responsesByRegion" => $responsesByRegion,
             "nonApproved" => $nonApproved,
             "calendar" => $calendar,
+            "branches" => $branches,
 
-            "branches" => $branches
         ];
 
         return response()->json($data, 200);

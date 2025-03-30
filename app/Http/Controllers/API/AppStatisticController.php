@@ -37,7 +37,6 @@ class AppStatisticController extends Controller
         $responsesAndServicesCount = $this->getResponsesAndServicesCount($from, $to, $purchasers);
         $nonApproved = $this->getNonApprovedCount($from, $to);
 
-
         $data = [
             "responsesDaily" => $responsesDaily,
             "responsesByName" => $responsesByName,
@@ -45,7 +44,7 @@ class AppStatisticController extends Controller
             "responsesByRegion" => $responsesByRegion,
             "responsesByPerformer" => $responsesByPerformer,
             "nonApproved" => $nonApproved,
-            "responsesAndServicesCount" => $responsesAndServicesCount
+            "responsesAndServicesCount" => $responsesAndServicesCount,
         ];
 
         return response()->json($data, 200);
