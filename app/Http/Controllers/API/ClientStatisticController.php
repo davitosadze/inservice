@@ -49,6 +49,7 @@ class ClientStatisticController extends Controller
         $responsesByName = $this->getResponsesByName($from, $to, $purchasers);
         $responsesBySphere = $this->getResponsesBySphere($from, $to, $purchasers);
         $responsesByRegion = $this->getResponsesByRegion($from, $to, $purchasers);
+        $nonApproved = $this->getNonApprovedCount($from, $to, $purchasers);
         $calendar = $this->calendar($from, $to, $purchasers);
 
 
@@ -57,6 +58,7 @@ class ClientStatisticController extends Controller
             "responsesByName" => $responsesByName,
             "responsesBySphere" => $responsesBySphere,
             "responsesByRegion" => $responsesByRegion,
+            "nonApproved" => $nonApproved,
             "calendar" => $calendar,
 
             "branchs" => $branchs
@@ -92,6 +94,7 @@ class ClientStatisticController extends Controller
 
         return $purchasers;
     }
+
 
 
     private function getResponsesBySphere($from, $to, $purchasers)
@@ -150,6 +153,18 @@ class ClientStatisticController extends Controller
 
         $data["responses"] = $responses;
         $data["services"] = $services;
+
+        return $data;
+    }
+
+    private function getNonApprovedCount($from, $to, $purchasers)
+    {
+
+        $responses = Response::whereIn("purchaser_id", $purchasers)->with('act')->whereBetween('created_at', [$from, $to])->where('status', '!=', 3)->count();
+        $services = Service::whereIn("purchaser_id", $purchasers)->with('act')->whereBetween('created_at', [$from, $to])->where('status', '!=', 3)->count();
+
+        $data["nonApprovedResponses"] = $responses;
+        $data["nonApprovedServices"] = $services;
 
         return $data;
     }

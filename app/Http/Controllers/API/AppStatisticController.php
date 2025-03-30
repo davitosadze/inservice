@@ -35,6 +35,8 @@ class AppStatisticController extends Controller
         $responsesByRegion = $this->getResponsesByRegion($from, $to, $purchasers);
         $responsesByPerformer = $this->getResponsesByPerformer($from, $to, $purchasers);
         $responsesAndServicesCount = $this->getResponsesAndServicesCount($from, $to, $purchasers);
+        $nonApproved = $this->getNonApprovedCount($from, $to);
+
 
         $data = [
             "responsesDaily" => $responsesDaily,
@@ -42,6 +44,7 @@ class AppStatisticController extends Controller
             "responsesBySphere" => $responsesBySphere,
             "responsesByRegion" => $responsesByRegion,
             "responsesByPerformer" => $responsesByPerformer,
+            "nonApproved" => $nonApproved,
             "responsesAndServicesCount" => $responsesAndServicesCount
         ];
 
@@ -84,6 +87,9 @@ class AppStatisticController extends Controller
             ];
         })->toArray();
     }
+
+
+
 
     private function getResponsesByName($from, $to, $purchasers)
     {
@@ -184,5 +190,18 @@ class AppStatisticController extends Controller
             ->get();
 
         return $purchasers ? $responsesQuery->whereIn('formatted_name', $purchasers)->count() : $responsesQuery->count();
+    }
+
+
+    private function getNonApprovedCount($from, $to)
+    {
+
+        $responses = Response::whereBetween('created_at', [$from, $to])->where('status', '!=', 3)->count();
+        $services = Service::whereBetween('created_at', [$from, $to])->where('status', '!=', 3)->count();
+
+        $data["nonApprovedResponses"] = $responses;
+        $data["nonApprovedServices"] = $services;
+
+        return $data;
     }
 }

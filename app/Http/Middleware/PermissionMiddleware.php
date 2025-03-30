@@ -32,12 +32,12 @@ class PermissionMiddleware
                 : explode('|', $permission);
         }
 
-        if ( is_null($permission) ) {
+        if (is_null($permission)) {
             $permission = $request->route()->getName();
 
             $permissions = array($permission);
         }
-        
+
 
         foreach ($permissions as $permission) {
             if ($authGuard->user()->can($permission)) {
