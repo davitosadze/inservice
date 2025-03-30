@@ -13,7 +13,7 @@ use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
 use App\Http\Controllers\API\ClientsController;
-use App\Http\Controllers\Api\ClientStatisticController;
+use App\Http\Controllers\API\ClientStatisticController;
 use App\Http\Controllers\API\DeviceBrandController;
 use App\Http\Controllers\API\DeviceTypeController;
 use App\Http\Controllers\API\InstructionController;
@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::apiResource("purchasers.special-attributes", SpecialAttributeController::class);
 
     // Clients
-    Route::post("clientstest/statistics", [ClientStatisticController::class, 'index']);
+    Route::post("clients/statistics", [ClientStatisticController::class, 'index']);
     Route::apiResource("clients", ClientsController::class);
     Route::post("clients/registerClient/{client_id}", [ClientsController::class, 'registerClient']);
 
