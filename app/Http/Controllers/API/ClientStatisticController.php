@@ -60,7 +60,7 @@ class ClientStatisticController extends Controller
         $responsesBySphere = $this->getResponsesBySphere($from, $to, $purchasers);
         $responsesByRegion = $this->getResponsesByRegion($from, $to, $purchasers);
         $nonApproved = $this->getNonApprovedCount($from, $to, $purchasers);
-        // $calendar = $this->calendar($from, $to, $purchasers);
+        $calendar = $this->calendar($from, $to, $purchasers);
 
 
         $data = [
@@ -69,7 +69,7 @@ class ClientStatisticController extends Controller
             "responsesBySphere" => $permissions["incidents_by_fields"] ? $responsesBySphere : [],
             "responsesByRegion" => $permissions["incidents_by_regions"] ?  $responsesByRegion : [],
             "nonApproved" => $nonApproved,
-            "calendar" => [],
+            "calendar" => $calendar,
             "branches" => $branches,
 
         ];
