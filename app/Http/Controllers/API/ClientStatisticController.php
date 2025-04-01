@@ -17,7 +17,24 @@ class ClientStatisticController extends Controller
     public function me()
     {
         $user = auth()->user();
-        $client = auth()->user()->client;
+        $client = $user->client;
+
+        if ($client) {
+            $toggles = $client->toggles ?? [];
+
+            $clientData = collect($client)->toArray();
+
+            $filteredClient = collect($clientData)->filter(function ($value, $key) use ($toggles) {
+                return !isset($toggles[$key]) || $toggles[$key] === true;
+            });
+
+            $userArray = $user->toArray();
+            $userArray['client'] = $filteredClient;
+
+            return response()->json([
+                "user" => $userArray
+            ], 200);
+        }
 
         return response()->json(["user" => $user], 200);
     }
