@@ -39,6 +39,7 @@ class ClientStatisticController extends Controller
 
         $client = auth()->user()->client;
 
+        $permissions = $client["toggles"];
         $branches = Purchaser::get()->filter(function ($purchaser) use ($client) {
             return $purchaser->formatted_name === $client->purchaser;
         })->map(function ($branch) {
@@ -63,10 +64,10 @@ class ClientStatisticController extends Controller
 
 
         $data = [
-            "responsesDaily" => $responsesDaily,
-            "responsesByName" => $responsesByName,
-            "responsesBySphere" => $responsesBySphere,
-            "responsesByRegion" => $responsesByRegion,
+            "responsesDaily" => $permissions["incidents_by_numbers"] ? $responsesDaily : [],
+            "responsesByName" => $permissions["incidents_by_branches"] ? $responsesByName : [],
+            "responsesBySphere" => $permissions["incidents_by_fields"] ? $responsesBySphere : [],
+            "responsesByRegion" => $permissions["incidents_by_regions"] ?  $responsesByRegion : [],
             "nonApproved" => $nonApproved,
             "calendar" => $calendar,
             "branches" => $branches,
@@ -157,9 +158,21 @@ class ClientStatisticController extends Controller
 
     private function calendar($from, $to, $purchasers)
     {
-        $responses = Response::whereIn("purchaser_id", $purchasers)->with('act')->whereBetween('created_at', [$from, $to])->with('purchaser')->get();
-        $services = Service::whereIn("purchaser_id", $purchasers)->with('act')->whereBetween('created_at', [$from, $to])->with('purchaser')->get();
+        $responses = Response::whereIn("purchaser_id", $purchasers)
+            ->with(['act' => function ($query) {
+                $query->select('response_id', 'note');
+            }])
+            ->whereBetween('created_at', [$from, $to])
 
+            ->get();
+
+        $services = Service::whereIn("purchaser_id", $purchasers)
+            ->with(['act' => function ($query) {
+                $query->select('service_id', 'note');
+            }])
+            ->whereBetween('created_at', [$from, $to])
+            ->with('purchaser')
+            ->get();
         $data["responses"] = $responses;
         $data["services"] = $services;
 
@@ -169,8 +182,15 @@ class ClientStatisticController extends Controller
     private function getNonApprovedCount($from, $to, $purchasers)
     {
 
-        $responses = Response::whereIn("purchaser_id", $purchasers)->with('act')->whereBetween('created_at', [$from, $to])->where('status', '!=', 3)->count();
-        $services = Service::whereIn("purchaser_id", $purchasers)->with('act')->whereBetween('created_at', [$from, $to])->where('status', '!=', 3)->count();
+        $responses = Response::whereIn("purchaser_id", $purchasers)
+            ->whereBetween('created_at', [$from, $to])
+            ->where('status', '!=', 3)
+            ->count();
+
+        $services = Service::whereIn("purchaser_id", $purchasers)
+            ->whereBetween('created_at', [$from, $to])
+            ->where('status', '!=', 3)
+            ->count();
 
         $data["nonApprovedResponses"] = $responses;
         $data["nonApprovedServices"] = $services;
