@@ -107,8 +107,7 @@
                                 />
                                 <label
                                     class="col-form-label ml-3 font-weight-medium"
-                                    >რეაგირებით ჩახურული და რემონტზე
-                                    გადაცემული</label
+                                    >კალენდარი</label
                                 >
                             </div>
                             <div class="col-sm-3">
