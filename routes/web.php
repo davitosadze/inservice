@@ -26,6 +26,9 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\PerformerController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\RepairActController;
+use App\Http\Controllers\RepairController;
+use App\Http\Controllers\RepairDeviceController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\ServiceActController;
 use App\Http\Controllers\ServiceController;
@@ -87,6 +90,11 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("responses", ResponseController::class);
     Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
 
+
+    // Repairs
+    Route::resource("repairs", RepairController::class);
+
+
     // Services
     Route::resource("services", ServiceController::class);
     Route::get("services/{service}/arrived", [ServiceController::class, 'arrived'])->name('services.arrived');
@@ -104,6 +112,9 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     // Locations
     Route::resource("locations", LocationController::class);
 
+    // Repair Devices
+    Route::resource("repair-devices", RepairDeviceController::class);
+
     // Act
     Route::resource("acts", ActController::class);
     Route::get("acts/{id}/export", [ActController::class, "export"])->name('acts.export');
@@ -111,6 +122,11 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     // Service Act
     Route::resource("service-acts", ServiceActController::class);
     Route::get("service-acts/{id}/export", [ServiceActController::class, "export"])->name('service-acts.export');
+
+
+    Route::resource("repair-acts", RepairActController::class);
+    Route::get("repair-acts/{id}/export", [RepairActController::class, "export"])->name('repair-acts.export');
+
 
     // Performers
     Route::resource("performers", PerformerController::class);

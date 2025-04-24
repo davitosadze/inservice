@@ -6,6 +6,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\ServiceAct;
 use App\Models\Location;
+use App\Models\Repair;
+use App\Models\RepairAct;
 use App\Models\Service as Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -58,6 +60,18 @@ class ServiceActController extends Controller
                 } elseif ($request->on_repair == 1) {
                     $service->status = 3;
                     $service->on_repair = 1;
+                    $repair = Repair::create(array_merge(Arr::except($service->toArray(), ['device_type']), [
+                        'status' => 2,
+                        'performer_id' => null,
+                        'from_id' => $service->id,
+                        'from' => 'service',
+                    ]));
+                    $actData = array_merge(Arr::except($model->toArray(), ['device_type_id']), [
+                        'repair_id' => $repair->id,
+                        'device_type_id' => null, // Assign the repair_id to the act
+                        'device_brand_id' => null // Assign the repair_id to the act
+                    ]);
+                    RepairAct::create($actData);
                 } else {
                     if (!$request->get('is_app')) {
                         $service->status = 2;

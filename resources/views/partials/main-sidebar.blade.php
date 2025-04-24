@@ -163,6 +163,42 @@
                     </li>
                 @endif
 
+
+                @if (Auth::user()->can('რემონტის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('repairs.index', ['type' => 'pending']) }}"
+                            class="nav-link {{ request()->routeIs('repairs.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <span>აქტიური რემონტები</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if (Auth::user()->can('რემონტის ნახვა'))
+                    @if (!Auth::user()->hasRole('ინჟინერი'))
+                        <li class="nav-item">
+                            <a href="{{ route('repairs.index', ['type' => 'done']) }}"
+                                class="nav-link  {{ request()->routeIs('repairs.*') && request()->query('type') == 'done' ? 'active' : '' }}">
+                                <i class="fab nav-icon fa-elementor"></i>
+                                <p>რემონტების არქივი</p>
+                            </a>
+                        </li>
+                    @endif
+                @endif
+
+
+
+                @if (Auth::user()->can('რემონტის მოწყობილობის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('repair-devices.index') }}"
+                            class="nav-link {{ request()->routeIs('repair-devices.*') ? 'active' : '' }}">
+                            <i class="fab nav-icon fa-elementor"></i>
+                            <span>რემონტის მოწყობილობები</span>
+                        </a>
+                    </li>
+                @endif
+
+
                 @if (Auth::user()->can('რეაგირების რედაქტირება'))
                     <li class="nav-item menu-is-opening">
                         <a href="#" class="nav-link">

@@ -7,6 +7,8 @@ use App\Models\Act;
 use App\Models\DeviceBrand;
 use App\Models\DeviceType;
 use App\Models\Location;
+use App\Models\Repair;
+use App\Models\RepairAct;
 use App\Models\Response as ModelsResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -59,6 +61,16 @@ class ActController extends Controller
                 } elseif ($request->on_repair == 1) {
                     $response->status = 3;
                     $response->on_repair = 1;
+                    $repair = Repair::create(array_merge($response->toArray(), [
+                        'status' => 2,
+                        'performer_id' => null,
+                        "from_id" => $response->id,
+                        "from" => "response",
+                    ]));
+                    $actData = array_merge($model->toArray(), [
+                        'repair_id' => $repair->id, // Assign the repair_id to the act
+                    ]);
+                    RepairAct::create($actData);
                 } else {
                     if (!$request->get('is_app')) {
                         $response->status = 2;

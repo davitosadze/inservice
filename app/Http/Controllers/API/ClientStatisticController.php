@@ -57,16 +57,20 @@ class ClientStatisticController extends Controller
         $client = auth()->user()->client;
 
         $permissions = $client["toggles"];
-        $branches = Purchaser::get()->filter(function ($purchaser) use ($client) {
-            return $purchaser->formatted_name === $client->purchaser;
-        })->map(function ($branch) {
-            return [
-                'id' => $branch->id,
-                'name' => $branch->name,
-                'subj_name' => $branch->subj_name,
-                'subj_address' => $branch->subj_address,
-            ];
-        })->values();
+        $branches = Purchaser::whereDate('created_at', '>=', Carbon::parse('2025-04-01'))
+            ->get()
+            ->filter(function ($purchaser) use ($client) {
+                return $purchaser->formatted_name === $client->purchaser;
+            })
+            ->map(function ($branch) {
+                return [
+                    'id' => $branch->id,
+                    'name' => $branch->name,
+                    'subj_name' => $branch->subj_name,
+                    'subj_address' => $branch->subj_address,
+                ];
+            })
+            ->values();
 
 
         $purchasers = $request->get("branches") ? $request->get("branches") : $branches->pluck('id');
@@ -112,7 +116,11 @@ class ClientStatisticController extends Controller
 
     private function getResponsesByName($from, $to, $purchasers)
     {
-        $purchasers = Purchaser::whereIn("id", $purchasers)->select("id", "name", "subj_name", "subj_address")->get();
+
+        $purchasers = Purchaser::whereIn("id", $purchasers)
+            ->whereDate("created_at", ">=", Carbon::parse("2025-04-01"))
+            ->select("id", "name", "subj_name", "subj_address")
+            ->get();
         foreach ($purchasers as $purchaser) {
             $purchaser["responses_count"] = Response::whereBetween('created_at', [$from, $to])
                 ->where('purchaser_id', $purchaser->id)
@@ -183,7 +191,7 @@ class ClientStatisticController extends Controller
 
             ->get();
 
-        $services = Service::whereIn("purchaser_id", $purchasers)
+        $services = Service::whereDate('created_at', '>=', Carbon::parse('2025-04-01'))->whereIn("purchaser_id", $purchasers)
             ->with(['act' => function ($query) {
                 $query->select('service_id', 'note');
             }])

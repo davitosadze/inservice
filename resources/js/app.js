@@ -214,6 +214,16 @@ app.component(
         )
     )
 );
+
+app.component(
+    "insert-repair-act",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'alter-table' */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/components/InsertRepairAct"
+        )
+    )
+);
+
 app.component(
     "report-table",
     defineAsyncComponent(() =>

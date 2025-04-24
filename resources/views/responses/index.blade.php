@@ -52,11 +52,25 @@
                 </div>
                 <hr>
                 <div id="gridView" class="row">
+
                     @foreach ($responses as $response)
+                        @php
+                            $statusClass = '';
+
+                            if ($response->on_repair == 1) {
+                                $statusClass = 'rag-on-repair';
+                            } elseif ($response->status == 1) {
+                                $statusClass = 'rag-red';
+                            } elseif ($response->status == 2) {
+                                $statusClass = 'rag-yellow';
+                            } elseif (in_array($response->status, [5, 10])) {
+                                $statusClass = 'rag-green-arrived';
+                            }
+                        @endphp
                         <div class="col-sm-6">
                             <div class="card">
-                                <h5
-                                    class="@if ($response->status == 1) rag-red @elseif($response->status == 2) rag-yellow @elseif($response->status == 10 || $response->status == 5) rag-green-arrived @endif card-header">
+
+                                <h5 class="{{ $statusClass }} card-header">
                                     <span class="left">{{ $response->id }}</span>
                                     <span class="right">{{ $response->performer?->name }}</span>
                                 </h5>
@@ -257,5 +271,9 @@
 
     .rag-green-arrived {
         background-color: #00c079 !important;
+    }
+
+    .rag-on-repair {
+        background-color: #a020f045 !important;
     }
 </style>

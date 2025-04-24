@@ -365,7 +365,8 @@ export default {
     },
     mounted() {
         this.rowClassRules = {
-            "rag-green-arrived": "data.status == 10",
+            "rag-on-repair": "data.on_repair == 1",
+            "rag-green-arrived": "data.status == 10 || data.status == 5",
             "rag-green": "data.status == 3",
             "rag-red": "data.status == 1",
             "rag-yellow": "data.status == 2",
@@ -554,6 +555,10 @@ export default {
 }
 .rag-green-arrived {
     background-color: #00c079 !important;
+}
+
+.rag-on-repair {
+    background-color: #a020f045 !important;
 }
 .ag-header-cell-menu-button {
     display: none;

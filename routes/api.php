@@ -20,6 +20,9 @@ use App\Http\Controllers\API\InstructionController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\PerformerController;
 use App\Http\Controllers\API\RegionController;
+use App\Http\Controllers\Api\RepairActController;
+use App\Http\Controllers\API\RepairController;
+use App\Http\Controllers\API\RepairDeviceController;
 use App\Http\Controllers\API\ResponseController;
 use App\Http\Controllers\API\ServiceActController;
 use App\Http\Controllers\API\ServiceController;
@@ -92,6 +95,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     // Locations
     Route::apiResource('locations', LocationController::class);
+    Route::apiResource('repair-devices', RepairDeviceController::class);
 
     // Instructions
     Route::post('/instructions', [InstructionController::class, 'storeOrUpdate']);
@@ -105,6 +109,10 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Responses
     Route::get('responses/export', [ResponseController::class, "export"])->name("responses.export");
     Route::apiResource('responses', ResponseController::class);
+
+    // Repairs
+    Route::get('repairs/export', [RepairController::class, "export"])->name("repairs.export");
+    Route::apiResource('repairs', RepairController::class);
 
     // Services
     Route::get('services/export', [ServiceController::class, "export"])->name("services.export");
@@ -124,6 +132,11 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post("service-acts/{act}/reject", [ServiceActController::class, "reject"]);
     Route::post("service-acts/{id}/change-status", [ServiceActController::class, "changeStatus"]);
 
+    // Repair Acts
+    Route::apiResource('repair-acts', RepairActController::class);
+    Route::post("repair-acts/{act}/reject", [RepairActController::class, "reject"]);
+    Route::post("repair-acts/{id}/change-status", [RepairActController::class, "changeStatus"]);
+
 
     Route::apiResource("evaluations", EvaluationController::class);
 
@@ -137,5 +150,6 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     // Application
     Route::post('app/responses/{response}/attend ', [APPResponseController::class, 'arrived'])->name('app.acts.arrived');
+    Route::post('app/responses ', [APPResponseController::class, 'store'])->name('app.responses.store');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
 });

@@ -652,11 +652,11 @@ select {
 .z-50 {
   z-index: 50;
 }
-.order-1 {
-  order: 1;
-}
 .order-2 {
   order: 2;
+}
+.order-1 {
+  order: 1;
 }
 .m-0 {
   margin: 0px;
@@ -728,11 +728,11 @@ select {
 .mt-6 {
   margin-top: 1.5rem;
 }
-.mb-0 {
-  margin-bottom: 0px;
-}
 .mb-5 {
   margin-bottom: 1.25rem;
+}
+.mb-0 {
+  margin-bottom: 0px;
 }
 .block {
   display: block;
