@@ -74,6 +74,7 @@
                                     </div>
                                 </div>
 
+
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>კლიენტის სახელი :</b></div>
                                     <div class="col-12">
@@ -253,7 +254,39 @@
                 let model = @json($model);
                 let setting = @json($setting);
 
+                $(document).ready(function() {
+                    $('.purchaser').select2();
+                    $('.system_one').select2();
 
+                    $('.system_one').change(function() {
+                        var parentId = $(this).val();
+                        if (parentId) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/api/systems/" +
+                                    parentId +
+                                    "/children",
+                                success: function(children) {
+                                    if (children.length > 0) {
+                                        var options =
+                                            '<option disabled selected>--- აირჩეთ ---</option>';
+                                        $.each(children, function(key, child) {
+                                            options += '<option value="' + child.id + '">' +
+                                                child.name + '</option>';
+                                        });
+                                        $('.system_two').html(options);
+                                        $('#systemTwoWrapper').show();
+                                    } else {
+                                        $('#systemTwoWrapper').hide();
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#systemTwoWrapper').hide();
+                        }
+                    });
+
+                });
 
                 $('.purchaser').on('select2:select', function(e) {
                     let res = JSON.parse(e.target.value);
