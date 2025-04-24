@@ -57,8 +57,7 @@ class ClientStatisticController extends Controller
         $client = auth()->user()->client;
 
         $permissions = $client["toggles"];
-        $branches = Purchaser::whereDate('created_at', '>=', Carbon::parse('2025-04-01'))
-            ->get()
+        $branches = Purchaser::get()
             ->filter(function ($purchaser) use ($client) {
                 return $purchaser->formatted_name === $client->purchaser;
             })
