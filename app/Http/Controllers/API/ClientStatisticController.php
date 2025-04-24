@@ -57,8 +57,7 @@ class ClientStatisticController extends Controller
         $client = auth()->user()->client;
 
         $permissions = $client["toggles"];
-        $branches = Purchaser::whereDate('created_at', '>=', Carbon::parse('2025-04-01'))
-            ->get()
+        $branches = Purchaser::get()
             ->filter(function ($purchaser) use ($client) {
                 return $purchaser->formatted_name === $client->purchaser;
             })
@@ -118,7 +117,6 @@ class ClientStatisticController extends Controller
     {
 
         $purchasers = Purchaser::whereIn("id", $purchasers)
-            ->whereDate("created_at", ">=", Carbon::parse("2025-04-01"))
             ->select("id", "name", "subj_name", "subj_address")
             ->get();
         foreach ($purchasers as $purchaser) {
@@ -191,7 +189,7 @@ class ClientStatisticController extends Controller
 
             ->get();
 
-        $services = Service::whereDate('created_at', '>=', Carbon::parse('2025-04-01'))->whereIn("purchaser_id", $purchasers)
+        $services = Service::whereIn("purchaser_id", $purchasers)
             ->with(['act' => function ($query) {
                 $query->select('service_id', 'note');
             }])
