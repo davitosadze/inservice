@@ -56,21 +56,24 @@
 
                         @endauth
 
-                        <p class="lead">კვლევის ობიექტი</p>
-                        @if ($repair->on_repair)
-                            @if ($repair->from == 'response')
-                                გადაცემულია რემონტზე რეაგირებიდან <a
-                                    href="{{ route('responses.show', $repair->from_id) }}">
-                                    {{ '#' . $repair->from_id }}</a>
-                            @elseif($repair->from == 'service')
-                                გადაცემულია რემონტზე სერვისიდან <a
-                                    href="{{ route('services.show', $repair->from_id) }}">{{ '#' . $repair->from_id }}</a>
-                            @else
-                                გადაცემულია რემონტზე კლიენტისგან
-                            @endif
-                        @endif
-                        <hr>
 
+                        <p class="lead">კვლევის ობიექტი</p>
+                        @if (!Auth::user()->hasRole('ინჟინერი'))
+
+                            @if ($repair->on_repair)
+                                @if ($repair->from == 'response')
+                                    გადაცემულია რემონტზე რეაგირებიდან <a
+                                        href="{{ route('responses.show', $repair->from_id) }}">
+                                        {{ '#' . $repair->from_id }}</a>
+                                @elseif($repair->from == 'service')
+                                    გადაცემულია რემონტზე სერვისიდან <a
+                                        href="{{ route('services.show', $repair->from_id) }}">{{ '#' . $repair->from_id }}</a>
+                                @else
+                                    გადაცემულია რემონტზე კლიენტისგან
+                                @endif
+                            @endif
+                            <hr>
+                        @endif
 
 
                         <div class="form-group row">

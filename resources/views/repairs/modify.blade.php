@@ -64,8 +64,8 @@
                                         <select name="purchaser" class="form-control purchaser">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['purchasers'] as $purchaser)
-                                                <option value='@json($purchaser)'
-                                                    @selected($model->purchaser_id == $purchaser['id'])>
+                                                <option @disabled($model->id)
+                                                    value='@json($purchaser)' @selected($model->purchaser_id == $purchaser['id'])>
                                                     {{ $purchaser['name'] }} / {{ $purchaser['subj_name'] }} /
                                                     {{ $purchaser['subj_address'] }}
                                                 </option>
@@ -78,28 +78,28 @@
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>კლიენტის სახელი :</b></div>
                                     <div class="col-12">
-                                        {{ Form::text('name', $model->name, ['class' => 'form-control']) }}
+                                        {{ Form::text('name', $model->name, ['class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
                                     </div>
                                 </div>
 
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>დამატებითი სახელი :</b></div>
                                     <div class="col-12">
-                                        {{ Form::text('subject_name', $model->subject_name, ['class' => 'form-control']) }}
+                                        {{ Form::text('subject_name', $model->subject_name, ['class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
                                     </div>
                                 </div>
 
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>კლიენტის მისამართი :</b></div>
                                     <div class="col-12">
-                                        {{ Form::text('subject_address', $model->subject_address, ['class' => 'form-control']) }}
+                                        {{ Form::text('subject_address', $model->subject_address, ['class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
                                     </div>
                                 </div>
 
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>საიდენთიფიკაციო კოდი :</b></div>
                                     <div class="col-12">
-                                        {{ Form::text('identification_num', $model->identification_num, ['class' => 'form-control']) }}
+                                        {{ Form::text('identification_num', $model->identification_num, ['class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
                                     </div>
                                 </div>
 
@@ -113,7 +113,8 @@
                                         <select name="region_id" class="form-control region">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['regions'] as $region)
-                                                <option value='{{ $region['id'] }}' @selected($model->region_id == $region['id'])>
+                                                <option @disabled($model->id) value='{{ $region['id'] }}'
+                                                    @selected($model->region_id == $region['id'])>
                                                     {{ $region['name'] }}
                                                 </option>
                                             @endforeach
@@ -166,7 +167,7 @@
 
                             <div class="form-group">
                                 <label for="formGroupExampleInput">შინაარსი:</label>
-                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control']) }}
+                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
 
                             </div>
                             @if ($model->id && $model->status >= 2)
@@ -255,36 +256,8 @@
                 let setting = @json($setting);
 
                 $(document).ready(function() {
-                    $('.purchaser').select2();
-                    $('.system_one').select2();
+                    // $('.purchaser').select2();
 
-                    $('.system_one').change(function() {
-                        var parentId = $(this).val();
-                        if (parentId) {
-                            $.ajax({
-                                type: "GET",
-                                url: "/api/systems/" +
-                                    parentId +
-                                    "/children",
-                                success: function(children) {
-                                    if (children.length > 0) {
-                                        var options =
-                                            '<option disabled selected>--- აირჩეთ ---</option>';
-                                        $.each(children, function(key, child) {
-                                            options += '<option value="' + child.id + '">' +
-                                                child.name + '</option>';
-                                        });
-                                        $('.system_two').html(options);
-                                        $('#systemTwoWrapper').show();
-                                    } else {
-                                        $('#systemTwoWrapper').hide();
-                                    }
-                                }
-                            });
-                        } else {
-                            $('#systemTwoWrapper').hide();
-                        }
-                    });
 
                 });
 

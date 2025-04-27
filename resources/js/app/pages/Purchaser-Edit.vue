@@ -81,6 +81,82 @@
                             />
                         </div>
 
+                        <!-- New Fields -->
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >პირველადი აღწერის თარიღი:</label
+                            >
+                            <input
+                                v-model="model.first_review_date"
+                                type="date"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კომენტარი:</label
+                            >
+                            <input
+                                v-model="model.first_review_description"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >ტექნიკური აღწერის თარიღი:</label
+                            >
+                            <input
+                                v-model="model.technical_review_date"
+                                type="date"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კომენტარი:</label
+                            >
+                            <input
+                                v-model="model.technical_review_description"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >საინფორმაციო ბაზის შექმნის თარიღი:</label
+                            >
+                            <input
+                                v-model="model.base_creation_date"
+                                type="date"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >კომენტარი:</label
+                            >
+                            <input
+                                v-model="model.base_description"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
                         <div class="form-group">
                             <label for="formGroupExampleInput">აღწერა:</label>
                             <ckeditor

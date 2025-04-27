@@ -30,6 +30,7 @@ use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
 use App\Http\Controllers\APP\ExpoNotificationController;
 use App\Http\Controllers\APP\MediaController;
+use App\Http\Controllers\APP\RepairController as APPRepairController;
 use App\Http\Controllers\APP\ResponseController as APPResponseController;
 use App\Http\Controllers\APP\ServiceController as APPServiceController;
 use App\Http\Controllers\APP\UserController as APPUserController;
@@ -152,4 +153,8 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('app/responses/{response}/attend ', [APPResponseController::class, 'arrived'])->name('app.acts.arrived');
     Route::post('app/responses ', [APPResponseController::class, 'store'])->name('app.responses.store');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
+
+    // App Repairs
+    Route::post('app/repairs/{repair}/attend ', [APPRepairController::class, 'arrived'])->name('app.repair-acts.arrived');
+    Route::post('app/repairs ', [APPRepairController::class, 'store'])->name('app.responses.store');
 });

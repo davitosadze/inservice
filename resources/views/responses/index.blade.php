@@ -12,6 +12,8 @@
                         <div class="col-sm-6 mt-2">
                             <a class="btn btn-primary" href="{{ route('responses.index') }}">რეაგირებები</a>
                             <a class="btn ml-1 btn-outline-primary" href="{{ route('services.index') }}">სერვისები</a>
+                            <a class="btn ml-1  btn-outline-primary" href="{{ route('repairs.index') }}">რემონტები</a>
+
                         </div>
                     @endif
                 </div><!-- /.row -->

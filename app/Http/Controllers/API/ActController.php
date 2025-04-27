@@ -62,15 +62,16 @@ class ActController extends Controller
                     $response->status = 3;
                     $response->on_repair = 1;
                     $repair = Repair::create(array_merge($response->toArray(), [
-                        'status' => 2,
+                        'status' => 1,
+                        'time' => null,
                         'performer_id' => null,
                         "from_id" => $response->id,
                         "from" => "response",
                     ]));
-                    $actData = array_merge($model->toArray(), [
-                        'repair_id' => $repair->id, // Assign the repair_id to the act
-                    ]);
-                    RepairAct::create($actData);
+                    // $actData = array_merge($model->toArray(), [
+                    //     'repair_id' => $repair->id, // Assign the repair_id to the act
+                    // ]);
+                    // RepairAct::create($actData);
                 } else {
                     if (!$request->get('is_app')) {
                         $response->status = 2;

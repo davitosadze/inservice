@@ -95,6 +95,80 @@
 
                         <div class="form-group row">
                             <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >პირველადი აღწერის თარიღი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p v-html="model.first_review_date"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >კომენტარი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p v-html="model.first_review_description"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >ტექნიკური აღწერის თარიღი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p v-html="model.technical_review_date"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >კომენტარი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p
+                                    v-html="model.technical_review_description"
+                                ></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >საინფორმაციო ბაზის შექმნის თარიღი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p v-html="model.base_creation_date"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
+                                class="col-sm-3 col-form-label"
+                                for="formGroupExampleInput"
+                                >კომენტარი:</label
+                            >
+
+                            <div class="col-sm-9">
+                                <p v-html="model.base_description"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label
                                 class="col-sm-2 col-form-label"
                                 for="formGroupExampleInput"
                                 >გალერეა:</label
@@ -163,6 +237,7 @@
                                             v-for="event in events"
                                             :key="event.id"
                                             class="list-group-item"
+                                            @click="handleEventClick(event)"
                                         >
                                             {{
                                                 event.title +
@@ -177,11 +252,15 @@
                                 <!-- Qalendar and calendar-event-modal components -->
                                 <Qalendar
                                     :events="events"
+                                    :selected-date="
+                                        selectedQalendarDate || new Date()
+                                    "
                                     :config="config"
                                     :day-min-height="250"
                                     @date-was-clicked="handleDateClicked"
                                     @edit-event="handleEditEvent"
                                     @delete-event="handleDeleteEvent"
+                                    ref="calendar"
                                 />
                                 <calendar-event-modal
                                     @eventStored="fetchEvents"
@@ -335,6 +414,7 @@ import FileActionsModal from "../components/FileActionsModal.vue";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import { event } from "jquery";
 
 const FilePond = vueFilePond(FilePondPluginImagePreview);
 
@@ -371,6 +451,7 @@ export default {
     },
     data() {
         return {
+            selectedQalendarDate: null,
             isModalVisible: false,
             activatedFile: null,
             isFileActionsModalVisible: false,
@@ -410,6 +491,18 @@ export default {
         },
     },
     methods: {
+        handleEventClick(event) {
+            console.log(new Date(2024, 0, 8));
+            console.log(
+                "Event: " + event.title + "\nTime: " + event.time.start
+            );
+
+            // Convert event start time to a Date object
+            const eventDate = new Date(event.time.start);
+            this.selectedQalendarDate = new Date(2024, 0, 8); // Set selected date
+            console.log(this.selectedQalendarDate);
+        },
+
         handleFilePondInit(pond) {},
         handleFilePondInitGallery(pond) {},
 

@@ -40,6 +40,8 @@ class Response extends Model
         return $this->belongsTo(User::class);
     }
 
+
+
     public function act()
     {
         return $this->hasOne(Act::class);

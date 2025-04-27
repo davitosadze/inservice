@@ -61,17 +61,18 @@ class ServiceActController extends Controller
                     $service->status = 3;
                     $service->on_repair = 1;
                     $repair = Repair::create(array_merge(Arr::except($service->toArray(), ['device_type']), [
-                        'status' => 2,
+                        'status' => 1,
+                        'time' => null,
                         'performer_id' => null,
                         'from_id' => $service->id,
                         'from' => 'service',
                     ]));
-                    $actData = array_merge(Arr::except($model->toArray(), ['device_type_id']), [
-                        'repair_id' => $repair->id,
-                        'device_type_id' => null, // Assign the repair_id to the act
-                        'device_brand_id' => null // Assign the repair_id to the act
-                    ]);
-                    RepairAct::create($actData);
+                    // $actData = array_merge(Arr::except($model->toArray(), ['device_type_id']), [
+                    //     'repair_id' => $repair->id,
+                    //     'device_type_id' => null, // Assign the repair_id to the act
+                    //     'device_brand_id' => null // Assign the repair_id to the act
+                    // ]);
+                    // RepairAct::create($actData);
                 } else {
                     if (!$request->get('is_app')) {
                         $service->status = 2;

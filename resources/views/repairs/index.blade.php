@@ -10,7 +10,8 @@
                     </div><!-- /.col -->
                     @if (Auth::user()->hasRole('ინჟინერი'))
                         <div class="col-sm-6 mt-2">
-                            <a class="btn btn-primary" href="{{ route('repairs.index') }}">რეაგირებები</a>
+                            <a class="btn btn-primary" href="{{ route('repairs.index') }}">რემონტები</a>
+                            <a class="btn ml-1 btn-outline-primary" href="{{ route('responses.index') }}">რეაგირებები</a>
                             <a class="btn ml-1 btn-outline-primary" href="{{ route('services.index') }}">სერვისები</a>
                         </div>
                     @endif
@@ -96,13 +97,33 @@
                                                 @endif
                                             @endrole
 
-
-
                                             @if (Auth::user()->can('რეაგირების რედაქტირება'))
                                                 <a href="{{ route('repairs.edit', $repair->id) }}"
                                                     class="ml-2 btn btn-primary">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
+                                            @endif
+                                            @if (!Auth::user()->hasRole('ინჟინერი'))
+                                                <hr>
+                                                <form method="POST"
+                                                    action="{{ route('repairs.assign-performer', $repair->id) }}"
+                                                    id="assign-performer-form">
+                                                    @csrf
+
+                                                    <select name="performer_id" class="form-control"
+                                                        id="performer_select"
+                                                        onchange="document.getElementById('assign-performer-form').submit()">
+                                                        <option value="">არაა არჩეული</option>
+                                                        @foreach ($additional['performers'] as $performer)
+                                                            <option @selected($performer['id'] == $repair->performer_id)
+                                                                value="{{ $performer['id'] }}">
+                                                                {{ $performer['name'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+
+                                                <hr>
                                             @endif
                                         </div>
                                         <div class="col-sm-6" style="text-align: right;">

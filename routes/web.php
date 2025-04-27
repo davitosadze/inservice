@@ -92,7 +92,9 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
 
     // Repairs
+    Route::post("repairs/{repair}/assign-performer", [RepairController::class, "assignPerformer"])->name('repairs.assign-performer');
     Route::resource("repairs", RepairController::class);
+    Route::get("repairs/{repair}/arrived", [RepairController::class, 'arrived'])->name('repairs.arrived');
 
 
     // Services
@@ -145,6 +147,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::resource("invoices", InvoiceController::class);
     Route::get("invoices/pdf/{id}", [InvoiceController::class, 'pdf'])->name('invoices.pdf');
     Route::get("invoices/excel/{id}", [InvoiceController::class, 'excel'])->name('invoices.excel');
+    Route::get("export-invoices-new", [InvoiceController::class, 'exportNew'])->name('invoices.export');
 
     Route::resource("categories", CategoryController::class);
     Route::resource("categories.category-attributes", CategoryAttributeController::class);

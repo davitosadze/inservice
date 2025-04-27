@@ -7,6 +7,7 @@ use App\Models\Region;
 use App\Models\Repair;
 use App\Models\RepairDevice;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use ExpoSDK\Expo;
 use ExpoSDK\ExpoMessage;
@@ -53,7 +54,11 @@ class RepairController extends Controller
 
         ];
 
-        $additional = [];
+        $additional = [
+            'performers' =>  User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
+                $query->whereIn('name', ['ინჟინერი']);
+            })->get()->toArray(),
+        ];
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
             $repairs = Repair::with(['user', 'purchaser', 'region'])->orderBy('id', 'desc')
@@ -101,7 +106,6 @@ class RepairController extends Controller
         $validator = Validator::make($request->all(), [
             'subject_name' => ['required'],
             'subject_address' => ['required'],
-            'region_id' => ['required'],
             'performer_id' => ['required'],
             'name' => ['required'],
             'identification_num' => ['required'],
@@ -201,6 +205,13 @@ class RepairController extends Controller
         return response()->json($result, HttpResponse::HTTP_CREATED);
     }
 
+    public function assignPerformer(Request $request, Repair $repair)
+    {
+        $repair->performer_id = $request->get('performer_id');
+        $repair->save();
+        return back()->with('success', "შემსრულებელი წარმატებით მიება");
+    }
+
 
     /**
      * Display the specified resource.
@@ -254,6 +265,15 @@ class RepairController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function arrived($id)
+    {
+        $response = Repair::find($id);
+        $response->time = Carbon::now();
+        $response->status = 10;
+        $response->save();
+        return back();
     }
 
     /**
