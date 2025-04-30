@@ -143,103 +143,99 @@
                             <p class="lead">მასალები</p>
 
                             <table
-                                class="table table-striped"
-                                style="background: #edebe4; color: #fff"
-                            >
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" style="width: 30%">
-                                            დასახელება
-                                        </th>
-                                        <th rowspan="2" style="width: 20%">
-                                            აღწერა
-                                        </th>
-                                        <th rowspan="2">ერთეული</th>
-                                        <th rowspan="2">რაოდენობა</th>
-                                        <th
-                                            colspan="2"
-                                            style="text-align: center"
-                                        >
-                                            ფასი
-                                        </th>
-                                        <th
-                                            colspan="2"
-                                            style="text-align: center"
-                                        >
-                                            ხელ.ფასი
-                                        </th>
-                                        <th colspan="2">ჯამი</th>
-                                        <th rowspan="2">ქმედება</th>
-                                    </tr>
-                                    <tr>
-                                        <th>დარიცხ</th>
-                                        <th style="word-wrap: break-word">
-                                            გარეშე
-                                        </th>
-                                        <th>დარიცხ</th>
-                                        <th style="word-wrap: break-word">
-                                            გარეშე
-                                        </th>
-                                        <th>დარიცხ</th>
-                                        <th style="word-wrap: break-word">
-                                            გარეშე
-                                        </th>
-                                    </tr>
-                                </thead>
+    class="table table-striped"
+    style="background: #edebe4; color: #fff"
+>
+    <thead>
+        <tr>
+            <th rowspan="2" style="width: 30%">
+                დასახელება
+            </th>
+            <th rowspan="2" style="width: 20%">
+                აღწერა
+            </th>
+            <th rowspan="2">ერთეული</th>
+            <th rowspan="2">რაოდენობა</th>
+            <th colspan="2" style="text-align: center">
+                ფასი
+            </th>
+            <th colspan="2" style="text-align: center">
+                ხელ.ფასი
+            </th>
+            <th colspan="2">ჯამი</th>
+            <th rowspan="2">ქმედება</th>
+        </tr>
+        <tr>
+            <th>დარიცხ</th>
+            <th style="word-wrap: break-word">
+                გარეშე
+            </th>
+            <th>დარიცხ</th>
+            <th style="word-wrap: break-word">
+                გარეშე
+            </th>
+            <th>დარიცხ</th>
+            <th style="word-wrap: break-word">
+                გარეშე
+            </th>
+        </tr>
+    </thead>
 
-                                <draggable
-                                    v-model="m.category_attributes"
-                                    tag="tbody"
-                                    item-key="id"
-                                    :disabled="step"
-                                >
-                                    <template #item="{ element }">
-                                        <request-single-attribute
-                                            @action_focus="try_focus"
-                                            @action_blur="try_blur"
-                                            @action_price="price"
-                                            @action_remove="remove"
-                                            :keys="keys"
-                                            :join-in-tree="
-                                                attributeJoinedTree(element)
-                                            "
-                                            :item="element"
-                                            :model="m"
-                                        />
-                                    </template>
-                                </draggable>
+    <draggable
+        v-model="m.category_attributes"
+        tag="tbody"
+        item-key="id"
+        :disabled="step"
+    >
+        <template #item="{ element }">
+            <request-single-attribute
+                @action_focus="try_focus"
+                @action_blur="try_blur"
+                @action_price="price"
+                @action_remove="remove"
+                :keys="keys"
+                :join-in-tree="
+                    attributeJoinedTree(element)
+                "
+                :item="element"
+                :model="m"
+            />
+        </template>
 
-                                <tr class="calculator">
-                                    <th colspan="5">დაჯამება :</th>
-                                    <th>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            readonly
-                                            v-model="agr.price"
-                                        />
-                                    </th>
-                                    <td></td>
-                                    <td>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            readonly
-                                            v-model="agr.service_price"
-                                        />
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            readonly
-                                            v-model="agr.calc"
-                                        />
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </table>
+        <!-- Move the calculator row here, inside the <tbody> -->
+        <tr class="calculator">
+            <th colspan="5">დაჯამება :</th>
+            <th>
+                <input
+                    class="form-control"
+                    type="text"
+                    readonly
+                    v-model="agr.price"
+                />
+            </th>
+            <td></td>
+            <td>
+                <input
+                    class="form-control"
+                    type="text"
+                    readonly
+                    v-model="agr.service_price"
+                />
+            </td>
+            <td></td>
+            <td>
+                <input
+                    class="form-control"
+                    type="text"
+                    readonly
+                    v-model="agr.calc"
+                />
+            </td>
+            <td></td>
+        </tr>
+    </draggable>
+</table>
+
                             <button
                                 type="button"
                                 @click="setter('categories')"
@@ -265,68 +261,46 @@
 
                             <div class="table-responsive">
                                 <table class="table">
-                                    <tr
-                                        v-for="(
-                                            input, index
-                                        ) in calculator.inputs"
-                                    >
-                                        <th style="width: 30%">
-                                            {{ input.title }}
-                                        </th>
-                                        <th>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                v-model="input.value"
-                                            />
-                                        </th>
-                                        <td
-                                            style="
-                                                margin: 0;
-                                                padding: 0;
-                                                width: 17%;
-                                            "
-                                        >
-                                            <table
-                                                class="table"
-                                                style="margin: 0; padding: 0"
-                                            >
-                                                <tr>
-                                                    <td
-                                                        style="
-                                                            margin: 0;
-                                                            padding: 3px;
-                                                            text-align: right;
-                                                        "
-                                                    >
-                                                        {{
-                                                            calculator
-                                                                .percenters[
-                                                                index
-                                                            ].p1
-                                                        }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td
-                                                        style="
-                                                            margin: 0;
-                                                            padding: 3px;
-                                                            text-align: right;
-                                                        "
-                                                    >
-                                                        {{
-                                                            calculator
-                                                                .percenters[
-                                                                index
-                                                            ].p2
-                                                        }}
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+  <tbody> <!-- Added tbody to wrap <tr> elements -->
+    <tr v-for="(input, index) in calculator.inputs" :key="index">
+      <th style="width: 30%">
+        {{ input.title }}
+      </th>
+      <th>
+        <input
+          type="number"
+          min="0"
+          v-model="input.value"
+        />
+      </th>
+      <td style="margin: 0; padding: 0; width: 17%">
+        <table class="table" style="margin: 0; padding: 0">
+          <tbody> <!-- Added tbody to wrap nested <tr> elements -->
+            <tr>
+              <td
+                style="margin: 0; padding: 3px; text-align: right"
+              >
+                {{
+                  calculator.percenters[index].p1
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="margin: 0; padding: 3px; text-align: right"
+              >
+                {{
+                  calculator.percenters[index].p2
+                }}
+              </td>
+            </tr>
+          </tbody> <!-- Closing tbody for nested table -->
+        </table>
+      </td>
+    </tr>
+  </tbody> <!-- Closing tbody for the main table -->
+</table>
+
                             </div>
                         </div>
                         <!-- /.col -->

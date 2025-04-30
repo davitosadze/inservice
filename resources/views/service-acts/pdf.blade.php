@@ -273,7 +273,10 @@
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    @if($model->service?->device_type)
+
                     {{ in_array('1', json_decode($model->service?->device_type, true)) ? '✓' : '' }}
+                    @endif
 
                 </p>
             </td>
@@ -319,7 +322,9 @@
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    @if($model->service?->device_type)
                     {{ in_array('2', json_decode($model->service?->device_type, true)) ? '✓' : '' }}
+                    @endif
                 </p>
             </td>
             <td
@@ -354,7 +359,9 @@
             <td
                 style="width:12pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
                 <p style="font-size:20px; padding-top:0px;" class="inner-text">
+                    @if($model->service?->device_type)
                     {{ in_array('3', json_decode($model->service?->device_type, true)) == 3 ? '✓' : '' }}
+                    @endif
                 </p>
             </td>
             <td style="width:221pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt"

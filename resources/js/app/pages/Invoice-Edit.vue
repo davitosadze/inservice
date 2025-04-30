@@ -9,7 +9,7 @@
                             <label
                                 for="staticEmail"
                                 class="col-sm-3 col-form-label"
-                                ><b>დასახელება :</b></label
+                                ><b>დასახელება:</b></label
                             >
                             <div class="col-sm-9">
                                 <input
@@ -161,78 +161,72 @@
                         <div class="col-12 table-responsive">
                             <p class="lead">მასალები</p>
 
-                            <table
-                                class="table table-striped"
-                                style="background: #edebe4; color: #fff"
-                            >
-                                <thead>
-                                    <tr>
-                                        <th style="width: 30%">დასახელება</th>
-                                        <th style="width: 20%">აღწერა</th>
-                                        <th>ერთეული</th>
-                                        <th>რაოდენობა</th>
-                                        <th style="text-align: center">
-                                            მასალის ფასი
-                                        </th>
-                                        <th style="text-align: center">
-                                            მომსახურების ფასი
-                                        </th>
-                                        <th>ჯამი</th>
-                                        <th>ქმედება</th>
-                                    </tr>
-                                </thead>
+                            <table class="table table-striped" style="background: #edebe4; color: #fff">
+  <thead>
+    <tr>
+      <th style="width: 30%">დასახელება</th>
+      <th style="width: 20%">აღწერა</th>
+      <th>ერთეული</th>
+      <th>რაოდენობა</th>
+      <th style="text-align: center">მასალის ფასი</th>
+      <th style="text-align: center">მომსახურების ფასი</th>
+      <th>ჯამი</th>
+      <th>ქმედება</th>
+    </tr>
+  </thead>
 
-                                <draggable
-                                    v-model="m.category_attributes"
-                                    tag="tbody"
-                                    item-key="id"
-                                    :disabled="step"
-                                >
-                                    <template #item="{ element }">
-                                        <request-single-attribute
-                                            @action_focus="try_focus"
-                                            @action_blur="try_blur"
-                                            @action_price="price"
-                                            @action_remove="remove"
-                                            :keys="keys"
-                                            :join-in-tree="
-                                                attributeJoinedTree(element)
-                                            "
-                                            :item="element"
-                                            :model="m"
-                                        />
-                                    </template>
-                                </draggable>
+  <draggable
+    v-model="m.category_attributes"
+    tag="tbody"
+    item-key="id"
+    :disabled="step"
+  >
+    <template #item="{ element }">
+      <request-single-attribute
+        @action_focus="try_focus"
+        @action_blur="try_blur"
+        @action_price="price"
+        @action_remove="remove"
+        :keys="keys"
+        :join-in-tree="attributeJoinedTree(element)"
+        :item="element"
+        :model="m"
+      />
+    </template>
+  </draggable>
 
-                                <tr class="calculator">
-                                    <th colspan="4">დაჯამება :</th>
-                                    <th>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            readonly
-                                            v-model="agr.price"
-                                        />
-                                    </th>
-                                    <td>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            readonly
-                                            v-model="agr.service_price"
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            readonly
-                                            v-model="agr.calc"
-                                        />
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </table>
+  <tbody>
+    <tr class="calculator">
+      <th colspan="4">დაჯამება :</th>
+      <th>
+        <input
+          class="form-control"
+          type="text"
+          readonly
+          v-model="agr.price"
+        />
+      </th>
+      <td>
+        <input
+          class="form-control"
+          type="text"
+          readonly
+          v-model="agr.service_price"
+        />
+      </td>
+      <td>
+        <input
+          class="form-control"
+          type="text"
+          readonly
+          v-model="agr.calc"
+        />
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
                             <button
                                 type="button"
                                 @click="setter('categories')"
@@ -296,91 +290,56 @@
                     <h3>კალკულატორი</h3>
                     <hr />
                     <div class="overflow-x-auto">
-                        <table
-                            class="table-auto border-collapse border border-gray-400 w-full"
-                        >
-                            <thead>
-                                <tr class="bg-gray-200">
-                                    <th class="border border-gray-400 p-2">
-                                        ტიპი
-                                    </th>
-                                    <th class="border border-gray-400 p-2">
-                                        შესასყიდი მასალის ფასი
-                                    </th>
-                                    <th class="border border-gray-400 p-2">
-                                        ფასნამატი
-                                    </th>
-                                    <th class="border border-gray-400 p-2">
-                                        გასაყიდი ჯამი
-                                    </th>
-                                    <th class="border border-gray-400 p-2">
-                                        ფასდაკლება პროცენტულად (არაუმეტეს 7%)
-                                    </th>
-                                    <th class="border border-gray-400 p-2">
-                                        ფასდაკლების თანხა
-                                    </th>
-                                    <th class="border border-gray-400 p-2">
-                                        საბოლოო გასაყიდი ფასი
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select
-                                            v-model="calculatorType"
-                                            id="calculatorType"
-                                            class="form-control"
-                                        >
-                                            <option value="0">
-                                                ფინანსური ოპერაცია რომლის დროსაც
-                                                დღგ-ს ვითვლით (მასალა)
-                                            </option>
-                                            <option value="1">
-                                                ფინანსური ოპერაცია რომლის დროსაც
-                                                მხოლოდ დღგ-ს ვიხდით (მეწარმე)
-                                            </option>
-                                            <option value="2">
-                                                ფინანსური ოპერაცია რომლის დროსაც
-                                                საშემოსავლოს და დღგ-ს ვიხდით
-                                                (ფიზ. პირი)
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td
-                                        class="border border-gray-400 p-2 bg-gray-300"
-                                    >
-                                        <input
-                                            type="number"
-                                            v-model.number="minPayment"
-                                            class="w-full text-center"
-                                        />
-                                    </td>
-                                    <td
-                                        class="border border-gray-400 p-2 bg-gray-300"
-                                    >
-                                        {{ priceIncrease }}
-                                    </td>
-                                    <td class="border border-gray-400 p-2">
-                                        {{ sellSum }}
-                                    </td>
-                                    <td class="border border-gray-400 p-2">
-                                        <input
-                                            type="number"
-                                            v-model.number="discountPercentage"
-                                            @input="validateDiscount"
-                                            class="w-full text-center"
-                                        />
-                                    </td>
-                                    <td class="border border-gray-400 p-2">
-                                        {{ discountAmount }}
-                                    </td>
-                                    <td class="border border-gray-400 p-2">
-                                        {{ finalPrice }} ლარი
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <table class="table-auto border-collapse border border-gray-400 w-full">
+  <thead>
+    <tr class="bg-gray-200">
+      <th class="border border-gray-400 p-2">ტიპი</th>
+      <th class="border border-gray-400 p-2">შესასყიდი მასალის ფასი</th>
+      <th class="border border-gray-400 p-2">ფასნამატი</th>
+      <th class="border border-gray-400 p-2">გასაყიდი ჯამი</th>
+      <th class="border border-gray-400 p-2">
+        ფასდაკლება პროცენტულად (არაუმეტეს 7%)
+      </th>
+      <th class="border border-gray-400 p-2">ფასდაკლების თანხა</th>
+      <th class="border border-gray-400 p-2">სრულყოფილი გასაყიდი ფასი</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <select v-model="calculatorType" id="calculatorType" class="form-control">
+          <option value="0">
+            ფინანსური ოპერაცია რომლის დროსაც დღგ-ს ვითვლით (მასალა)
+          </option>
+          <option value="1">
+            ფინანსური ოპერაცია რომლის დროსაც მხოლოდ დღგ-ს ვიხდით (მეწარმე)
+          </option>
+          <option value="2">
+            ფინანსური ოპერაცია რომლის დროსაც საშემოსავლოს და დღგ-ს ვიხდით (ფიზ. პირი)
+          </option>
+        </select>
+      </td>
+      <td class="border border-gray-400 p-2 bg-gray-300">
+        <input type="number" v-model.number="minPayment" class="w-full text-center" />
+      </td>
+      <td class="border border-gray-400 p-2 bg-gray-300">
+        {{ priceIncrease }}
+      </td>
+      <td class="border border-gray-400 p-2">{{ sellSum }}</td>
+      <td class="border border-gray-400 p-2">
+        <input
+          type="number"
+          v-model.number="discountPercentage"
+          @input="validateDiscount"
+          class="w-full text-center"
+        />
+      </td>
+      <td class="border border-gray-400 p-2">{{ discountAmount }}</td>
+      <td class="border border-gray-400 p-2">{{ finalPrice }} ლარი</td>
+    </tr>
+  </tbody>
+</table>
+
                     </div>
                 </div>
                 <!-- /.invoice -->

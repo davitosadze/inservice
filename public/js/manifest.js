@@ -203,6 +203,7 @@
 /******/ 					script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 				}
 /******/ 		
+/******/ 		
 /******/ 				script.src = url;
 /******/ 			}
 /******/ 			inProgress[url] = [done];
@@ -216,7 +217,6 @@
 /******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
 /******/ 				if(prev) return prev(event);
 /******/ 			}
-/******/ 			;
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
 /******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);
@@ -306,6 +306,7 @@
 /******/ 			if((!__webpack_require__.o(installedChunks, chunkId) || installedChunks[chunkId] === undefined) && !/^(css\/(app|guest|vendors\/lte\-core)|\/js\/manifest)$/.test(chunkId)) {
 /******/ 				installedChunks[chunkId] = null;
 /******/ 				var link = document.createElement('link');
+/******/ 				link.charset = 'utf-8';
 /******/ 		
 /******/ 				if (__webpack_require__.nc) {
 /******/ 					link.setAttribute("nonce", __webpack_require__.nc);

@@ -84,10 +84,10 @@ class ClientStatisticController extends Controller
 
 
         $data = [
-            "responsesDaily" => $permissions["incidents_by_numbers"] ? $responsesDaily : [],
-            "responsesByName" => $permissions["incidents_by_branches"] ? $responsesByName : [],
-            "responsesBySphere" => $permissions["incidents_by_fields"] ? $responsesBySphere : [],
-            "responsesByRegion" => $permissions["incidents_by_regions"] ?  $responsesByRegion : [],
+            "responsesDaily" => !empty($permissions["incidents_by_numbers"]) ? $responsesDaily : [],
+            "responsesByName" => !empty($permissions["incidents_by_branches"]) ? $responsesByName : [],
+            "responsesBySphere" => !empty($permissions["incidents_by_fields"]) ? $responsesBySphere : [],
+            "responsesByRegion" => !empty($permissions["incidents_by_regions"]) ? $responsesByRegion : [],
             "nonApproved" => $nonApproved,
             "calendar" => $calendar,
             "branches" => $branches,

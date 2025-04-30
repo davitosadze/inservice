@@ -13,6 +13,7 @@ const mix = require('laravel-mix');
  */
 
 
+ mix.disableNotifications();
 
 mix.webpackConfig(webpack => {
     return {

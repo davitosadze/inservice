@@ -570,7 +570,9 @@
                                                     />
                                                 </template>
                                             </draggable>
-                                            <tr class="calculator"></tr>
+                                            <tbody>
+                                                <tr class="calculator"></tr>
+                                            </tbody>
                                         </table>
 
                                         <button

@@ -300,6 +300,8 @@
                                                     </th>
                                                 </tr>
                                             </thead>
+
+                                            <tbody>
                                             <draggable
                                                 v-model="expenses"
                                                 tag="tbody"
@@ -320,6 +322,7 @@
                                                 </template>
                                             </draggable>
                                             <tr class="calculator"></tr>
+                                        </tbody>
                                         </table>
                                     </div>
                                     <!-- /.col -->
