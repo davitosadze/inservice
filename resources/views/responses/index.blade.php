@@ -67,6 +67,8 @@
                                 $statusClass = 'rag-yellow';
                             } elseif (in_array($response->status, [5, 10])) {
                                 $statusClass = 'rag-green-arrived';
+                            } elseif($response->status == 9) {
+                                $statusClass = 'rag-gray';
                             }
                         @endphp
                         <div class="col-sm-6">
@@ -275,6 +277,10 @@
         background-color: #00c079 !important;
     }
 
+    .rag-gray {
+        background-color: #a9a9a9 !important;
+    }
+    
     .rag-on-repair {
         background-color: #a020f045 !important;
     }

@@ -370,6 +370,7 @@ export default {
             "rag-green": "data.status == 3",
             "rag-red": "data.status == 1",
             "rag-yellow": "data.status == 2",
+            "rag-gray": "data.status == 9",
         };
     },
     methods: {
@@ -555,6 +556,10 @@ export default {
 }
 .rag-green-arrived {
     background-color: #00c079 !important;
+}
+
+.rag-gray {
+    background-color: #a9a9a9 !important;
 }
 
 .rag-on-repair {

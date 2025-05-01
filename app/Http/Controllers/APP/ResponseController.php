@@ -45,7 +45,7 @@ class ResponseController extends Controller
             "name" => $purchaser->name,
             "purchaser_id" => $purchaser->id,
             "job_description" => $request->get('description'),
-            "status" => 10,
+            "status" => 9,
             "user_id" => Auth::user()->id
         ]);
 
