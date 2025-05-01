@@ -34,7 +34,7 @@ class ResponseController extends Controller
             $responses = $responses->whereIn('status', [0, 3])
                 ->get();
         } else {
-            $responses = $responses->whereIn("status", [1, 2, 5, 10])
+            $responses = $responses->whereIn("status", [1, 2, 5, 9, 10])
                 ->get();
         }
 
