@@ -136,7 +136,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     // Repair Acts
     Route::apiResource('repair-acts', RepairActController::class);
     Route::post("repair-acts/{act}/reject", [RepairActController::class, "reject"]);
-    Route::post("repair-acts/{id}/change-status", [RepairActController::class, "changeStatus"]);
+    Route::post("repair-acts/{id}/change-status", [RepairActController::class, "changeStatusNew"]);
 
 
     Route::apiResource("evaluations", EvaluationController::class);
