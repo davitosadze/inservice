@@ -152,6 +152,9 @@ class ResponseController extends Controller
                 $model->user()->associate(auth()->user());
             }
 
+            if($model->status == 9) {
+                $model->status == 1;
+            }
             if ($model->status == 2) {
                 $model->status = 3;
                 $model->act()->update([

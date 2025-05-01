@@ -208,8 +208,8 @@
                                 {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control']) }}
 
                             </div>
-                            @if ($model->id && $model->status >= 2)
-                                <div class="form-group">
+                            @if ($model->id && $model->status >= 2 && $model->status != 9)
+                            <div class="form-group">
                                     <label for="formGroupExampleInput">დანადგარის ლოკაციის ზუსტი აღწერა:</label>
 
                                     {{ Form::textarea('exact_location', $model->exact_location ? $model->exact_location : $model->act?->location?->name, ['placeholder' => 'დანადგარის ლოკაციის ზუსტი აღწერა', 'cols' => 2, 'rows' => 2, 'class' => 'form-control']) }}
