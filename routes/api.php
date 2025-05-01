@@ -151,6 +151,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     // Application
     Route::post('app/responses/{response}/attend ', [APPResponseController::class, 'arrived'])->name('app.acts.arrived');
+    Route::post('app/responses ', [APPResponseController::class, 'index'])->name('app.responses.index');
     Route::post('app/responses ', [APPResponseController::class, 'store'])->name('app.responses.store');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
 

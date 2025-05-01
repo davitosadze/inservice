@@ -13,6 +13,11 @@ use Validator;
 class ResponseController extends Controller
 {
 
+    public function index() {
+        $responses = Response::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')->where("user_id", Auth::user()->id)->get();
+        return response($responses->toArray());
+
+    }
 
     public function arrived($id)
     {
