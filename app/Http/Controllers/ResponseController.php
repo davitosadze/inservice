@@ -153,7 +153,7 @@ class ResponseController extends Controller
             }
 
             if($model->status == 9) {
-                $model->status == 1;
+                $model->status = 1;
             }
             if ($model->status == 2) {
                 $model->status = 3;
