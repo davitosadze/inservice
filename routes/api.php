@@ -20,7 +20,7 @@ use App\Http\Controllers\API\InstructionController;
 use App\Http\Controllers\API\LocationController;
 use App\Http\Controllers\API\PerformerController;
 use App\Http\Controllers\API\RegionController;
-use App\Http\Controllers\Api\RepairActController;
+use App\Http\Controllers\API\RepairActController;
 use App\Http\Controllers\API\RepairController;
 use App\Http\Controllers\API\RepairDeviceController;
 use App\Http\Controllers\API\ResponseController;
