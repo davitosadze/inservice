@@ -80,7 +80,7 @@ class ResponseController extends Controller
                 ->orWhere("status", 0)
                 ->get();
         } else {
-            $responses = $responses->whereIn("status", [1, 2, 5, 10])
+            $responses = $responses->whereIn("status", [1, 2, 9, 5, 10])
                 ->get();
         }
 
