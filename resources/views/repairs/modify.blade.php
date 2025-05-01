@@ -256,7 +256,7 @@
                 let setting = @json($setting);
 
                 $(document).ready(function() {
-                    // $('.purchaser').select2();
+                     $('.purchaser').select2();
 
 
                 });
