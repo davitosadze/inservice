@@ -43,7 +43,7 @@ class RepairAct extends Model
 
     public function deviceType()
     {
-        return $this->belongsTo(DeviceType::class);
+        return $this->belongsTo(RepairDevice::class);
     }
 
     public function deviceBrand()
