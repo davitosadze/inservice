@@ -54,8 +54,8 @@ class ClientStatisticController extends Controller
         $dates = collect();
         $from->toPeriod($to)->forEach(fn($date) => $dates->push($date->toDateString()));
 
-
-        $client = auth()->user()->client;
+        $user = auth()->user();
+        $client = Client::whereJsonContains('user_ids', $user->id)->first() ?? null;
 
         $permissions = $client["toggles"];
         $branches = Purchaser::whereNot('single', 1)->get()
