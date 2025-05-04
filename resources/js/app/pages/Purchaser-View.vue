@@ -299,7 +299,7 @@
                                             class="list-group-item list-group-item-action"
                                         >
                                             <a
-                                                :href="`/reports/${report.id}/edit`"
+                                                :href="`/reports/${report.id}?open=1`"
                                                 class="text-decoration-none text-dark d-block"
                                             >
                                                 {{

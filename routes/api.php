@@ -5,7 +5,6 @@ use App\Http\Controllers\API\AppStatisticController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PurchaserController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\InvoiceController;
@@ -28,6 +27,7 @@ use App\Http\Controllers\API\ServiceActController;
 use App\Http\Controllers\API\ServiceController;
 use App\Http\Controllers\API\StatisticController;
 use App\Http\Controllers\API\SystemController;
+use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\APP\ExpoNotificationController;
 use App\Http\Controllers\APP\MediaController;
 use App\Http\Controllers\APP\RepairController as APPRepairController;
