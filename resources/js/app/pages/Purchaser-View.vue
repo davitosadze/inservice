@@ -277,9 +277,46 @@
 
                         <div class="mt-5 row">
                             <div
+                                class="col-md-3"
+                                style="
+                                    background-color: #f1f0ef;
+                                    text-align: center;
+                                    padding: 1rem;
+                                    border-radius: 10px;
+                                "
+                            >
+                                <!-- Section Title -->
+                                <h6 class="mb-3">დეფექტური აქტები</h6>
+
+                                <!-- Scrollable List -->
+                                <div
+                                    style="overflow-y: auto; max-height: 300px"
+                                >
+                                    <ul class="list-group">
+                                        <li
+                                            v-for="report in additional.reports"
+                                            :key="report.id"
+                                            class="list-group-item list-group-item-action"
+                                        >
+                                            <a
+                                                :href="`/reports/${report.id}/edit`"
+                                                class="text-decoration-none text-dark d-block"
+                                            >
+                                                {{
+                                                    report.title +
+                                                    " " +
+                                                    report.uuid
+                                                }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div
                                 v-for="subject in subjects"
                                 :key="subject.id"
-                                class="col-md-4"
+                                class="col-md-3"
                             >
                                 <file-pond
                                     @activatefile="onActivateFile"
@@ -304,8 +341,10 @@
                         </div>
 
                         <!-- Folder Structure -->
-
-                        <div class="container files mt-5">
+                        <div
+                            style="width: 35%"
+                            class="container files mt-5 mx-auto"
+                        >
                             <h4>დამატებითი ფაილები:</h4>
                             <hr />
                             <div
@@ -313,6 +352,7 @@
                                 :key="date"
                                 class="mb-4"
                             >
+                                <!-- Date toggle -->
                                 <h3
                                     @click="toggleLocations(date)"
                                     class="btn btn-primary w-100 text-left p-3 rounded-pill d-flex align-items-center justify-content-between"
@@ -330,26 +370,29 @@
                                     <i v-else class="fas fa-chevron-down"></i>
                                 </h3>
 
-                                <!-- Locations shown when a date is clicked -->
                                 <div
                                     v-show="isDateSelected(date)"
                                     :id="'locations-' + date"
                                     class="ml-4 mt-2"
                                 >
+                                    <!-- Loop through locations -->
                                     <div
-                                        v-for="(files, location) in locations"
+                                        v-for="(folders, location) in locations"
                                         :key="location"
-                                        class="mb-2"
+                                        class="mb-3"
                                     >
                                         <button
-                                            @click="toggleFiles(location)"
+                                            @click="toggleFiles(date, location)"
                                             class="btn btn-outline-primary w-100 text-left d-flex align-items-center p-3 rounded-pill"
                                         >
                                             <i class="fas fa-folder mr-2"></i
                                             >{{ location }}
                                             <i
                                                 v-if="
-                                                    isLocationSelected(location)
+                                                    isLocationSelected(
+                                                        date,
+                                                        location
+                                                    )
                                                 "
                                                 class="fas fa-chevron-up ml-auto"
                                             ></i>
@@ -359,39 +402,61 @@
                                             ></i>
                                         </button>
 
-                                        <!-- Files shown when a location is clicked -->
                                         <div
                                             v-show="
-                                                isLocationSelected(location)
+                                                isLocationSelected(
+                                                    date,
+                                                    location
+                                                )
                                             "
                                             class="ml-4 mt-2"
                                         >
+                                            <!-- Loop through folders under location -->
                                             <div
-                                                v-for="file in files"
-                                                :key="file.file_name"
-                                                class="mb-2 d-flex align-items-center"
+                                                v-for="(
+                                                    files, folder
+                                                ) in folders"
+                                                :key="folder"
+                                                class="mb-2"
                                             >
-                                                <button
-                                                    @click="openImage(file)"
-                                                    class="btn btn-link text-left flex-grow-1 d-flex align-items-center"
-                                                >
+                                                <h5 class="mt-3 mb-2">
                                                     <i
-                                                        class="fas fa-image mr-2"
-                                                    ></i
-                                                    >{{ file.file_name }}
-                                                </button>
-                                                <button
-                                                    @click="deleteFile(file)"
-                                                    class="btn btn-danger ml-2"
+                                                        class="fas fa-folder-open mr-1"
+                                                    ></i>
+                                                    {{ folder }}
+                                                </h5>
+
+                                                <!-- Loop through files -->
+                                                <div
+                                                    v-for="file in files"
+                                                    :key="file.file_name"
+                                                    class="mb-2 d-flex align-items-center"
                                                 >
-                                                    წაშლა
-                                                </button>
+                                                    <button
+                                                        @click="openImage(file)"
+                                                        class="btn btn-link text-left flex-grow-1 d-flex align-items-center"
+                                                    >
+                                                        <i
+                                                            class="fas fa-image mr-2"
+                                                        ></i>
+                                                        {{ file.file_name }}
+                                                    </button>
+                                                    <button
+                                                        @click="
+                                                            deleteFile(file)
+                                                        "
+                                                        class="btn btn-danger ml-2"
+                                                    >
+                                                        წაშლა
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <!-- End Folder Structure -->
                     </div>
                 </div>
@@ -446,7 +511,7 @@ export default {
     mounted() {
         this.fetchEvents();
         this.fetchFolderStructure();
-
+        console.log(this.additional.evaluations);
         this.v$.model.$touch();
     },
     data() {

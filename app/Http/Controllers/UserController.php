@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 use File;
@@ -81,7 +82,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => [
                 'required',
-                Rule::unique('users')->ignore($request->id, 'id')
+                Rule::unique('users')->ignore($request->name, 'name')
             ],
 
             'email' => [
@@ -90,7 +91,7 @@ class UserController extends Controller
             ],
 
             'media' => [
-                'required'
+                'nullable'
             ],
 
             'inter_password' => auth()->user()->hasRole('director') || auth()->user()->id == $request->id ? [
@@ -148,10 +149,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        
         $model = User::firstOrNew(['id' => $id]);
 
-        if (!$model['id'] && $id != 'new') {
+         if (!$model['id'] && $id != 'new') {
             abort(404);
         }
 

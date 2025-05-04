@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Purchaser;
+use App\Models\Report;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PurchaserController extends Controller
@@ -28,8 +29,8 @@ class PurchaserController extends Controller
                 ['field' => "subj_name", 'headerName' => 'დამატებითი სახელი'],
                 ['field' => "subj_address", 'headerName' => 'კლიენტის მისამართი'],
                 ['field' => "technical_time", 'headerName' => 'ტექნიკური მომსახურების დრო წთ-ში'],
-                ['field' => "cleaning_time", 'headerName' => 'წმენდითი მომსახურების დრო წთ-ში']
-
+                ['field' => "cleaning_time", 'headerName' => 'წმენდითი მომსახურების დრო წთ-ში'],
+  
             ],
             'url' => [
                 'request' =>
@@ -79,11 +80,14 @@ class PurchaserController extends Controller
      */
     public function show($id)
     {
+
         $model = Purchaser::find($id);
-        // return $model;
+
+         // return $model;
         $this->authorize('view', $model);
 
-        $additional = [];
+        $reports = Report::where('subject_address', $model->subj_address)->get();
+        $additional = ["reports" => $reports];
         $setting = [
 
             'url' => [

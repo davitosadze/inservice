@@ -207,8 +207,26 @@ class RepairController extends Controller
 
     public function assignPerformer(Request $request, Repair $repair)
     {
+
         $repair->performer_id = $request->get('performer_id');
         $repair->save();
+
+ 
+            if ($repair->performer?->expo_token) {
+                $messages = [
+                    new ExpoMessage([
+                        'title' => 'რემონტი',
+                        'body' => 'თქვენ მიიღეთ ახალი სამუშაო',
+                        'to' => $repair->performer?->expo_token,
+                        'data' => [
+                            'url' => 'repairs',
+                            'id' => $repair->id,
+                        ]
+                    ]),
+                ];
+                (new Expo())->send($messages)->push();
+            }
+    
         return back()->with('success', "შემსრულებელი წარმატებით მიება");
     }
 

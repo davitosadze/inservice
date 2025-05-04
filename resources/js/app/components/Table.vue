@@ -62,6 +62,43 @@ function alterRenderer(params) {
     return eGui;
 }
 
+function circleDateRenderer(params, dateField) {
+    const value = params.data[dateField];
+
+    let eGui = document.createElement("div");
+    eGui.style.display = "flex";
+    eGui.style.justifyContent = "center";
+    eGui.style.alignItems = "center";
+    eGui.style.height = "100%";
+
+    const circle = document.createElement("div");
+    circle.style.width = "15px"; // Increased size for text to fit
+    circle.style.height = "15px";
+    circle.style.borderRadius = "50%";
+    circle.style.backgroundColor = value ? "green" : "red";
+    circle.style.display = "flex";
+    circle.style.justifyContent = "center";
+    circle.style.alignItems = "center";
+    circle.style.color = "white"; // Text color
+    circle.style.fontWeight = "bold"; // Make the text stand out
+
+    eGui.appendChild(circle);
+    return eGui;
+}
+
+// Now use the function for each column definition
+function technicalReviewDateRenderer(params) {
+    return circleDateRenderer(params, "technical_review_date");
+}
+
+function firstReviewDateRenderer(params) {
+    return circleDateRenderer(params, "first_review_date");
+}
+
+function baseCreationDateRenderer(params) {
+    return circleDateRenderer(params, "base_creation_date");
+}
+
 function alterRendererWithView(params) {
     let eGui = document.createElement("div");
 
@@ -240,6 +277,51 @@ export default {
             if (props.setting.is_table_advanced) {
                 if (props.setting.model == "purchaser") {
                     is_table_advanced = [
+                        {
+                            headerName: "პირველადი შემოწმების თარიღი",
+                            headerClass: "text-center",
+                            maxWidth: 100,
+                            filter: true, // Use ag-Grid's Set Filter for custom filtering
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: firstReviewDateRenderer,
+                            editable: false,
+                            colId: "firstReview",
+                            valueGetter: (params) =>
+                                !!params.data.first_review_date, // Returns true/false for filtering
+                            filterParams: {
+                                values: ["true", "false"], // Set custom filter options
+                            },
+                        },
+                        {
+                            headerName: "ბაზის შექმნის თარიღი",
+                            headerClass: "text-center",
+                            maxWidth: 100,
+                            filter: true,
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: baseCreationDateRenderer,
+                            editable: false,
+                            valueGetter: (params) =>
+                                !!params.data.base_creation_date, // Returns true/false for filtering
+                            filterParams: {
+                                values: ["true", "false"], // Set custom filter options
+                            },
+                            colId: "baseCreation",
+                        },
+                        {
+                            headerName: "ტექნიკური შემოწმების თარიღი",
+                            headerClass: "text-center",
+                            maxWidth: 100,
+                            filter: true,
+                            cellStyle: { textAlign: "center" },
+                            cellRenderer: technicalReviewDateRenderer,
+                            editable: false,
+                            valueGetter: (params) =>
+                                !!params.data.technical_review_date, // Returns true/false for filtering
+                            filterParams: {
+                                values: ["true", "false"], // Set custom filter options
+                            },
+                            colId: "technicalReview",
+                        },
                         {
                             headerName: "გადმოწერა",
                             headerClass: "text-center",

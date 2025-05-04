@@ -31,6 +31,10 @@
     }
     ?>
 
+    @php
+    $readonly = ($model->by_client && Auth::user()->roles->contains('დირექტორი')) ? 'readonly' : '';
+    $disabled = ($model->by_client && Auth::user()->roles->contains('დირექტორი')) ? 'disabled' : '';
+    @endphp                   
     <!-- Main content -->
     <section class="content">
 
@@ -94,10 +98,10 @@
                                 <div class="form-group mb-2" style="align-items: center;">
                                     <div class="col-12"><b>აირჩიეთ :</b></div>
                                     <div class="col-12">
-                                        <select name="purchaser" class="form-control purchaser">
+                                        <select  name="purchaser" class="form-control purchaser">
                                             <option disabled selected>--- აირჩეთ ---</option>
                                             @foreach ($additional['purchasers'] as $purchaser)
-                                                <option value='@json($purchaser)'
+                                                <option {{ $disabled }} value='@json($purchaser)'
                                                     @selected($model->purchaser_id == $purchaser['id'])>
                                                     {{ $purchaser['name'] }} / {{ $purchaser['subj_name'] }} /
                                                     {{ $purchaser['subj_address'] }}
@@ -178,7 +182,7 @@
                             </div>
 
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>მოწყობილობის დასახელება :</b></div>
                                     <div class="col-12">
@@ -201,11 +205,12 @@
                                     </div>
 
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="form-group">
+                             <div class="form-group">
                                 <label for="formGroupExampleInput">შინაარსი:</label>
-                                {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control']) }}
+             
+                            {{ Form::textarea('content', $model->content, [$readonly,'placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control']) }}
 
                             </div>
                             @if ($model->id && $model->status >= 2 && $model->status != 9)

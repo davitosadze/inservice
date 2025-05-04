@@ -18,9 +18,8 @@
     <section class="content">
 
         <div id="renderer">
-
-
-
+ 
+            
             <div class="card card-primary card-outline card-tabs">
                 <div class="card-body">
                     {{ Form::model($model, ['route' => ['users.store', $model->id ? $model->id : 'new'], 'files' => true]) }}
@@ -46,9 +45,17 @@
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="email">თანამდებობა</label>
-                                            {{ Form::text('position', $model->position, ['class' => 'form-control']) }}
+                                            {{ Form::text('position', $model->position, ['class' => 'form-control', '']) }}
                                         </div>
                                     </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <label for="status">სტატუსი</label>
+                                            {{ Form::select('status', [0 => 'დაუდასტურებელი', 1 => 'დადასტურებული'], $model->status, ['class' => 'form-control']) }}
+                                        </div>
+                                    </div>
+                                    
                                     {{-- @if (auth()->user()->hasRole('director')) --}}
                                     <div class="form-row">
                                         <div class="form-group col">

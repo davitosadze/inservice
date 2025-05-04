@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\Purchaser;
 use App\Models\Region;
 use App\Models\Response;
@@ -17,7 +18,7 @@ class ClientStatisticController extends Controller
     public function me()
     {
         $user = auth()->user();
-        $client = $user->client;
+        $client = Client::whereJsonContains('user_ids', $user->id)->first() ?? null;
 
         if ($client) {
             $toggles = $client->toggles ?? [];

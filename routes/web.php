@@ -52,11 +52,11 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     Route::get("/dashboard", [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/test', [DashboardController::class, 'test']);
-    Route::get("/profile", [UserController::class, 'profile'])->name('profile');
+     Route::get("/profile", [UserController::class, 'profile'])->name('profile');
 
     Route::resource("users", UserController::class);
-    Route::post("users/uploads", [UserController::class, 'upload']);
+     Route::post("users/storeNew", [UserController::class, 'storeNew'])->name('users.storeNew');
+     Route::post("users/uploads", [UserController::class, 'upload']);
     Route::get("users/uploads2/{report_item}", [UserController::class, 'upload2']);
 
     Route::resource("clients", ClientsController::class);

@@ -12,6 +12,7 @@
         "ahmedsaoud31/laravel-permission-to-vuejs": "dev-master",
         "barryvdh/laravel-dompdf": "^1.0",
         "ctwillie/expo-server-sdk-php": "^2.1",
+        "doctrine/dbal": "^4.2",
         "dompdf/dompdf": "^1.2",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",

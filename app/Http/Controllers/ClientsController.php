@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Purchaser;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
@@ -68,6 +69,7 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
+
         $model = Client::with(['expenses' => function ($query) {
             $query->with('media');
         }], "user")->firstOrNew(['id' => $id]);
@@ -104,7 +106,8 @@ class ClientsController extends Controller
         // return $model;
         $this->authorize('view', $model);
 
-        $additional = ["purchasers" => Purchaser::whereNot('single', 1)->get()->pluck('formatted_name')->unique()->values()];
+        $clients = User::role('კლიენტი')->get();
+        $additional = ["purchasers" => Purchaser::whereNot('single', 1)->get()->pluck('formatted_name')->unique()->values(), 'clients' => $clients];
         $setting = [
 
             'columns' => [['field' => "client_name"]],

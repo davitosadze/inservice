@@ -6,62 +6,35 @@
 
                 <div class="invoice p-3 mb-3">
                     <div style="">
-                        <form @submit.prevent="registerClient">
+                        <form @submit.prevent="submitSelectedUsers">
                             <div class="form-group row">
-                                <!-- Email Input -->
-                                <div class="col-md-4">
-                                    <label for="email" class="col-form-label"
-                                        ><b>იმეილი:</b></label
+                                <div class="col-md-10">
+                                    <label for="users" class="col-form-label"
+                                        ><b>აირჩიეთ მომხმარებლები:</b></label
                                     >
-                                    <input
-                                        id="email"
-                                        v-model="email"
+                                    <select
+                                        id="users"
+                                        v-model="selectedUserIds"
                                         class="form-control"
-                                        type="email"
-                                        placeholder="შეიყვანეთ იმეილი"
+                                        multiple
                                         required
-                                    />
+                                    >
+                                        <option
+                                            v-for="client in clients"
+                                            :key="client.id"
+                                            :value="client.id"
+                                        >
+                                            {{ client.name }}
+                                        </option>
+                                    </select>
                                 </div>
 
-                                <!-- Password Input -->
-                                <div class="col-md-3">
-                                    <label for="password" class="col-form-label"
-                                        ><b>პაროლი:</b></label
-                                    >
-                                    <input
-                                        id="password"
-                                        v-model="password"
-                                        class="form-control"
-                                        type="password"
-                                        placeholder="შეიყვანეთ პაროლი"
-                                        required
-                                    />
-                                </div>
-
-                                <!-- Confirm Password Input -->
-                                <div class="col-md-3">
-                                    <label
-                                        for="confirm_password"
-                                        class="col-form-label"
-                                        ><b>გაიმეორეთ პაროლი:</b></label
-                                    >
-                                    <input
-                                        id="confirm_password"
-                                        v-model="confirmPassword"
-                                        class="form-control"
-                                        type="password"
-                                        placeholder="გაიმეორეთ პაროლი"
-                                        required
-                                    />
-                                </div>
-
-                                <!-- Submit Button -->
                                 <div class="col-md-2 d-flex align-items-end">
                                     <button
                                         type="submit"
                                         class="btn btn-success w-100"
                                     >
-                                        შენახვა
+                                        გაგზავნა
                                     </button>
                                 </div>
                             </div>
@@ -141,6 +114,17 @@
                                     class="col-form-label ml-3 font-weight-medium"
                                     >დაფიქსირებული ინციდენტები რეგიონის
                                     მიხედვით</label
+                                >
+                            </div>
+
+                            <div class="col-sm-3 mt-2">
+                                <input
+                                    type="checkbox"
+                                    v-model="toggles.repairs"
+                                />
+                                <label
+                                    class="col-form-label ml-3 font-weight-medium"
+                                    >რემონტები</label
                                 >
                             </div>
                         </div>
@@ -659,9 +643,8 @@ export default {
         this.m = this.attributeInit;
     },
     mounted() {
-        console.log(this.additional);
         this.initializeSelect2();
-
+        // this.selectedUserIds = JSON.parse(this.model.user_ids);
         if (!this.can("კლიენტის რედაქტირება")) {
             console.log(this.setting.url.request);
             let redirect = this.setting.url.request.show.replace(
@@ -680,10 +663,11 @@ export default {
             selector: "",
             step: false,
             keys: [],
+            selectedUserIds: JSON.parse(this.model.user_ids),
             email: this.model?.user?.email || "",
             password: "",
             confirmPassword: "",
-
+            clients: this.additional.clients,
             branchs: this.additional.purchasers,
             selectedBranchs: [],
 
@@ -716,6 +700,7 @@ export default {
                 incidents_by_branches:
                     this.model.toggles?.incidents_by_branches,
                 incidents_by_regions: this.model.toggles?.incidents_by_regions,
+                repairs: this.model.toggles?.repairs,
             },
         };
     },
@@ -805,6 +790,17 @@ export default {
             this.$nextTick(() => {
                 $("#branchs").val(this.selectedService).trigger("change");
             });
+        },
+
+        async submitSelectedUsers() {
+            try {
+                await axios.post("/api/clients/assign-users/" + this.model.id, {
+                    user_ids: this.selectedUserIds,
+                });
+                alert("მომხმარებლები წარმატებით გაიგზავნა");
+            } catch (error) {
+                console.error("Error submitting users:", error);
+            }
         },
         async registerClient() {
             if (this.password !== this.confirmPassword) {

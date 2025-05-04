@@ -39,6 +39,7 @@ use App\Http\Controllers\FolderController;
 Route::post("app/statistics", [AppStatisticController::class, 'index']);
 Route::get('app/purchaser-names', [PurchaserController::class, "purchaserNames"]);
 Route::post('app/upload-media', [MediaController::class, "uploadMedia"]);
+Route::post("app/clients/register", [ClientsController::class, 'registerClient']);
 
 Route::get('/instructions', [InstructionController::class, 'index']);
 Route::get('/instructions/{id}', [InstructionController::class, 'show']);
@@ -75,7 +76,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::get("clients/me", [ClientStatisticController::class, 'me']);
     Route::post("clients/statistics", [ClientStatisticController::class, 'index']);
     Route::apiResource("clients", ClientsController::class);
-    Route::post("clients/registerClient/{client_id}", [ClientsController::class, 'registerClient']);
+    Route::post("clients/assign-users/{client}", [ClientsController::class, 'assignUsers']);
 
     Route::post("uploadClientFiles", [ClientsController::class, 'uploadClientFiles']);
     Route::delete("deleteClientFiles/{media_id}", [ClientsController::class, 'deleteClientFiles']);
@@ -154,6 +155,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::get('app/responses ', [APPResponseController::class, 'index'])->name('app.responses.index');
     Route::post('app/responses ', [APPResponseController::class, 'store'])->name('app.responses.store');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
+
 
     // App Repairs
     Route::post('app/repairs/{repair}/attend ', [APPRepairController::class, 'arrived'])->name('app.repair-acts.arrived');

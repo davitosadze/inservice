@@ -32,7 +32,8 @@ class User extends Authenticatable implements HasMedia
         'inter_password',
         'manager_type',
         'job_description',
-        'position'
+        'position',
+        'status'
     ];
 
     protected $appends = ["profile_image"];

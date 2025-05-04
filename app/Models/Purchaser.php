@@ -52,6 +52,11 @@ class Purchaser extends Model implements HasMedia
         return preg_replace('/[^\p{L}]+/u', '', $this->name);
     }
 
+    public function evaluations() {
+        return $this->hasMany(Evaluation::class, "purchaser_id");
+    }
+
+ 
     public function specialAttributes()
     {
         return $this->hasMany(SpecialAttribute::class);

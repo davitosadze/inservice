@@ -112,6 +112,12 @@ class ClientsController extends Controller
         return response()->json(["success" => true, "expense" => $expense], 200);
     }
 
+    public function assignUsers(Request $request, Client $client) {
+        $client->user_ids = $request->get('user_ids');
+        $client->save();
+        return response()->json('success', 200);
+    }
+
 
     public function store(Request $request)
     {
@@ -181,34 +187,30 @@ class ClientsController extends Controller
 
 
 
-    public function registerClient(Request $request, $client_id)
+    public function registerClient(Request $request)
     {
 
-        $client = Client::find($client_id);
-
+ 
         $validatedData = $request->validate([
-            'email' => ['required', 'email', Rule::unique('users')->ignore($client->user_id)],
+            'name' => 'required',
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6'],
         ]);
-
-
-        $user = User::updateOrCreate(
-            ['id' => $client->user_id ? $client->user_id : null],
-            [
-                'name' => $client->client_name,
-                'email' => $validatedData['email'],
-                'password' => $validatedData["password"],
-            ]
-        );
-
+        
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],  
+            'status' => 0,  
+        ]);
+        
         // Assign "კლიენტი" role if not already assigned
         if (!$user->hasRole('კლიენტი')) {
             $user->assignRole('კლიენტი');
         }
-
-        $client->update(['user_id' => $user->id]);
-
-        return response()->json(['message' => 'მონაცემები განახლდა წარმატებით', 'user' => $user], 200);
+        
+        return response()->json(['message' => 'დაელოდეთ ვერიფიკაციას', 'user' => $user], 200);
+    
     }
 
 

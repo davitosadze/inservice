@@ -28,7 +28,7 @@ class Client extends Model implements HasMedia
         "guarantee_start_date",
         "guarantee_end_date",
         "unique_id",
-        "user_id",
+        "user_ids",
         "toggles",
         "purchaser"
     ];

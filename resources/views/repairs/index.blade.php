@@ -106,22 +106,22 @@
                                             @if (!Auth::user()->hasRole('ინჟინერი'))
                                                 <hr>
                                                 <form method="POST"
-                                                    action="{{ route('repairs.assign-performer', $repair->id) }}"
-                                                    id="assign-performer-form">
-                                                    @csrf
-
-                                                    <select name="performer_id" class="form-control"
-                                                        id="performer_select"
-                                                        onchange="document.getElementById('assign-performer-form').submit()">
-                                                        <option value="">არაა არჩეული</option>
-                                                        @foreach ($additional['performers'] as $performer)
-                                                            <option @selected($performer['id'] == $repair->performer_id)
-                                                                value="{{ $performer['id'] }}">
-                                                                {{ $performer['name'] }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </form>
+                                                action="{{ route('repairs.assign-performer', $repair->id) }}"
+                                                id="assign-performer-form-{{ $repair->id }}">
+                                                @csrf
+                                            
+                                                <select name="performer_id" class="form-control"
+                                                    id="performer_select_{{ $repair->id }}"
+                                                    onchange="document.getElementById('assign-performer-form-{{ $repair->id }}').submit()">
+                                                    <option value="">არაა არჩეული</option>
+                                                    @foreach ($additional['performers'] as $performer)
+                                                        <option @selected($performer['id'] == $repair->performer_id)
+                                                            value="{{ $performer['id'] }}">
+                                                            {{ $performer['name'] }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </form>
 
                                                 <hr>
                                             @endif
