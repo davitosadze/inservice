@@ -19,7 +19,7 @@ class FolderController extends Controller
         foreach ($media as $item) {
             $date = $item->getCustomProperty('date', 'თარიღის გარეშე');
             $location = $item->getCustomProperty('location', 'ლოკაციის გარეშე');
-            $folder_name = $item->getCustomProperty('folder_name', 'ფოლდერის გარეშე');
+            $folder_name = $item->getCustomProperty('folder_name', 'სერვისები');
             $fileName = $item->file_name;
             $fileUrl = $item->getUrl();
             $fileUrl = preg_replace('/\d{4}-\d{2}-\d{2}/', $date, $fileUrl);
