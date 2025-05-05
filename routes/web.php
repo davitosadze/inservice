@@ -154,7 +154,12 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     Route::resource("instructions", InstructionController::class);
 
-    // Folders
+    // Chats
+
+    Route::get('/chats', [App\Http\Controllers\Chat\ChatController::class, 'index'])->name('chats.index');
+    Route::get('/chats/{id}', [App\Http\Controllers\Chat\ChatController::class, 'show'])->name('chats.show');
+    Route::post('/chats/{id}/reply', [App\Http\Controllers\Chat\ChatController::class, 'reply'])->name('chats.reply');
+
 });
 
 require __DIR__ . '/auth.php';

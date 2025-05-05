@@ -18,6 +18,7 @@
     @yield('head')
     @stack('styles')
 
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
 <body class="font-sans antialiased hold-transition sidebar-mini layout-fixed">
@@ -87,12 +88,34 @@
         {{ $slot }}
     </main>
 
+         <div id="notification" 
+             style="display: none; position: fixed; right: 20px; bottom: 20px;" 
+             class="alert alert-info">
+        </div>
+ 
+        <script>
+            // Add Pusher configuration before loading chat-notifications.js
+            window.pusherConfig = {
+                key: '{{ config('broadcasting.connections.pusher.key') }}',
+                cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}'
+            };
+        </script>
     <!-- Scripts -->
     <script src="{{ mix('js/manifest.js') }}"></script>
     <script src="{{ mix('js/vendor.js') }}"></script>
     <script src="{{ mix('js/guest.js') }}" defer></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ mix('js/vendors/lte-core.js') }}"></script>
+    <script src="{{ asset('js/chat-notifications.js') }}"></script>
+    
+    <script>
+        @can('ჩატი')
+            document.addEventListener('DOMContentLoaded', () => {
+                window.chatNotifications = new ChatNotificationSystem();
+                window.chatNotifications.init();
+            });
+        @endcan
+    </script>
     <script type="text/javascript">
         window.addEventListener("orientationchange", function() {
 
@@ -115,6 +138,7 @@
     </script>
     @stack('scripts')
 
+ 
 </body>
 
 </html>

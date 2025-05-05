@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APP;
 use App\Http\Controllers\Controller;
 use App\Models\Purchaser;
 use App\Models\Response;
+use App\Notifications\NewResponseNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,8 @@ class ResponseController extends Controller
 
     public function store(Request $request)
     {
+
+ 
         $validator = Validator::make($request->all(), [
             'branch_id' => 'required|exists:purchasers,id',
             'description' => 'required|string|max:1000',
@@ -44,7 +47,7 @@ class ResponseController extends Controller
 
         $purchaser = Purchaser::find($request->get('branch_id'));
 
-        Response::create([
+        $response = Response::create([
             "subject_name" => $purchaser->subj_name,
             "subject_address" => $purchaser->subj_address,
             "name" => $purchaser->name,
@@ -55,6 +58,10 @@ class ResponseController extends Controller
             "status" => 9,
             "user_id" => Auth::user()->id
         ]);
+
+        // $user = auth()->user();
+        // $user->notify(new NewResponseNotification($user,$response));
+    
 
         return response()->json([
             "success" => true,

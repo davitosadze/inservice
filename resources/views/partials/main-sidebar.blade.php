@@ -20,7 +20,14 @@
                     </li>
                 @endif
 
-
+                @if (Auth::user()->can('ჩატი'))
+                <li class="nav-item">
+                    <a href="{{ route('chats.index') }}" class="nav-link {{ request()->routeIs('chats.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-comments"></i>
+                        <p>ჩატი</p>
+                    </a>
+                </li>
+                @endif
 
                 @if (Auth::user()->can('ინვოისის ნახვა'))
                     <li class="nav-item">

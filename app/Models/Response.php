@@ -29,7 +29,8 @@ class Response extends Model
         "device_type",
         'on_repair',
         "user_id",
-        "by_client"
+        "by_client",
+        "end_time"
     ];
     protected $appends = ["formatted_name", "job_time"];
 

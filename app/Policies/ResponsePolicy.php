@@ -58,8 +58,8 @@ class ResponsePolicy
      */
     public function update(User $user, ResponseModel $response)
     {
-        //
-        return (($user->can("რეაგირების რედაქტირება") && $response->user->id == $user->id) || $user->hasRole('director'));
+        return $user->can("რეაგირების რედაქტირება");
+        // return (($user->can("რეაგირების რედაქტირება") && $response->user->id == $user->id) || $user->hasRole('director'));
     }
 
     /**

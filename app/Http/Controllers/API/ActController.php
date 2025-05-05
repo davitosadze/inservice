@@ -10,6 +10,7 @@ use App\Models\Location;
 use App\Models\Repair;
 use App\Models\RepairAct;
 use App\Models\Response as ModelsResponse;
+use App\Notifications\NewResponseNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,6 +59,11 @@ class ActController extends Controller
 
                 if ($request->approve == 1) {
                     $response->status = 3;
+                    $response->end_time =  Carbon::now();
+                    // if($response->by_client) {
+                    //     $user = $response->user;
+                    //     $user->notify(new NewResponseNotification($user,$response));
+                    // }
                 } elseif ($request->on_repair == 1) {
                     $response->status = 3;
                     $response->on_repair = 1;

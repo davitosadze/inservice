@@ -11,6 +11,7 @@ use App\Http\Controllers\API\InvoiceController;
 use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
+use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ClientsController;
 use App\Http\Controllers\API\ClientStatisticController;
 use App\Http\Controllers\API\DeviceBrandController;
@@ -161,4 +162,10 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('app/repairs/{repair}/attend ', [APPRepairController::class, 'arrived'])->name('app.repair-acts.arrived');
     Route::post('app/repairs ', [APPRepairController::class, 'store'])->name('app.responses.store');
     Route::get('app/repairs ', [APPRepairController::class, 'index'])->name('app.repairs.index');
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/chat/start', [ChatController::class, 'startChat']);
+    Route::post('/chat/message', [ChatController::class, 'sendMessage']);
+    Route::get('/chat/{chatId}/messages', [ChatController::class, 'getMessages']);
 });

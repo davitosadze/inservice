@@ -18,7 +18,7 @@ use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia, LaravelPermissionToVueJS;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia, LaravelPermissionToVueJS, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -87,9 +87,9 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Invoice::class, "user_id");
     }
 
-    public function client()
+    public function getClient()
     {
-        return $this->hasOne(Client::class, "user_id");
+        return Client::whereJsonContains('user_ids', $this->id)->first() ?? null;
     }
 
     public function getProfileImageAttribute()
@@ -108,5 +108,10 @@ class User extends Authenticatable implements HasMedia
             return;
         }
         return $this->getMedia('*')->first()?->original_url;
+    }
+
+    public function hasPermission($permission)
+    {
+         return $this->permissions->contains('name', $permission);
     }
 }
