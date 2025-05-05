@@ -230,15 +230,43 @@
                             <button class="btn btn-success  btn-block">
                                 <i class="far fa-paper-plane"></i> გაგზავნა
                             </button>
+
+                            {{-- Custom Field: Show description based on $from --}}
+                            @if($additional['descmodel'])
+                            <div class="form-group mt-4">
+                                <label for="related_description"><b>აღწერა</b></label>
+                                <textarea class="form-control" id="related_description" rows="3" readonly>{{ $additional['descmodel']?->content  }}</textarea>
+                            </div>
+                            @endif
+                            
+                            @php
+                            $mediaLabel = $model->from === 'service' ? 'სერვისის სურათები' : ($model->from === 'response' ? 'რეაგირების სურათები' : null);
+                            $mediaFiles = $model->purchaser?->getMedia('Additional_InformationFiles')->filter(function($media) use ($mediaLabel) {
+                                return $media->getCustomProperty('folder_name') === $mediaLabel;
+                            });
+                            @endphp
+                            
+                            @if($mediaLabel && $mediaFiles && $mediaFiles->count())
+                                <div class="form-group mt-3">
+                                    <label><b>{{ $mediaLabel }}</b></label>
+                                    <div class="container">
+                                        <div class="row">
+                                            @foreach($mediaFiles as $file)
+                                                <div class="col-6 mb-2">
+                                                    <a href="{{ $file->getFullUrl() }}" target="_blank">
+                                                        <img src="{{ $file->getFullUrl() }}" class="img-fluid rounded" style="max-height: 180px;" alt="file image">
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        
+                      
                         </div>
-
-
                     </div>
-
                 </div>
-
-
-
             </div>
 
         </div>

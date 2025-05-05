@@ -124,7 +124,7 @@
                                 />
                                 <label
                                     class="col-form-label ml-3 font-weight-medium"
-                                    >რემონტები</label
+                                    >შეკვეთები</label
                                 >
                             </div>
                         </div>

@@ -6,6 +6,8 @@ use App\Models\Purchaser;
 use App\Models\Region;
 use App\Models\Repair;
 use App\Models\RepairDevice;
+use App\Models\Response;
+use App\Models\Service;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -253,9 +255,14 @@ class RepairController extends Controller
         $model = Repair::firstOrNew(['id' => $id]);
         $this->authorize('view', $model);
 
+ 
         if (!$model['id'] && $id != 'new') {
             abort(404);
         }
+        
+
+        
+ 
         $additional = [
             'purchasers' => Purchaser::whereNot('single', 1)->get()->toArray(),
             'performers' =>  User::where('id', "!=", auth()->user()->id)->whereHas('roles', function (Builder $query) {
@@ -263,6 +270,7 @@ class RepairController extends Controller
             })->get()->toArray(),
             'regions' => Region::get()->toArray(),
             'repair_devices' => RepairDevice::get()->toArray(),
+            'descmodel' => $model->fromModel,
         ];
 
 

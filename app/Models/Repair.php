@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Repair extends Model
 {
@@ -73,4 +74,31 @@ class Repair extends Model
         $diff = Carbon::parse($this->time)->diff($this->updated_at);
         return  $diff->format('%h საათი და %i წუთი');
     }
+
+    /**
+     * Get the related Response if from is 'response'
+     */
+/**
+ * Get the related Response if from is 'response'
+ */
+        public function response(): BelongsTo
+        {
+            return $this->belongsTo(Response::class, 'from_id');
+        }
+
+        /**
+         * Get the related Service if from is 'service'
+         */
+        public function service(): BelongsTo
+        {
+            return $this->belongsTo(Service::class, 'from_id');
+        }
+
+        /**
+         * Get the polymorphic relation based on 'from' type
+         */
+        public function fromModel()
+        {
+            return $this->from === 'response' ? $this->response() : $this->service();
+        }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
 
 class Authenticate extends Middleware
 {
@@ -17,5 +18,16 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+    }
+
+    public function handle($request, Closure $next, ...$guards)
+    {
+        if (auth()->check() && auth()->user()->status === 0) {
+            auth()->logout();
+            return redirect()->route('login')
+                ->withErrors(['email' => 'თქვენი ანგარიში დეაქტივირებულია']);
+        }
+
+        return parent::handle($request, $next, ...$guards);
     }
 }

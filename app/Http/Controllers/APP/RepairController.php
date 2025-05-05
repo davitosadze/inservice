@@ -12,6 +12,19 @@ use Illuminate\Support\Facades\Auth;
 
 class RepairController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])
+        ->whereHas('response', function ($query) {
+            $query->where('user_id', auth()->id());
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+    
+        return response($repairs->toArray());
+    }
+
     public function arrived($id)
     {
         $repair = Repair::find($id);

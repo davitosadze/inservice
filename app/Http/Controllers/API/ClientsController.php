@@ -195,14 +195,32 @@ class ClientsController extends Controller
             'name' => 'required',
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6'],
+            'companyCode' => 'required',
         ]);
-        
+
+        $client = Client::where('identification_code', $validatedData['companyCode'])->first();
+        if (!$client) {
+            return response()->json(['message' => 'კომპანია ვერ მოიძებნა'], 422);
+        }
+
+
+ 
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => $validatedData['password'],  
             'status' => 0,  
         ]);
+
+        if ($client->user_ids == null) {
+            $client->user_ids = json_encode([$user->id]);
+        } else {
+            $existingUserIds = json_decode($client->user_ids, true) ?? [];
+            $client->user_ids = json_encode(array_merge($existingUserIds, [$user->id]));
+        }
+        $client->save();
+        
+ 
         
         // Assign "კლიენტი" role if not already assigned
         if (!$user->hasRole('კლიენტი')) {
