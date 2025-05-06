@@ -20,6 +20,37 @@ class ResponseController extends Controller
 
     }
 
+    public function show($id)
+    {
+        $response = Response::with(['user', 'purchaser', 'region', 'performer'])->find($id);
+        $purchaser = $response->purchaser;
+
+        
+        $lastService = $purchaser->services()->orderBy('id', 'desc')->first();
+        $lastResponse = $purchaser->responses()->orderBy('id', 'desc')->first();
+        $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
+        $lastServiceDate = $lastService ? $lastService->created_at : null;
+        $additionalData = [
+            'last_service_date' => $lastServiceDate,
+            'last_response_date' => $lastResponseDate,
+            'last_service_content' => $lastService ? $lastService->content : null,
+            'last_service_job_description' => $lastService ? $lastService->job_description : null,
+        ];
+
+        if (!$response) {
+            return response()->json(["success" => false, "message" => "Response not found"], 404);
+        }
+    
+        if ($response->user_id !== auth()->id()) {
+            return response()->json(["success" => false, "message" => "Unauthorized access"], 403);
+        }
+    
+        return response()->json([
+            'response' => $response,
+            'additional_data' => $additionalData,
+        ]);    
+    }
+
     public function arrived($id)
     {
         $response = Response::find($id);

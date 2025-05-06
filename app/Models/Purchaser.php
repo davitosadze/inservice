@@ -56,6 +56,16 @@ class Purchaser extends Model implements HasMedia
         return $this->hasMany(Evaluation::class, "purchaser_id");
     }
 
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
  
     public function specialAttributes()
     {

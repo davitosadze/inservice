@@ -152,12 +152,13 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::delete("requests/destroy-attribute/{id}", [EvaluationController::class, 'destroy_attribute'])->name('requests.destroy_attribute');
 
     // Application
+    Route::get('app/responses/{response} ', [APPResponseController::class, 'show'])->name('app.responses.show');
     Route::post('app/responses/{response}/attend ', [APPResponseController::class, 'arrived'])->name('app.acts.arrived');
     Route::get('app/responses ', [APPResponseController::class, 'index'])->name('app.responses.index');
     Route::post('app/responses ', [APPResponseController::class, 'store'])->name('app.responses.store');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
 
-
+ 
     // App Repairs
     Route::post('app/repairs/{repair}/attend ', [APPRepairController::class, 'arrived'])->name('app.repair-acts.arrived');
     Route::post('app/repairs ', [APPRepairController::class, 'store'])->name('app.responses.store');
