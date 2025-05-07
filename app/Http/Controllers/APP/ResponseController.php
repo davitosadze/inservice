@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\APP;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use App\Models\Purchaser;
 use App\Models\Response;
 use App\Notifications\NewResponseNotification;
@@ -35,6 +36,7 @@ class ResponseController extends Controller
             'last_response_date' => $lastResponseDate,
             'last_service_content' => $lastService ? $lastService->content : null,
             'last_service_job_description' => $lastService ? $lastService->job_description : null,
+            'chat_id' => Chat::where('response_id', $response->id)->first() ? Chat::where('response_id', $response->id)->first()->id : null,
         ];
 
         if (!$response) {
