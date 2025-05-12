@@ -29,7 +29,8 @@ class Repair extends Model
         'repair_device_id',
         'from_id',
         'from',
-        "user_id"
+        "user_id",
+        "type"
     ];
     use HasFactory;
 

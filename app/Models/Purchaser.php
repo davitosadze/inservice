@@ -61,7 +61,6 @@ class Purchaser extends Model implements HasMedia
         return $this->hasMany(Service::class);
     }
 
-
     public function responses()
     {
         return $this->hasMany(Response::class);

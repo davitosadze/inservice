@@ -36,9 +36,14 @@ class RepairController extends Controller
 
     public function store(Request $request)
     {
+
+
         $validator = Validator::make($request->all(), [
-            'branch_id' => 'required|exists:purchasers,id',
+            'branch_id' => 'required_if:type,1|exists:purchasers,id',
+            'subj_name' => 'required_if:type,2',
+            'subj_address' => 'required_if:type,2',
             'description' => 'required|string|max:1000',
+            'type' => 'required|in:1,2',
         ]);
 
         if ($validator->fails()) {
@@ -48,8 +53,21 @@ class RepairController extends Controller
             ], 422);
         }
 
-        $purchaser = Purchaser::find($request->get('branch_id'));
+        $type = $request->get('type');
+        if($request->get('type') == 1) {
+            $purchaser = Purchaser::find($request->get('branch_id'));
 
+        } else {
+            $purchaser = Purchaser::create([
+                "name" => auth()->user()->getClient()->client_name,
+                "subj_name" => $request->get('subj_name'),
+                "subj_address" => $request->get('subj_address'),
+                "identification_num" => auth()->user()->getClient()->client_identification_code,
+                "signle" => 1,
+            ]);
+        }
+
+ 
         Repair::create([
             "subject_name" => $purchaser->subj_name,
             "subject_address" => $purchaser->subj_address,
@@ -57,7 +75,8 @@ class RepairController extends Controller
             "purchaser_id" => $purchaser->id,
             "job_description" => $request->get('description'),
             "status" => 10,
-            "user_id" => Auth::user()->id
+            "user_id" => Auth::user()->id,
+            "type" => $type,
         ]);
 
         return response()->json([

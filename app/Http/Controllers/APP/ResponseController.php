@@ -16,7 +16,14 @@ class ResponseController extends Controller
 {
 
     public function index() {
-        $responses = Response::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')->where("user_id", Auth::user()->id)->get();
+        $client = Auth::user()->getClient();
+
+        $userIds = json_decode($client->user_ids);
+         $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
+            ->orderBy('id', 'desc')
+            ->whereIn('user_id', $userIds)
+            ->get();
+        
         return response($responses->toArray());
 
     }

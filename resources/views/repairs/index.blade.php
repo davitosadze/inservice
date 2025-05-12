@@ -58,10 +58,11 @@
                             <div class="card">
                                 <h5
                                     class="@if ($repair->status == 1) rag-red @elseif($repair->status == 2) rag-yellow @elseif($repair->status == 10 || $repair->status == 5) rag-green-arrived @endif card-header">
-                                    <span class="left">{{ $repair->id }}</span>
+                                    <span class="left">{{ $repair->id }} </span>
                                     <span class="right">{{ $repair->performer?->name }}</span>
                                 </h5>
                                 <div class="card-body">
+                                   <h6>@if($repair->type == 2) არასაკონტრაქტო @endif</h6> 
                                     <h5 class="card-title">{{ $repair->name }}</h5>
                                     <p class="card-text">{{ $repair->subject_address }}</p>
                                     <p class="card-text">{{ $repair->subject_name }}</p>

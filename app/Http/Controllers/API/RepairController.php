@@ -21,13 +21,13 @@ class RepairController extends Controller
     {
 
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
-            $repairs = Repair::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')
+            $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])->orderBy('id', 'desc')
                 ->whereIn("status", [1, 5, 10])
                 ->where("performer_id", Auth::user()->id);
         } elseif (Auth::user()->roles->contains('name', 'ტექნიკური მენეჯერი - შეზღუდული')) {
-            $repairs = Repair::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc')->where("user_id", Auth::user()->id);;
+            $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])->orderBy('id', 'desc')->where("user_id", Auth::user()->id);;
         } else {
-            $repairs = Repair::with(['user', 'purchaser', 'region', 'performer'])->orderBy('id', 'desc');
+            $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])->orderBy('id', 'desc');
         }
 
         if ($request->get("type") == "done") {

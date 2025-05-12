@@ -815,14 +815,8 @@ select {
 .mt-8 {
   margin-top: 2rem;
 }
-.mb-1 {
-  margin-bottom: 0.25rem;
-}
 .block {
   display: block;
-}
-.inline {
-  display: inline;
 }
 .flex {
   display: flex;
@@ -944,9 +938,6 @@ select {
 }
 .flex-col {
   flex-direction: column;
-}
-.flex-wrap {
-  flex-wrap: wrap;
 }
 .items-center {
   align-items: center;
@@ -1073,6 +1064,9 @@ select {
 .fill-current {
   fill: currentColor;
 }
+.p-0 {
+  padding: 0px;
+}
 .p-2 {
   padding: 0.5rem;
 }
@@ -1081,9 +1075,6 @@ select {
 }
 .p-6 {
   padding: 1.5rem;
-}
-.p-0 {
-  padding: 0px;
 }
 .px-1 {
   padding-left: 0.25rem;
