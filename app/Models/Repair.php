@@ -43,12 +43,14 @@ protected $appends = ['act_note'];
     }
 
     public function getActNoteAttribute(){ 
-        if($this->from == "response" && $this->from_id) {
-            return Response::find($this->from_id)->act?->note;
-        } elseif($this->from == "service" && $this->from_id) {
-            return Service::find($this->from_id)->act?->note;
+        if ($this->from == "response" && $this->from_id) {
+            $response = Response::find($this->from_id);
+            return $response?->act?->note ?? '';
+        } elseif ($this->from == "service" && $this->from_id) {
+            $service = Service::find($this->from_id);
+            return $service?->act?->note ?? '';
         }
-
+        
         return "";
     }
 
