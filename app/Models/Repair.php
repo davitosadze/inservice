@@ -34,9 +34,22 @@ class Repair extends Model
     ];
     use HasFactory;
 
+
+protected $appends = ['act_note'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getActNoteAttribute(){ 
+        if($this->from == "response" && $this->from_id) {
+            return Response::find($this->from_id)->act?->note;
+        } elseif($this->from == "service" && $this->from_id) {
+            return Service::find($this->from_id)->act?->note;
+        }
+
+        return "";
     }
 
 
