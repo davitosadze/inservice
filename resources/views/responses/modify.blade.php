@@ -94,7 +94,8 @@
 
                                 <p class="lead">კვლევის ობიექტი</p>
 
-
+                                @if($model->type == 2) არასაკონტრაქტო @endif
+                                <hr>
                                 <div class="form-group mb-2" style="align-items: center;">
                                     <div class="col-12"><b>აირჩიეთ :</b></div>
                                     <div class="col-12">

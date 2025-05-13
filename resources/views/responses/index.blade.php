@@ -79,6 +79,8 @@
                                     <span class="right">{{ $response->performer?->name }}</span>
                                 </h5>
                                 <div class="card-body">
+                                    <h6>@if($response->type == 2) არასაკონტრაქტო @endif</h6> 
+
                                     <h5 class="card-title">{{ $response->name }}</h5>
                                     <p class="card-text">{{ $response->subject_address }}</p>
                                     <p class="card-text">{{ $response->subject_name }}</p>
