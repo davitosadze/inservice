@@ -34,15 +34,14 @@
                             </thead>
                             <tbody>
                                 @foreach($chats as $chat)
+                                @if($chat->response)
                                     <tr>
                                         <td>{{ $chat->id }}</td>
                                         <td>{{ $chat->user->name }}</td>
                                         <td>
                                             
-                                            <a href="{{ route('responses.show', $chat->response?->id) }}">
-                                                {{ $chat->response?->id . " - " . $chat->response?->name }}
-                                            </a>                                        
-                                            <td>{{ $chat->created_at->format('d/m/Y H:i') }}</td>
+                                            <a href="{{ route('responses.show', $chat->response?->id) }}">{{ $chat->response?->id . " - " . $chat->response?->name }}</a></td>
+                                        <td>{{ $chat->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             <a href="{{ route('chats.show', $chat->id) }}" 
                                                class="btn btn-primary btn-sm">
@@ -50,6 +49,7 @@
                                             </a>
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
