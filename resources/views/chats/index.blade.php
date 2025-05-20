@@ -38,9 +38,8 @@
                                     <tr>
                                         <td>{{ $chat->id }}</td>
                                         <td>{{ $chat->user->name }}</td>
-                                        <td>
-                                            
-                                            <a href="{{ route('responses.show', $chat->response?->id) }}">{{ $chat->response?->id . " - " . $chat->response?->name }}</a></td>
+                                        <td>    
+                                        <a href="{{ route('responses.show', $chat->response?->id) }}">{{ $chat->response?->id . " - " . $chat->response?->name }}</a></td>
                                         <td>{{ $chat->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             <a href="{{ route('chats.show', $chat->id) }}" 

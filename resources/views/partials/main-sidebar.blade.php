@@ -161,6 +161,7 @@
 
 
                 {{-- Main Options --}}
+                @if (Auth::user()->can('ძირითადი პარამეტრების ნახვა'))
                 <li class="nav-item menu-is-opening">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -203,9 +204,10 @@
 
                     </ul>
                 </li>
+                @endif
 
-
-                {{-- User Options --}}
+                @if (Auth::user()->can('მომხმარებლის პარამეტრების ნახვა'))
+      
                 <li class="nav-item menu-is-opening">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -221,11 +223,11 @@
                         </li>
                     </ul>
                 </li>
-
+                @endif
 
 
                 {{-- Additional Options --}}
-
+                @if (Auth::user()->can('სხვა პარამეტრების ნახვა'))
                 <li class="nav-item menu-is-opening">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -336,7 +338,7 @@
 
                     </ul>
                 </li>
-
+                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

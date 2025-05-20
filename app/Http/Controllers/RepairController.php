@@ -82,6 +82,12 @@ class RepairController extends Controller
                 ->get();
         }
 
+        if($request->get('mode') == 'standby') {
+            $repairs = $repairs->where('standby_mode', true);
+        } else   {
+            $repairs = $repairs->where('standby_mode', false);
+        }
+
         return view('repairs.index', ['additional' => $additional, 'setting' => $setting, 'repairs' => $repairs]);
     }
 
@@ -205,6 +211,14 @@ class RepairController extends Controller
         }
 
         return response()->json($result, HttpResponse::HTTP_CREATED);
+    }
+
+    public function changeMode(Request $request, Repair $repair)
+    {
+        $repair->standby_mode = $request->get('mode');
+        $repair->save();
+
+        return back()->with('success', "რემონტის რეჟიმი წარმატებით შეიცვალა");
     }
 
     public function assignPerformer(Request $request, Repair $repair)

@@ -175,7 +175,7 @@
 
                     <button
                         :disabled="v$.$errors.length"
-                        v-if="$can('აქტის რედაქტირება')"
+                        v-if="$can('რემონტის აქტის რედაქტირება')"
                         @click="send($event, 'send')"
                         type=""
                         class="btn btn-primary btn-block"
@@ -189,7 +189,10 @@
                     >
                         <button
                             :disabled="v$.$errors.length"
-                            v-if="$can('აქტის რედაქტირება') && this.model.id"
+                            v-if="
+                                $can('რემონტის აქტის რედაქტირება') &&
+                                this.model.id
+                            "
                             @click="send($event, 'approve')"
                             type=""
                             class="btn btn-success btn-block"
@@ -200,7 +203,10 @@
 
                         <button
                             :disabled="v$.$errors.length"
-                            v-if="$can('აქტის რედაქტირება') && this.model.id"
+                            v-if="
+                                $can('რემონტის აქტის რედაქტირება') &&
+                                this.model.id
+                            "
                             @click="reject"
                             type=""
                             class="btn btn-danger btn-block"

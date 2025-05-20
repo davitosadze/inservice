@@ -93,6 +93,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     // Repairs
     Route::post("repairs/{repair}/assign-performer", [RepairController::class, "assignPerformer"])->name('repairs.assign-performer');
+    Route::post("repairs/{repair}/change-mode", [RepairController::class, "changeMode"])->name('repairs.change-mode');
     Route::resource("repairs", RepairController::class);
     Route::get("repairs/{repair}/arrived", [RepairController::class, 'arrived'])->name('repairs.arrived');
 

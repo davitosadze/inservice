@@ -46,6 +46,28 @@
                 </div>
             @endif
 
+            <div class="card-tools">
+                <div class="input-group input-group-sm">
+                    <!-- ...existing export buttons... -->
+                </div>
+
+                <!-- Add tabs for repair types -->
+                <ul class="nav nav-tabs mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link {{ !request()->has('mode') ? 'active' : '' }}" 
+                        href="{{ route('repairs.index') }}">
+                        მთავარი რემონტები
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->get('mode') === 'standby' ? 'active' : '' }}" 
+                        href="{{ route('repairs.index', ['mode' => 'standby']) }}">
+                        მოლოდინის რეჟიმის რემონტები
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
             @if (app('request')->input('type') != 'done')
                 <div class="mt-2 view-switcher">
                     <button id="switchToGrid" class="btn active btn-sm btn-outline-success">გრიდი</button>
@@ -59,7 +81,11 @@
                                 <h5
                                     class="@if ($repair->status == 1) rag-red @elseif($repair->status == 2) rag-yellow @elseif($repair->status == 10 || $repair->status == 5) rag-green-arrived @endif card-header">
                                     <span class="left">{{ $repair->id }} </span>
-                                    <span class="right">{{ $repair->performer?->name }}</span>
+                                    <span class="right">
+                                        @if($repair->standby_mode)
+                                            <i class="fas fa-clock text-warning" title="Standby Mode"></i>
+                                        @endif
+                                    </span>
                                 </h5>
                                 <div class="card-body">
                                    <h6>@if($repair->type == 2) არასაკონტრაქტო @endif</h6> 
@@ -104,23 +130,19 @@
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                             @endif
+                                            
                                             @if (!Auth::user()->hasRole('ინჟინერი'))
                                                 <hr>
                                                 <form method="POST"
-                                                action="{{ route('repairs.assign-performer', $repair->id) }}"
-                                                id="assign-performer-form-{{ $repair->id }}">
+                                                action="{{ route('repairs.change-mode', $repair->id) }}"
+                                                id="change-mode-form-{{ $repair->id }}">
                                                 @csrf
                                             
-                                                <select name="performer_id" class="form-control"
-                                                    id="performer_select_{{ $repair->id }}"
-                                                    onchange="document.getElementById('assign-performer-form-{{ $repair->id }}').submit()">
-                                                    <option value="">არაა არჩეული</option>
-                                                    @foreach ($additional['performers'] as $performer)
-                                                        <option @selected($performer['id'] == $repair->performer_id)
-                                                            value="{{ $performer['id'] }}">
-                                                            {{ $performer['name'] }}
-                                                        </option>
-                                                    @endforeach
+                                                <select name="mode" class="form-control"
+                                                    id="mode_select_{{ $repair->id }}"
+                                                    onchange="document.getElementById('change-mode-form-{{ $repair->id }}').submit()">
+                                                    <option @selected($repair->standby_mode == false) value="0">ჩვეულებრივი</option>
+                                                    <option  @selected($repair->standby_mode == true) value="1">მოლოდინის რეჟიმი</option>
                                                 </select>
                                             </form>
 
