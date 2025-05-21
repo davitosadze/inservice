@@ -663,7 +663,7 @@ export default {
             selector: "",
             step: false,
             keys: [],
-            selectedUserIds: JSON.parse(this.model.user_ids),
+            selectedUserIds: JSON.parse(this.model.user_ids ?? "[]"),
             email: this.model?.user?.email || "",
             password: "",
             confirmPassword: "",
