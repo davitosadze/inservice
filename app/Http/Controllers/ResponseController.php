@@ -117,7 +117,7 @@ class ResponseController extends Controller
             'subject_name' => ['required'],
             'subject_address' => ['required'],
             'region_id' => ['required'],
-            'performer_id' => ['required'],
+            // 'performer_id' => ['required'],
             'name' => ['required'],
             'identification_num' => ['required'],
             'system_one' => ['required'],
