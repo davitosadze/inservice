@@ -17,27 +17,27 @@ class ResponseController extends Controller
 
     public function index() {
     
-    $client = Auth::user()->getClient();
+        $client = Auth::user()->getClient();
 
-    $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
-        ->orderBy('id', 'desc')
-        ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
-        ->get()
-        ->filter(function($response) use ($client) {
-            return $response->formatted_name == $client->purchaser;
-        });
-    
-    return response($responses->values()->toArray());
+        $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
+            ->orderBy('id', 'desc')
+            ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
+            ->get()
+            ->filter(function($response) use ($client) {
+                return $response->formatted_name == $client->purchaser;
+            });
+        
+        return response($responses->values()->toArray());
 
 
     }
 
     public function show($id)
     {
+
         $response = Response::with(['user', 'purchaser', 'region', 'performer'])->find($id);
         $purchaser = $response->purchaser;
-
-        
+         
         $lastService = $purchaser->services()->orderBy('id', 'desc')->first();
         $lastResponse = $purchaser->responses()->orderBy('id', 'desc')->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
@@ -54,9 +54,7 @@ class ResponseController extends Controller
             return response()->json(["success" => false, "message" => "Response not found"], 404);
         }
     
-        if ($response->user_id !== auth()->id()) {
-            return response()->json(["success" => false, "message" => "Unauthorized access"], 403);
-        }
+
     
         return response()->json([
             'response' => $response,
