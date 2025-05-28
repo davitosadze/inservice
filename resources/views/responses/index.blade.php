@@ -47,6 +47,36 @@
                 </div>
             @endif
 
+
+                        <div class="card-tools">
+                <div class="input-group input-group-sm">
+                    <!-- ...existing export buttons... -->
+                </div>
+
+                <!-- Add tabs for repair types -->
+                <ul class="nav nav-tabs mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->get('type') === 'pending' ? 'active' : '' }}" 
+                        href="{{ route('responses.index') }}">
+                        მთავარი რეაგირებები
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->get('type') === 'client-pending' ? 'active' : '' }}" 
+                        href="{{ route('responses.index', ['type' => 'client-pending']) }}">
+                        კლიენტის მოლოდინში
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->get('type') === 'done' ? 'active' : '' }}" 
+                        href="{{ route('responses.index', ['type' => 'done']) }}">
+                        დასრულებული რეაგირებები
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+
             @if (app('request')->input('type') != 'done')
                 <div class="mt-2 view-switcher">
                     <button id="switchToGrid" class="btn active btn-sm btn-outline-success">გრიდი</button>

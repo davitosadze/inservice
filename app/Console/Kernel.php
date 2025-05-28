@@ -13,9 +13,18 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+
+    protected $commands = [
+        Commands\ChangeStatuses::class,
+    ];
+
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('status:update-statuses')
+                 ->hourly()
+                 ->withoutOverlapping()
+                 ->runInBackground();
+                    
     }
 
     /**

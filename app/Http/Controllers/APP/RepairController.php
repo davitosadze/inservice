@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APP;
 use App\Http\Controllers\Controller;
 use App\Models\Purchaser;
 use App\Models\Repair;
+use App\Notifications\NewRepairNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -15,14 +16,17 @@ class RepairController extends Controller
 
     public function index(Request $request)
     {
+        $client = Auth::user()->getClient();
+
         $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])
-        ->whereHas('response', function ($query) {
-            $query->where('user_id', auth()->id());
-        })
         ->orderBy('id', 'desc')
-        ->get();
+        ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
+        ->get()
+        ->filter(function($response) use ($client) {
+            return $response->formatted_name == $client->purchaser;
+        });
     
-        return response($repairs->toArray());
+        return response($repairs->values()->toArray());
     }
 
     public function arrived($id)
@@ -32,6 +36,18 @@ class RepairController extends Controller
         $repair->status = 10;
         $repair->save();
         return response()->json(["success" => true, "time" => Carbon::now()], 200);
+    }
+
+    public function changeStatus(Request $request, Repair $repair) {
+
+        $repair->status = $request->get('status');
+        $repair->save();
+
+        if($request->get('status') == 3) {
+            $user = $repair->user;
+            // $user->notify(new NewRepairNotification($user,$repair));
+        }
+        return response()->json(["success" => true], 200);
     }
 
     public function store(Request $request)
@@ -68,7 +84,7 @@ class RepairController extends Controller
         }
 
  
-        Repair::create([
+       $repair = Repair::create([
             "subject_name" => $purchaser->subj_name,
             "subject_address" => $purchaser->subj_address,
             "name" => $purchaser->name,
@@ -78,6 +94,9 @@ class RepairController extends Controller
             "user_id" => Auth::user()->id,
             "type" => $type,
         ]);
+
+        $user = auth()->user();
+        // $user->notify(new NewRepairNotification($user,$repair));
 
         return response()->json([
             "success" => true,

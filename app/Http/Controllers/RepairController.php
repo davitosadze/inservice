@@ -76,17 +76,24 @@ class RepairController extends Controller
         if ($request->get("type") == "done") {
             $repairs = $repairs->where("status", 3)
                 ->orWhere("status", 0)
+                ->where("standby_mode", false)
                 ->get();
-        } else {
+        }
+        elseif($request->get("type") == "standby") {
+            $repairs = $repairs->where('standby_mode', true)->get();
+        } 
+        elseif($request->get("type") == "client-pending") {
+            $repairs = $repairs->where('status', 4)
+            ->where("standby_mode", false)
+            ->get();
+        }
+        else {
             $repairs = $repairs->whereIn("status", [1, 2, 5, 10])
+                ->where("standby_mode", false)
                 ->get();
         }
 
-        if($request->get('mode') == 'standby') {
-            $repairs = $repairs->where('standby_mode', true);
-        } else   {
-            $repairs = $repairs->where('standby_mode', false);
-        }
+ 
 
         return view('repairs.index', ['additional' => $additional, 'setting' => $setting, 'repairs' => $repairs]);
     }

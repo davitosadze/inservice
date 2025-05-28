@@ -16,15 +16,19 @@ class ResponseController extends Controller
 {
 
     public function index() {
-        $client = Auth::user()->getClient();
+    
+    $client = Auth::user()->getClient();
 
-        $userIds = json_decode($client->user_ids);
-         $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
-            ->orderBy('id', 'desc')
-            ->whereIn('user_id', $userIds)
-            ->get();
-        
-        return response($responses->toArray());
+    $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
+        ->orderBy('id', 'desc')
+        ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
+        ->get()
+        ->filter(function($response) use ($client) {
+            return $response->formatted_name == $client->purchaser;
+        });
+    
+    return response($responses->values()->toArray());
+
 
     }
 
@@ -67,6 +71,18 @@ class ResponseController extends Controller
         $response->status = 10;
         $response->save();
         return response()->json(["success" => true, "time" => Carbon::now()], 200);
+    }
+
+    public function changeStatus(Request $request, Response $response) {
+        $response->status = $request->get('status');
+        $response->save();
+
+        if($request->get('status') == 3) {
+            $user = $response->user;
+            // $user->notify(new NewResponseNotification($user,$response));
+        }
+
+        return response()->json(["success" => true], 200);
     }
 
     public function store(Request $request)
@@ -115,7 +131,7 @@ class ResponseController extends Controller
 
         ]);
 
-        // $user = auth()->user();
+        $user = auth()->user();
         // $user->notify(new NewResponseNotification($user,$response));
     
 

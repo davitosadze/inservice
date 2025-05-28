@@ -54,15 +54,27 @@
                 <!-- Add tabs for repair types -->
                 <ul class="nav nav-tabs mt-3">
                     <li class="nav-item">
-                        <a class="nav-link {{ !request()->has('mode') ? 'active' : '' }}" 
+                        <a class="nav-link {{ request()->get('type') === 'pending' ? 'active' : '' }}" 
                         href="{{ route('repairs.index') }}">
                         მთავარი რემონტები
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->get('mode') === 'standby' ? 'active' : '' }}" 
-                        href="{{ route('repairs.index', ['mode' => 'standby']) }}">
+                        <a class="nav-link {{ request()->get('type') === 'standby' ? 'active' : '' }}" 
+                        href="{{ route('repairs.index', ['type' => 'standby']) }}">
                         მოლოდინის რეჟიმის რემონტები
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->get('type') === 'client-pending' ? 'active' : '' }}" 
+                        href="{{ route('repairs.index', ['type' => 'client-pending']) }}">
+                        კლიენტის მოლოდინის რეჟიმის რემონტები
+                        </a>
+                    </li>
+                   <li class="nav-item">
+                        <a class="nav-link {{ request()->get('type') === 'done' ? 'active' : '' }}" 
+                        href="{{ route('repairs.index', ['type' => 'done']) }}">
+                        დასრულებული რემონტები
                         </a>
                     </li>
                 </ul>

@@ -30,7 +30,7 @@ class NewResponseNotification extends Notification implements ShouldQueue
         $mail = new MailMessage();
         $id = $this->response?->id;
 
-        if ($this->response?->status == 0) {
+        if ($this->response?->status == 9) {
             return $mail
                 ->subject('ახალი შეკვეთა - QR' . $id)
                 ->line('შეკვეთა #QR' . $id . ' შემოვიდა')

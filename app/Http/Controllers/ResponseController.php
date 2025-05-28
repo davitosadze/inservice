@@ -58,7 +58,6 @@ class ResponseController extends Controller
                 ]
             ],
             "table_view_enabled" => true,
-            "type" => "gamarjoba"
 
         ];
 
@@ -79,10 +78,17 @@ class ResponseController extends Controller
             $responses = $responses->where("status", 3)
                 ->orWhere("status", 0)
                 ->get();
+        } elseif($request->get('type') == 'client-pending') {
+            $responses = $responses->where("status", 4)
+                ->get();
+
         } else {
             $responses = $responses->whereIn("status", [1, 2, 9, 5, 10])
                 ->get();
         }
+
+ 
+
 
         return view('responses.index', ['additional' => $additional, 'setting' => $setting, 'responses' => $responses]);
     }
