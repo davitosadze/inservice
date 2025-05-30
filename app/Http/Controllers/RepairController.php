@@ -123,7 +123,7 @@ class RepairController extends Controller
             'subject_address' => ['required'],
             'performer_id' => ['required'],
             'name' => ['required'],
-            'identification_num' => ['required'],
+            // 'identification_num' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -141,7 +141,7 @@ class RepairController extends Controller
             'statusText' => ""
         ];
 
-        $response = $request->id ? $this->authorize('update', Repair::find($request->id)) : $this->authorize('create', Repair::class);
+        // $response = $request->id ? $this->authorize('update', Repair::find($request->id)) : $this->authorize('create', Repair::class);
 
         DB::beginTransaction();
 
