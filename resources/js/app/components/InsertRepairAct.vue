@@ -148,7 +148,9 @@
                                     />
 
                                     <span
-                                        v-if="$can('აქტის რედაქტირება')"
+                                        v-if="
+                                            $can('რემონტის აქტის რედაქტირება')
+                                        "
                                         class="btn ml-1 btn-primary mt-1"
                                         @click="toggleFullScreen"
                                         >გადიდება</span

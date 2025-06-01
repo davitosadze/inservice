@@ -81,6 +81,19 @@
                             />
                         </div>
 
+                        <div class="form-group">
+                            <label for="formGroupExampleInput"
+                                >ადგილზე გამოცხადების დრო:</label
+                            >
+                            <input
+                                v-model="model.arrival_time"
+                                type="text"
+                                class="form-control"
+                                id="formGroupExampleInput"
+                                placeholder=""
+                            />
+                        </div>
+
                         <!-- New Fields -->
                         <div class="form-group">
                             <label for="formGroupExampleInput"

@@ -54,9 +54,9 @@ class RepairActController extends Controller
                 $repair = Repair::find($repair_id);
 
                 if ($request->approve == 1) {
-                    $repair->status = 4;
+                    $repair->status = 3;
                 } elseif ($request->on_repair == 1) {
-                    $repair->status = 4;
+                    $repair->status = 3;
                     $repair->on_repair = 1;
                 } else {
                     if (!$request->get('is_app')) {

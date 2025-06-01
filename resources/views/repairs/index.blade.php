@@ -35,7 +35,7 @@
 
             <br>
 
-            @if (Auth::user()->can('რეაგირების შექმნა'))
+            @if (Auth::user()->can('რემონტის შექმნა'))
                 <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
                         <button href="{{ request()->url() }}/new/edit" id="create"
@@ -119,7 +119,7 @@
                                             @endif
 
 
-                                            @if (Auth::user()->can('რეაგირების ნახვა'))
+                                            @if (Auth::user()->can('რემონტის ნახვა'))
                                                 <a href="{{ route('repairs.show', $repair->id) }}"
                                                     class="btn btn-primary">
                                                     <i class="fas fa-eye"></i>
@@ -136,7 +136,7 @@
                                                 @endif
                                             @endrole
 
-                                            @if (Auth::user()->can('რეაგირების რედაქტირება'))
+                                            @if (Auth::user()->can('რემონტის რედაქტირება'))
                                                 <a href="{{ route('repairs.edit', $repair->id) }}"
                                                     class="ml-2 btn btn-primary">
                                                     <i class="fas fa-edit"></i>
@@ -162,7 +162,7 @@
                                             @endif
                                         </div>
                                         <div class="col-sm-6" style="text-align: right;">
-                                            @if (Auth::user()->can('რეაგირების წაშლა'))
+                                            @if (Auth::user()->can('რემონტის წაშლა'))
                                                 <form method="POST"
                                                     action="{{ route('repairs.destroy', $repair->id) }}">
                                                     @csrf

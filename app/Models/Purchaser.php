@@ -27,6 +27,7 @@ class Purchaser extends Model implements HasMedia
         "first_review_description",
         "technical_review_description",
         "base_description",
+        "arrival_time"
     ];
 
     protected $attributes = [

@@ -58,11 +58,11 @@ class ActController extends Controller
                 $response = ModelsResponse::find($response_id);
 
                 if ($request->approve == 1) {
-                    $response->status = 4;
+                    $response->status = 3;
                     $response->end_time =  Carbon::now();
 
                 } elseif ($request->on_repair == 1) {
-                    $response->status = 4;
+                    $response->status = 3;
                     $response->on_repair = 1;
                     $repair = Repair::create(array_merge($response->toArray(), [
                         'status' => 1,
