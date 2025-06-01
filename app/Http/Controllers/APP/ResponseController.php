@@ -21,7 +21,7 @@ class ResponseController extends Controller
 
         $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
             ->orderBy('id', 'desc')
-            // ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
+            ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'))
             ->get()
             ->filter(function($response) use ($client) {
                 return $response->formatted_name == $client->purchaser;
