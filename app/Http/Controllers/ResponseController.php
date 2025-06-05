@@ -183,7 +183,10 @@ class ResponseController extends Controller
                             'data' => [
                                 'url' => 'responses',
                                 'id' => $model->id,
-                            ]
+                            ],
+                            'sound' => 'default',  
+                            'priority' => 'high',  
+                            'channelId' => 'default', 
                         ]),
                     ];
                     (new Expo())->send($messages)->push();
