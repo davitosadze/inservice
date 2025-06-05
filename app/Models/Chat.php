@@ -15,6 +15,19 @@ class Chat extends Model
         return $this->hasMany(Message::class);
     }
 
+    public function item()
+    {
+        switch ($this->type) {
+ 
+            case 'repair':
+                return $this->belongsTo(Repair::class, 'item_id', 'id');
+            case 'response':
+                return $this->belongsTo(Response::class, 'item_id', 'id');
+            default:
+                return null;
+        }
+    }
+
     public function repair(): BelongsTo
     {
         return $this->belongsTo(Repair::class, 'item_id', 'id');

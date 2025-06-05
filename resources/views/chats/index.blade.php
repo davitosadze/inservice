@@ -34,7 +34,7 @@
                             </thead>
                             <tbody>
                                 @foreach($chats as $chat)
-                                @if($chat->item_id)
+                                @if($chat->item)
                                     <tr>
                                         <td>{{ $chat->id }}</td>
                                         <td>{{ $chat->user->name }}</td>
