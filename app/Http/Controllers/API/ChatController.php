@@ -13,11 +13,14 @@ class ChatController extends Controller
     public function startChat(Request $request)
     {
         $request->validate([
-            'response_id' => 'required|exists:responses,id'
+            'type' => 'required',
+            'item_id' => 'required',
+            'type' => 'required'
         ]);
 
         $chat = Chat::create([
-            'response_id' => $request->response_id,
+            'item_id' => $request->item_id,
+            'type' => $request->type,
             'user_id' => auth()->id()
         ]);
 

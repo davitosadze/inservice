@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\APP;
 
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use App\Models\Purchaser;
 use App\Models\Repair;
 use App\Notifications\NewRepairNotification;
@@ -44,6 +45,8 @@ class RepairController extends Controller
             'last_response_date' => $lastResponseDate,
             'last_response_content' => $lastResponse ? $lastResponse->content : null,
             'last_response_job_description' => $lastResponse ? $lastResponse->job_description : null,
+            'chat_id' => Chat::where('item_id', $repair->id)->where('type', 'repair')->first() ? Chat::where('item_id', $repair->id)->where('type', 'repair')->first()->id : null,
+
         ];
 
         if (!$repair) {

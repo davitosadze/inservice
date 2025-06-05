@@ -27,19 +27,25 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>მომხმარებელი</th>
-                                    <th>რეაგირება</th>
+                                    <th>მოდელი</th>
                                     <th>თარიღი</th>
                                     <th>მოქმედება</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($chats as $chat)
-                                @if($chat->response)
+                                @if($chat->item_id)
                                     <tr>
                                         <td>{{ $chat->id }}</td>
                                         <td>{{ $chat->user->name }}</td>
-                                        <td>    
-                                        <a href="{{ route('responses.show', $chat->response?->id) }}">{{ $chat->response?->id . " - " . $chat->response?->name }}</a></td>
+                                        <td>
+                                            @if($chat->type == 'response')
+
+                                             <a href="{{ route('responses.show', $chat->response?->id) }}">{{ 'რეაგირება ' . $chat->response?->id . " - " . $chat->response?->name }}</a></td>
+                                            @else 
+                                             <a href="{{ route('repairs.show', $chat->repair?->id) }}">{{ 'რემონტი ' . $chat->repair?->id . " - " . $chat->repair?->name }}</a></td>
+
+                                            @endif
                                         <td>{{ $chat->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             <a href="{{ route('chats.show', $chat->id) }}" 
