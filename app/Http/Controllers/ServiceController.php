@@ -181,7 +181,10 @@ class ServiceController extends Controller
                             'data' => [
                                 'url' => 'services',
                                 'id' => $model->id,
-                            ]
+                            ],
+                            'sound' => 'default',  
+                            'priority' => 'high',  
+                            'channelId' => 'default', 
                         ]),
                     ];
                     (new Expo())->send($messages)->push();

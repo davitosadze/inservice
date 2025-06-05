@@ -179,7 +179,10 @@ class RepairController extends Controller
                             'data' => [
                                 'url' => 'repairs',
                                 'id' => $model->id,
-                            ]
+                            ],
+                            'sound' => 'default',  
+                            'priority' => 'high',  
+                            'channelId' => 'default', 
                         ]),
                     ];
                     (new Expo())->send($messages)->push();
@@ -244,7 +247,10 @@ class RepairController extends Controller
                         'data' => [
                             'url' => 'repairs',
                             'id' => $repair->id,
-                        ]
+                        ],
+                        'sound' => 'default',  
+                        'priority' => 'high',  
+                        'channelId' => 'default', 
                     ]),
                 ];
                 (new Expo())->send($messages)->push();
