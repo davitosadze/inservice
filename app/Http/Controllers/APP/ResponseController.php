@@ -35,7 +35,7 @@ class ResponseController extends Controller
     public function show($id)
     {
 
-        $response = Response::with(['user', 'purchaser', 'region', 'performer'])->find($id);
+        $response = Response::with(['user', 'purchaser', 'region', 'performer', 'act'])->find($id);
         $purchaser = $response->purchaser;
          
         $lastService = $purchaser->services()->orderBy('id', 'desc')->first();
@@ -45,8 +45,8 @@ class ResponseController extends Controller
         $additionalData = [
             'last_service_date' => $lastServiceDate,
             'last_response_date' => $lastResponseDate,
-            'last_service_content' => $lastService ? $lastService->content : null,
-            'last_service_job_description' => $lastService ? $lastService->job_description : null,
+            'last_response_content' => $lastResponse ? $lastResponse->content : null,
+            'last_response_job_description' => $lastResponse ? $lastResponse->job_description : null,
             'chat_id' => Chat::where('response_id', $response->id)->first() ? Chat::where('response_id', $response->id)->first()->id : null,
         ];
 
@@ -59,7 +59,7 @@ class ResponseController extends Controller
         return response()->json([
             'response' => $response,
             'additional_data' => $additionalData,
-        ]);    
+        ]);
     }
 
     public function arrived($id)

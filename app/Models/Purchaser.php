@@ -66,6 +66,11 @@ class Purchaser extends Model implements HasMedia
     {
         return $this->hasMany(Response::class);
     }
+
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class);
+    }
  
     public function specialAttributes()
     {

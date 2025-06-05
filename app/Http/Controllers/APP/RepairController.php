@@ -29,6 +29,35 @@ class RepairController extends Controller
         return response($repairs->values()->toArray());
     }
 
+    public function show($id)
+    {
+
+        $repair = Repair::with(['user', 'purchaser', 'region', 'performer', 'act'])->find($id);
+        $purchaser = $repair->purchaser;
+         
+        $lastService = $purchaser->services()->orderBy('id', 'desc')->first();
+        $lastResponse = $purchaser->responses()->orderBy('id', 'desc')->first();
+        $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
+        $lastServiceDate = $lastService ? $lastService->created_at : null;
+        $additionalData = [
+            'last_service_date' => $lastServiceDate,
+            'last_response_date' => $lastResponseDate,
+            'last_response_content' => $lastResponse ? $lastResponse->content : null,
+            'last_response_job_description' => $lastResponse ? $lastResponse->job_description : null,
+        ];
+
+        if (!$repair) {
+            return response()->json(["success" => false, "message" => "Repair not found"], 404);
+        }
+    
+
+    
+        return response()->json([
+            'repair' => $repair,
+            'additional_data' => $additionalData,
+        ]);
+    }
+
     public function arrived($id)
     {
         $repair = Repair::find($id);

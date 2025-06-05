@@ -164,6 +164,8 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('app/repairs/{repair}/attend ', [APPRepairController::class, 'arrived'])->name('app.repair-acts.arrived');
     Route::post('app/repairs ', [APPRepairController::class, 'store'])->name('app.responses.store');
     Route::get('app/repairs ', [APPRepairController::class, 'index'])->name('app.repairs.index');
+    Route::get('app/repairs/{repair} ', [APPRepairController::class, 'show'])->name('app.repairs.show');
+
     Route::post('app/repairs/{repair}/change-status ', [APPRepairController::class, 'changeStatus'])->name('app.repairs.changeStatus');
 
 });
