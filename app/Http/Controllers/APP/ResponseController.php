@@ -24,7 +24,8 @@ class ResponseController extends Controller
             ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'))
             ->get()
             ->filter(function($response) use ($client) {
-                return $response->formatted_name == $client->purchaser;
+                $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+                return in_array($response->formatted_name, $clientPurchasers);
             });
         
         return response($responses->values()->toArray());

@@ -60,7 +60,9 @@ class ClientStatisticController extends Controller
         $permissions = $client["toggles"];
         $branches = Purchaser::whereNot('single', 1)->get()
             ->filter(function ($purchaser) use ($client) {
-                return $purchaser->formatted_name === $client->purchaser;
+                $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+                return in_array($purchaser->formatted_name, $clientPurchasers);
+
             })
             ->map(function ($branch) {
                 return [

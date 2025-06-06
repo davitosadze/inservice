@@ -18,13 +18,15 @@ class RepairController extends Controller
     public function index(Request $request)
     {
         $client = Auth::user()->getClient();
+        
 
         $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])
         ->orderBy('id', 'desc')
         ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
         ->get()
         ->filter(function($response) use ($client) {
-            return $response->formatted_name == $client->purchaser;
+            $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+            return in_array($response->formatted_name, $clientPurchasers);
         });
     
         return response($repairs->values()->toArray());

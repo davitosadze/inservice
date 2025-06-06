@@ -145,6 +145,9 @@ class ClientsController extends Controller
                 $model->fill($request->except('toggles')); // Exclude toggles from mass assignment
                 $model->toggles = $request->has('toggles') ? $request->toggles : []; // Save as JSON
 
+
+
+
                 // Save model
                 $model->save();
 

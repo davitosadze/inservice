@@ -46,8 +46,10 @@
                             >
                             <div class="col-sm-9">
                                 <select
+                                    id="branchs"
                                     class="form-control"
-                                    v-model="this.model.purchaser"
+                                    v-model="selectedBranchs"
+                                    multiple
                                 >
                                     <option
                                         :key="branch"
@@ -78,8 +80,7 @@
                                         toggles.incidents_closed_with_reaction
                                     "
                                 />
-                                <label
-                                    class="col-form-label ml-3 font-weight-medium"
+                                <label class="col-form-label ml-3 font-weight-medium"
                                     >კალენდარი</label
                                 >
                             </div>
@@ -669,7 +670,7 @@ export default {
             confirmPassword: "",
             clients: this.additional.clients,
             branchs: this.additional.purchasers,
-            selectedBranchs: [],
+            selectedBranchs: JSON.parse(this.model.purchaser || '[]'), // Parse existing selected branches
 
             selectBuilder: [],
             toggles: {
@@ -708,6 +709,11 @@ export default {
         // Watch for any changes in the selected service and reflect them in the select2 dropdown
         selectedService(newValue) {
             $("#branchs").val(newValue).trigger("change");
+        },
+        selectedBranchs(newValue) {
+            // Update the model when selectedBranchs changes
+            this.model.purchaser = JSON.stringify(newValue);
+            $("#branchs").val(newValue).trigger('change');
         },
     },
     beforeDestroy() {
@@ -785,10 +791,25 @@ export default {
     },
     methods: {
         initializeSelect2() {
-            $("#branchs").select2();
+            const self = this;
+            
+            // Initialize select2 with multiple selection
+            $("#branchs").select2({
+                placeholder: "აირჩიეთ ფილიალები",
+                allowClear: true,
+                multiple: true,
+                width: '100%'
+            });
 
+            // Set initial values
             this.$nextTick(() => {
-                $("#branchs").val(this.selectedService).trigger("change");
+                $("#branchs").val(this.selectedBranchs).trigger('change');
+            });
+
+            // Listen for changes and update Vue model
+            $("#branchs").on('change', function() {
+                self.selectedBranchs = $(this).val() || [];
+                self.model.purchaser = JSON.stringify(self.selectedBranchs);
             });
         },
 
@@ -970,6 +991,7 @@ export default {
             let formData = {
                 ...this.model,
                 toggles: this.toggles,
+                purchaser: JSON.stringify(this.selectedBranchs), // Ensure it's JSON string
             };
 
             this.$http
@@ -1090,5 +1112,20 @@ table.table-striped tr.calculator {
 table {
     border-collapse: collapse;
     width: 100%;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
 }
 </style>
