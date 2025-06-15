@@ -212,6 +212,7 @@ class ClientsController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => $validatedData['password'],  
+            'inter_passwrod' => $validatedData['password'],  
             'status' => 0,  
         ]);
 

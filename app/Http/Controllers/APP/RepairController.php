@@ -38,15 +38,15 @@ class RepairController extends Controller
         $repair = Repair::with(['user', 'purchaser', 'region', 'performer', 'act'])->find($id);
         $purchaser = $repair->purchaser;
          
-        $lastService = $purchaser->services()->orderBy('id', 'desc')->first();
-        $lastResponse = $purchaser->responses()->orderBy('id', 'desc')->first();
+        $lastService = $purchaser->services()->where('status', 3)->orderBy('id', 'desc')->first();
+        $lastResponse = $purchaser->responses()->where('status', 3)->orderBy('id', 'desc')->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
         $lastServiceDate = $lastService ? $lastService->created_at : null;
         $additionalData = [
             'last_service_date' => $lastServiceDate,
             'last_response_date' => $lastResponseDate,
-            'last_response_content' => $lastResponse ? $lastResponse->content : null,
-            'last_response_job_description' => $lastResponse ? $lastResponse->job_description : null,
+            'last_response_content' => $lastResponse ? $lastResponse->act?->note : null,
+            'last_response_job_description' => $lastResponse ? $lastResponse->content : null,
             'chat_id' => Chat::where('item_id', $repair->id)->where('type', 'repair')->first() ? Chat::where('item_id', $repair->id)->where('type', 'repair')->first()->id : null,
 
         ];
