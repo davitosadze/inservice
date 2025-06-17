@@ -29,7 +29,7 @@ class PurchaserController extends Controller
                 ['field' => "subj_name", 'headerName' => 'დამატებითი სახელი'],
                 ['field' => "subj_address", 'headerName' => 'კლიენტის მისამართი'],
                 ['field' => "technical_time", 'headerName' => 'ტექნიკური მომსახურების დრო წთ-ში'],
-                ['field' => "cleaning_time", 'headerName' => 'წმენდითი მომსახურების დრო წთ-ში'],
+                ['field' => "arrival_time", 'headerName' => 'ადგილზე გამოცხადების დრო'],
   
             ],
             'url' => [

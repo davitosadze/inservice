@@ -122,6 +122,7 @@ class RepairController extends Controller
             'subject_name' => ['required'],
             'subject_address' => ['required'],
             'performer_id' => ['required'],
+            'estimated_arrival_time' => ['required_with:performer_id'],
             'name' => ['required'],
             // 'identification_num' => ['required'],
         ]);

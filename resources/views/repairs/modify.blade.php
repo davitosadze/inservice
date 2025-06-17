@@ -167,6 +167,18 @@
                                 </div>
                             </div>
 
+
+                          <div class="mb-3">
+                                <div class="form-group mt-3 mb-2" style="align-items: center;">
+                                    <div class="col-12"><b>ადგილზე მისვლის სავარაუდო დრო :</b></div>
+                                    <div class="col-12">
+                                        {{ Form::datetimeLocal('estimated_arrival_time', $model->estimated_arrival_time, ['placeholder' => 'ადგილზე მისვლის სავარაუდო დრო', 'class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
+                                    </div>
+
+                                </div>
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="formGroupExampleInput">შინაარსი:</label>
                                 {{ Form::textarea('content', $model->content, ['placeholder' => 'შინაარსი', 'cols' => 2, 'rows' => 4, 'class' => 'form-control', 'readonly' => $model->id ? true : false]) }}

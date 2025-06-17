@@ -277,51 +277,51 @@ export default {
             if (props.setting.is_table_advanced) {
                 if (props.setting.model == "purchaser") {
                     is_table_advanced = [
-                        {
-                            headerName: "პირველადი შემოწმების თარიღი",
-                            headerClass: "text-center",
-                            maxWidth: 100,
-                            filter: true, // Use ag-Grid's Set Filter for custom filtering
-                            cellStyle: { textAlign: "center" },
-                            cellRenderer: firstReviewDateRenderer,
-                            editable: false,
-                            colId: "firstReview",
-                            valueGetter: (params) =>
-                                !!params.data.first_review_date, // Returns true/false for filtering
-                            filterParams: {
-                                values: ["true", "false"], // Set custom filter options
-                            },
-                        },
-                        {
-                            headerName: "ბაზის შექმნის თარიღი",
-                            headerClass: "text-center",
-                            maxWidth: 100,
-                            filter: true,
-                            cellStyle: { textAlign: "center" },
-                            cellRenderer: baseCreationDateRenderer,
-                            editable: false,
-                            valueGetter: (params) =>
-                                !!params.data.base_creation_date, // Returns true/false for filtering
-                            filterParams: {
-                                values: ["true", "false"], // Set custom filter options
-                            },
-                            colId: "baseCreation",
-                        },
-                        {
-                            headerName: "ტექნიკური შემოწმების თარიღი",
-                            headerClass: "text-center",
-                            maxWidth: 100,
-                            filter: true,
-                            cellStyle: { textAlign: "center" },
-                            cellRenderer: technicalReviewDateRenderer,
-                            editable: false,
-                            valueGetter: (params) =>
-                                !!params.data.technical_review_date, // Returns true/false for filtering
-                            filterParams: {
-                                values: ["true", "false"], // Set custom filter options
-                            },
-                            colId: "technicalReview",
-                        },
+                        // {
+                        //     headerName: "პირველადი შემოწმების თარიღი",
+                        //     headerClass: "text-center",
+                        //     maxWidth: 100,
+                        //     filter: true, // Use ag-Grid's Set Filter for custom filtering
+                        //     cellStyle: { textAlign: "center" },
+                        //     cellRenderer: firstReviewDateRenderer,
+                        //     editable: false,
+                        //     colId: "firstReview",
+                        //     valueGetter: (params) =>
+                        //         !!params.data.first_review_date, // Returns true/false for filtering
+                        //     filterParams: {
+                        //         values: ["true", "false"], // Set custom filter options
+                        //     },
+                        // },
+                        // {
+                        //     headerName: "ბაზის შექმნის თარიღი",
+                        //     headerClass: "text-center",
+                        //     maxWidth: 100,
+                        //     filter: true,
+                        //     cellStyle: { textAlign: "center" },
+                        //     cellRenderer: baseCreationDateRenderer,
+                        //     editable: false,
+                        //     valueGetter: (params) =>
+                        //         !!params.data.base_creation_date, // Returns true/false for filtering
+                        //     filterParams: {
+                        //         values: ["true", "false"], // Set custom filter options
+                        //     },
+                        //     colId: "baseCreation",
+                        // },
+                        // {
+                        //     headerName: "ტექნიკური შემოწმების თარიღი",
+                        //     headerClass: "text-center",
+                        //     maxWidth: 100,
+                        //     filter: true,
+                        //     cellStyle: { textAlign: "center" },
+                        //     cellRenderer: technicalReviewDateRenderer,
+                        //     editable: false,
+                        //     valueGetter: (params) =>
+                        //         !!params.data.technical_review_date, // Returns true/false for filtering
+                        //     filterParams: {
+                        //         values: ["true", "false"], // Set custom filter options
+                        //     },
+                        //     colId: "technicalReview",
+                        // },
                         {
                             headerName: "გადმოწერა",
                             headerClass: "text-center",

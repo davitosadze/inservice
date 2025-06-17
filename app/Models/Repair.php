@@ -31,7 +31,8 @@ class Repair extends Model
         'from',
         "user_id",
         "type",
-        "standby_mode"
+        "standby_mode",
+        'estimated_arrival_time',
     ];
     use HasFactory;
 
