@@ -111,12 +111,12 @@
                         <a href="{{ route('responses.index', ['type' => 'pending']) }}"
                             class="nav-link {{ request()->routeIs('responses.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
-                            <span>აქტიური <br> სწრაფი რეაგირებები</span>
+                            <span> სწრაფი რეაგირებები</span>
                         </a>
                     </li>
                 @endif
 
-                @if (Auth::user()->can('რეაგირების ნახვა'))
+                {{-- @if (Auth::user()->can('რეაგირების ნახვა'))
                     @if (!Auth::user()->hasRole('ინჟინერი'))
                         <li class="nav-item">
                             <a href="{{ route('responses.index', ['type' => 'done']) }}"
@@ -126,7 +126,7 @@
                             </a>
                         </li>
                     @endif
-                @endif
+                @endif --}}
 
 
 
@@ -136,12 +136,12 @@
                         <a href="{{ route('repairs.index', ['type' => 'pending']) }}"
                             class="nav-link {{ request()->routeIs('repairs.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
-                            <span>აქტიური <br> სარემონტო სამუშაოები</span>
+                            <span>სარემონტო სამუშაოები</span>
                         </a>
                     </li>
                 @endif
 
-                @if (Auth::user()->can('რემონტის ნახვა'))
+                {{-- @if (Auth::user()->can('რემონტის ნახვა'))
                     @if (!Auth::user()->hasRole('ინჟინერი'))
                         <li class="nav-item">
                             <a href="{{ route('repairs.index', ['type' => 'done']) }}"
@@ -151,7 +151,7 @@
                             </a>
                         </li>
                     @endif
-                @endif
+                @endif --}}
 
 
                 <hr>
