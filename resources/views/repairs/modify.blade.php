@@ -172,7 +172,7 @@
                                 <div class="form-group mt-3 mb-2" style="align-items: center;">
                                     <div class="col-12"><b>ადგილზე მისვლის სავარაუდო დრო :</b></div>
                                     <div class="col-12">
-                                        {{ Form::datetimeLocal('estimated_arrival_time', $model->estimated_arrival_time, ['placeholder' => 'ადგილზე მისვლის სავარაუდო დრო', 'class' => 'form-control', 'readonly' => $model->id ? true : false]) }}
+                                        {{ Form::datetimeLocal('estimated_arrival_time', $model->estimated_arrival_time, ['placeholder' => 'ადგილზე მისვლის სავარაუდო დრო', 'class' => 'form-control']) }}
                                     </div>
 
                                 </div>
