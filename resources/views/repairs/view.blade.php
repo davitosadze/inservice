@@ -46,6 +46,22 @@
                                             </a>
                                         @endif
                                     </div>
+
+                                    @can('ჩატი')
+                                        @if($repair->chat())
+                                            <div class="mt-3">
+                                                <a href="{{ route('chats.show', $repair->chat()->id) }}" class="btn btn-outline-primary d-inline-flex align-items-center">
+                                                    <i class="bi bi-chat-dots me-2"></i> ჩატის ნახვა
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="mt-3">
+                                                <a href="{{ route('chats.startChat', ['type' => 'repair', 'model_id' => $repair->id]) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                                    <i class="bi bi-chat-left-text me-2"></i> ჩატის დაწყება
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endcan
                                 </div>
                             @endif
 

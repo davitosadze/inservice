@@ -80,6 +80,12 @@ class Response extends Model
         return preg_replace('/[^\p{L}]+/u', '', $this->name);
     }
 
+    public function chat() {
+        return Chat::where('type', 'response')
+            ->where('item_id', $this->id)
+            ->first() ?? null;
+    }
+
     public function getJobTimeAttribute()
     {
         $diff = Carbon::parse($this->time)->diff($this->updated_at);

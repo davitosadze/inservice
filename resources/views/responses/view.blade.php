@@ -46,7 +46,24 @@
                                             </a>
                                         @endif
                                     </div>
-                                </div>
+                                    
+                                    <!-- Chat Button -->
+                                    @can('ჩატი')
+                                        @if($response->chat())
+                                            <div class="mt-3">
+                                                <a href="{{ route('chats.show', $response->chat()->id) }}" class="btn btn-outline-primary d-inline-flex align-items-center">
+                                                    <i class="bi bi-chat-dots me-2"></i> ჩატის ნახვა
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="mt-3">
+                                                <a href="{{ route('chats.startChat', ['type' => 'response', 'model_id' => $response->id]) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                                    <i class="bi bi-chat-left-text me-2"></i> ჩატის დაწყება
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endcan
+                                 </div>
                             @endif
 
 
@@ -170,3 +187,49 @@
     </section>
 
 </x-app-layout>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatBtn = document.getElementById('startChatBtn');
+    
+    if (chatBtn) {
+        chatBtn.addEventListener('click', function() {
+            const responseId = this.dataset.responseId;
+            
+            // Show loading state
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ჩატის შექმნა...';
+            this.disabled = true;
+            
+            // Create or get existing chat
+            axios.post('/api/chat/start', {
+                response_id: responseId
+            })
+            .then(response => {
+                if (response.data.chat_id) {
+                    // Redirect to chat page
+                    window.location.href = `/chats/${response.data.chat_id}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error creating chat:', error);
+                
+                // Reset button state
+                this.innerHTML = '<i class="fas fa-comments"></i> ჩატის დაწყება';
+                this.disabled = false;
+                
+                // Show error message
+                if (error.response && error.response.status === 409) {
+                    // Chat already exists, redirect to existing chat
+                    if (error.response.data.chat_id) {
+                        window.location.href = `/chats/${error.response.data.chat_id}`;
+                    }
+                } else {
+                    alert('შეცდომა ჩატის შექმნისას');
+                }
+            });
+        });
+    }
+});
+</script>
+@endpush

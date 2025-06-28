@@ -112,6 +112,11 @@ protected $appends = ['act_note'];
             return $this->belongsTo(Service::class, 'from_id');
         }
 
+        public function chat() {
+            return Chat::where('type', 'repair')
+                ->where('item_id', $this->id)
+                ->first() ?? null;
+        }
         /**
          * Get the polymorphic relation based on 'from' type
          */

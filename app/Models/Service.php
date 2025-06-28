@@ -56,7 +56,11 @@ class Service extends Model
     {
         return $this->belongsTo(User::class, "performer_id");
     }
-
+    public function chat() {
+        return Chat::where('type', 'service')
+            ->where('item_id', $this->id)
+            ->first() ?? null;
+    }
     public function getJobTimeAttribute()
     {
         $diff = Carbon::parse($this->time)->diff($this->updated_at);

@@ -46,6 +46,23 @@
                                             </a>
                                         @endif
                                     </div>
+
+                                    @can('ჩატი')
+                                        @if($service->chat())
+                                            <div class="mt-3">
+                                                <a href="{{ route('chats.show', $service->chat()->id) }}" class="btn btn-outline-primary d-inline-flex align-items-center">
+                                                    <i class="bi bi-chat-dots me-2"></i> ჩატის ნახვა
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="mt-3">
+                                                <a href="{{ route('chats.startChat', ['type' => 'service', 'model_id' => $service->id]) }}" class="btn btn-primary d-inline-flex align-items-center">
+                                                    <i class="bi bi-chat-left-text me-2"></i> ჩატის დაწყება
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @endcan
+
                                 </div>
                             @endif
 

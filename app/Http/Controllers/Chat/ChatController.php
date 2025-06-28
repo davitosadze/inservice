@@ -20,6 +20,19 @@ class ChatController extends Controller
         return view('chats.index', compact('chats'));
     }
 
+    public function startChat(Request $request, $type, $model_id)
+    {
+        // $this->authorize("create", Chat::class);
+
+        $chat = Chat::firstOrCreate([
+            'user_id' => auth()->id(),
+            'type' => $type,
+            'item_id' => $model_id
+        ]);
+
+        return redirect()->route('chats.show', $chat->id);
+    }
+
     public function show($id)
     {
         $chat = Chat::with(['messages.user', 'response'])
