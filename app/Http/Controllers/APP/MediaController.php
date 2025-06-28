@@ -53,7 +53,7 @@ public function uploadMedia(Request $request)
             // Slugify for filename to avoid Unicode issues
             $safeFileName = Str::slug($originalComment, '_') . '.png';
 
-            $location = $request->get('location');
+            $location = Str::slug($request->get('location'), '_');
 
             try {
                 \DB::beginTransaction();
