@@ -176,6 +176,14 @@
                                         </div>
                                         <hr>
                                         <div class="col-sm 12">
+                                            <hr>
+                                            @if($repair->performer)
+                                                <p>ინჟინერი: {{ $repair->performer->name }}</p>
+                                            @else
+                                                <p>ინჟინერი: -</p>
+                                            @endif
+
+                                            
                                             <div class="mt-2 card-footer">
                                                 <div class="left">
                                                     <b>
@@ -186,8 +194,12 @@
                                                 </div>
                                                 <div class="right">
                                                     <b>
-                                                        <p>ადგილზე მისვლის დრო:</p>
-                                                        <p>{{ $repair->time ? \Carbon\Carbon::parse($repair->time)->format('H:i / d.m.Y') : '-' }}
+                                                        @if($repair->time)
+                                                            <p>ადგილზე მისვლის დრო:</p>
+                                                        @else 
+                                                            <p>ადგილზე მისვლის სავარაუდო დრო:</p>
+                                                        @endif
+                                                        <p>{{ $repair->time ? \Carbon\Carbon::parse($repair->time)->format('H:i / d.m.Y') : $repair->estimated_arrival_time }}
                                                         </p>
                                                     </b>
                                                 </div>
