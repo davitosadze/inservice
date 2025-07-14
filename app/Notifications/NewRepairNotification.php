@@ -45,6 +45,7 @@ class NewRepairNotification extends Notification implements ShouldQueue
 
         if ($this->repair?->status == 10) {
             return $mail
+                ->from('noreply@inservice.ge', 'Inservice')
                 ->subject('ახალი შეკვეთა - PR' . $id)
                 ->line('შეკვეთა #PR' . $id . ' შემოვიდა')
                 ->line('სახელი: ' . $this->user->name)
@@ -59,6 +60,7 @@ class NewRepairNotification extends Notification implements ShouldQueue
 
         if ($this->repair?->status == 3) {
             return $mail
+                ->from('noreply@inservice.ge', 'Inservice')
                 ->subject('შეკვეთა დასრულებულია - PR' . $id)
                 ->line('თქვენი შეკვეთა #PR' . $id . ' დასრულებულია')
                 ->line('სახელი: ' . $this->user->name)
@@ -89,5 +91,16 @@ class NewRepairNotification extends Notification implements ShouldQueue
         return [
             //
         ];
+    }
+
+    /**
+     * Override the recipient email to always send to noreply@inservice.ge
+     *
+     * @param  mixed  $notifiable
+     * @return string
+     */
+    public function routeNotificationForMail($notifiable)
+    {
+        return 'noreply@inservice.ge';
     }
 }
