@@ -32,7 +32,6 @@ class NewResponseNotification extends Notification implements ShouldQueue
 
         if ($this->response?->status == 9) {
             return $mail
-                ->from('noreply@inservice.ge', 'Inservice')
                 ->subject('ახალი შეკვეთა - QR' . $id)
                 ->line('შეკვეთა #QR' . $id . ' შემოვიდა')
                 ->line('სახელი: ' . $this->user->name)
@@ -47,7 +46,6 @@ class NewResponseNotification extends Notification implements ShouldQueue
 
         if ($this->response?->status == 3) {
             return $mail
-                ->from('noreply@inservice.ge', 'Inservice')
                 ->subject('შეკვეთა დასრულებულია - QR' . $id)
                 ->line('თქვენი შეკვეთა #QR' . $id . ' დასრულებულია')
                 ->line('სახელი: ' . $this->user->name)
@@ -65,11 +63,5 @@ class NewResponseNotification extends Notification implements ShouldQueue
         }
 
         return null;  
-    }
-
-    public function routeNotificationForMail($notifiable)
-    {
-        // Override the recipient email to always send to noreply@inservice.ge
-        return 'noreply@inservice.ge';
     }
 }
