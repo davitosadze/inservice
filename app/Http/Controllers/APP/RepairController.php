@@ -9,6 +9,7 @@ use App\Models\Repair;
 use App\Notifications\NewRepairNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,18 +19,30 @@ class RepairController extends Controller
     public function index(Request $request)
     {
         $client = Auth::user()->getClient();
-        
 
-        $repairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])
-        ->orderBy('id', 'desc')
-        ->whereDate('created_at', '>=', Carbon::parse('first day of this year'))
-        ->get()
-        ->filter(function($response) use ($client) {
-            $clientPurchasers = json_decode($client->purchaser, true) ?: [];
-            return in_array($response->formatted_name, $clientPurchasers);
+        $allRepairs = Repair::with(['user', 'purchaser', 'region', 'performer', 'response'])
+            ->orderBy('id', 'desc')
+            ->whereDate('created_at', '>=', Carbon::parse('first day of January'))
+            ->get();
+        
+        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+        
+        $filtered = $allRepairs->filter(function ($repair) use ($clientPurchasers) {
+            return in_array($repair->formatted_name, $clientPurchasers);
         });
-    
-        return response($repairs->values()->toArray());
+        
+        // Manual pagination
+        $page = request()->get('page', 1);
+        $perPage = 10;
+        $paginated = new LengthAwarePaginator(
+            $filtered->forPage($page, $perPage)->values(),
+            $filtered->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+        
+        return response($paginated);
     }
 
     public function show($id)

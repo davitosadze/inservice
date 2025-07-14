@@ -18,6 +18,7 @@ class Response extends Model
         "date",
         "purchaser_id",
         "performer_id",
+        "manager_id",
         "region_id",
         "subject_name",
         "subject_address",
@@ -63,6 +64,11 @@ class Response extends Model
     public function performer()
     {
         return $this->belongsTo(User::class, "performer_id");
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, "manager_id");
     }
 
     public function systemOne()

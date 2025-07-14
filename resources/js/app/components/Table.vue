@@ -24,6 +24,7 @@
             :rowClassRules="rowClassRules"
             :tooltipShowDelay="tooltipShowDelay"
             :tooltipHideDelay="tooltipHideDelay"
+            :context="{ componentParent: this }"
             @grid-ready="onGridReady"
             @cell-clicked="onCellClicked"
         >
@@ -102,18 +103,78 @@ function baseCreationDateRenderer(params) {
 function alterRendererWithView(params) {
     let eGui = document.createElement("div");
 
-    if ($can("კლიენტის რედაქტირება")) {
-        eGui.innerHTML = `
-			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
-			<i id="gela" style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="edit" class="fas fa-edit"></i>
-			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
-		`;
-    } else {
-        eGui.innerHTML = `
-			<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>
-			<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>
-		`;
+    // Get model type from grid context or params
+    const modelType =
+        params.context?.componentParent?.setting?.model || "clients";
+
+    // Define permission mappings for different models
+    const permissions = {
+        clients: {
+            view: "კლიენტის ნახვა",
+            edit: "კლიენტის რედაქტირება",
+            delete: "კლიენტის წაშლა",
+        },
+        responses: {
+            view: "რეაგირების ნახვა",
+            edit: "რეაგირების რედაქტირება",
+            delete: "რეაგირების წაშლა",
+        },
+        repairs: {
+            view: "რემონტის ნახვა",
+            edit: "რემონტის რედაქტირება",
+            delete: "რემონტის წაშლა",
+        },
+        services: {
+            view: "სერვისის ნახვა",
+            edit: "სერვისის რედაქტირება",
+            delete: "სერვისის წაშლა",
+        },
+        invoices: {
+            view: "ინვოისის ნახვა",
+            edit: "ინვოისის რედაქტირება",
+            delete: "ინვოისის წაშლა",
+        },
+        acts: {
+            view: "აქტის ნახვა",
+            edit: "აქტის რედაქტირება",
+            delete: "აქტის წაშლა",
+        },
+        default: {
+            view: "კლიენტის ნახვა",
+            edit: "კლიენტის რედაქტირება",
+            delete: "კლიენტის წაშლა",
+        },
+    };
+
+    const modelPermissions = permissions[modelType] || permissions["default"];
+
+    let buttonsHtml = "";
+
+    // Add მივიღე button for responses if by_client is true and manager_id is null
+    if (
+        modelType === "responses" &&
+        params.data.by_client &&
+        !params.data.manager_id
+    ) {
+        buttonsHtml += `<i style="cursor:pointer; color:orange; font-size:1.2em; margin-right:0.3em;" data-action="assign-manager" class="fas fa-hand-paper" title="მივიღე"></i>`;
     }
+
+    // Add view button if user has view permission
+    if ($can(modelPermissions.view)) {
+        buttonsHtml += `<i style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="view" class="fas fa-eye"></i>`;
+    }
+
+    // Add edit button if user has edit permission
+    if ($can(modelPermissions.edit)) {
+        buttonsHtml += `<i id="gela" style="cursor:pointer; color:green; font-size:1.2em; margin-right:0.3em;" data-action="edit" class="fas fa-edit"></i>`;
+    }
+
+    // Add delete button if user has delete permission
+    if ($can(modelPermissions.delete)) {
+        buttonsHtml += `<i style="cursor:pointer; color:red; font-size:1.2em;" data-action="delete" class="fas fa-trash"></i>`;
+    }
+
+    eGui.innerHTML = buttonsHtml;
     return eGui;
 }
 
@@ -277,51 +338,6 @@ export default {
             if (props.setting.is_table_advanced) {
                 if (props.setting.model == "purchaser") {
                     is_table_advanced = [
-                        // {
-                        //     headerName: "პირველადი შემოწმების თარიღი",
-                        //     headerClass: "text-center",
-                        //     maxWidth: 100,
-                        //     filter: true, // Use ag-Grid's Set Filter for custom filtering
-                        //     cellStyle: { textAlign: "center" },
-                        //     cellRenderer: firstReviewDateRenderer,
-                        //     editable: false,
-                        //     colId: "firstReview",
-                        //     valueGetter: (params) =>
-                        //         !!params.data.first_review_date, // Returns true/false for filtering
-                        //     filterParams: {
-                        //         values: ["true", "false"], // Set custom filter options
-                        //     },
-                        // },
-                        // {
-                        //     headerName: "ბაზის შექმნის თარიღი",
-                        //     headerClass: "text-center",
-                        //     maxWidth: 100,
-                        //     filter: true,
-                        //     cellStyle: { textAlign: "center" },
-                        //     cellRenderer: baseCreationDateRenderer,
-                        //     editable: false,
-                        //     valueGetter: (params) =>
-                        //         !!params.data.base_creation_date, // Returns true/false for filtering
-                        //     filterParams: {
-                        //         values: ["true", "false"], // Set custom filter options
-                        //     },
-                        //     colId: "baseCreation",
-                        // },
-                        // {
-                        //     headerName: "ტექნიკური შემოწმების თარიღი",
-                        //     headerClass: "text-center",
-                        //     maxWidth: 100,
-                        //     filter: true,
-                        //     cellStyle: { textAlign: "center" },
-                        //     cellRenderer: technicalReviewDateRenderer,
-                        //     editable: false,
-                        //     valueGetter: (params) =>
-                        //         !!params.data.technical_review_date, // Returns true/false for filtering
-                        //     filterParams: {
-                        //         values: ["true", "false"], // Set custom filter options
-                        //     },
-                        //     colId: "technicalReview",
-                        // },
                         {
                             headerName: "გადმოწერა",
                             headerClass: "text-center",
@@ -579,9 +595,10 @@ export default {
                     window.location.href = this.setting.url.request.edit;
                 } else if (action === "delete") {
                     this.remove(params, params.data.id, params.node.data);
+                } else if (action === "assign-manager") {
+                    this.assignManager(params.data.id);
                 }
             } else if (params.column.colId == "gadawera") {
-                console.log(this.setting.model);
                 let action = params.event.target.dataset.action;
                 if (action == "excel") {
                     window.location.href =
@@ -621,6 +638,54 @@ export default {
                     );
                 }
             }
+        },
+        assignManager(responseId) {
+            if (!confirm("ნამდვილად მიიღებთ ამ რეაგირებას?")) {
+                return;
+            }
+
+            let token = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+
+            this.$http
+                .post(
+                    `/responses/${responseId}/assign-manager`,
+                    {},
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": token,
+                        },
+                    }
+                )
+                .then((response) => {
+                    if (response.data.success) {
+                        this.$toast.success("რეაგირება წარმატებით დაენიჭა!", {
+                            position: "top-right",
+                            duration: 3000,
+                        });
+                        // Refresh the grid data
+                        this.onGridReady({
+                            api: this.gridApi,
+                            columnApi: this.columnApi,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    let errorMessage = "შეცდომა რეაგირების დანიჭვისას!";
+                    if (
+                        error.response &&
+                        error.response.data &&
+                        error.response.data.message
+                    ) {
+                        errorMessage = error.response.data.message;
+                    }
+                    this.$toast.error(errorMessage, {
+                        position: "top-right",
+                        duration: 5000,
+                    });
+                });
         },
     },
 };

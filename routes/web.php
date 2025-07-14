@@ -46,6 +46,8 @@ use App\Http\Controllers\SystemController;
 */
 
 
+
+
 Route::middleware(['auth', 'has_permission'])->group(function () {
 
 
@@ -89,6 +91,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     // Responses
     Route::resource("responses", ResponseController::class);
     Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
+    Route::post("responses/{response}/assign-manager", [ResponseController::class, 'assignManager'])->name('responses.assign-manager');
 
 
     // Repairs

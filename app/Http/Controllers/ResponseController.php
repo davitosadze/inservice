@@ -149,7 +149,7 @@ class ResponseController extends Controller
 
 
             $model->fill($request->all());
-
+            $model->manager_id = auth()->user()->id;
             if (!$request->get('system_two')) {
                 $model->system_two = NULL;
             }
@@ -324,5 +324,21 @@ class ResponseController extends Controller
         $response->status = 10;
         $response->save();
         return back();
+    }
+
+    public function assignManager($id)
+    {
+        $response = Response::findOrFail($id);
+        
+        // Check if response is by client and manager_id is null
+        if (!$response->by_client || $response->manager_id !== null) {
+            return redirect()->back()->with('error', 'This response cannot be assigned to you.');
+        }
+        
+        // Assign current user as manager
+        $response->manager_id = auth()->id();
+        $response->save();
+        
+        return redirect()->back()->with('success', 'Response successfully assigned to you.');
     }
 }

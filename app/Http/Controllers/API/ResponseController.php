@@ -25,9 +25,17 @@ class ResponseController extends Controller
                 ->whereIn("status", [1, 5, 10])
                 ->where("performer_id", Auth::user()->id);
         } elseif (Auth::user()->roles->contains('name', 'ტექნიკური მენეჯერი - შეზღუდული')) {
-            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc')->where("user_id", Auth::user()->id);;
-        } else {
+            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])
+            ->orderBy('id', 'desc')
+            ->where("user_id", Auth::user()->id);
+        } elseif(Auth::user()->roles->contains('name', 'დირექტორი')) {
             $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc');
+
+        } else {
+            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])
+            ->where("manager_id", Auth::user()->id)
+            ->orWhere('manager_id', null)
+            ->orderBy('id', 'desc');
         }
 
         if ($request->get("type") == "done") {

@@ -128,6 +128,16 @@
                                                 </a>
                                             @endif
 
+                                            @if ($response->by_client && !$response->manager_id)
+                                                <form method="POST" action="{{ route('responses.assign-manager', $response->id) }}" style="display: inline;">
+                                                    @csrf
+                                                    <button type="submit" 
+                                                        onclick="return confirm('ნამდვილად მიიღებთ ამ რეაგირებას?')"
+                                                        class="btn btn-warning mr-2">
+                                                        მივიღე
+                                                    </button>
+                                                </form>
+                                            @endif
 
                                             @if (Auth::user()->can('რეაგირების ნახვა'))
                                                 <a href="{{ route('responses.show', $response->id) }}"

@@ -770,6 +770,9 @@ select {
 .mb-5 {
   margin-bottom: 1.25rem;
 }
+.me-2 {
+  margin-inline-end: 0.5rem;
+}
 .ml-0 {
   margin-left: 0px;
 }

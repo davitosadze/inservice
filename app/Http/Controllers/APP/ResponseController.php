@@ -9,6 +9,7 @@ use App\Models\Response;
 use App\Notifications\NewResponseNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
@@ -19,16 +20,29 @@ class ResponseController extends Controller
     
         $client = Auth::user()->getClient();
 
-        $responses = Response::with(['user', 'purchaser', 'region', 'performer'])
-            ->orderBy('id', 'desc')
-            ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'))
-            ->get()
-            ->filter(function($response) use ($client) {
-                $clientPurchasers = json_decode($client->purchaser, true) ?: [];
-                return in_array($response->formatted_name, $clientPurchasers);
-            });
+        $allResponses = Response::with(['user', 'purchaser', 'region', 'performer'])
+        ->orderBy('id', 'desc')
+        ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'))
+        ->get();
+    
+        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
         
-        return response($responses->values()->toArray());
+        $filtered = $allResponses->filter(function ($response) use ($clientPurchasers) {
+            return in_array($response->formatted_name, $clientPurchasers);
+        });
+        
+        // Manual pagination
+        $page = request()->get('page', 1);
+        $perPage = 10;
+        $paginated = new LengthAwarePaginator(
+            $filtered->forPage($page, $perPage)->values(),
+            $filtered->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+            
+        return response($paginated);
 
 
     }
