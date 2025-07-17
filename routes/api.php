@@ -155,7 +155,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::get('app/responses/{response} ', [APPResponseController::class, 'show'])->name('app.responses.show');
     Route::post('app/responses/{response}/attend ', [APPResponseController::class, 'arrived'])->name('app.acts.arrived');
     Route::get('app/responses ', [APPResponseController::class, 'index'])->name('app.responses.index');
-    Route::get('app/responses/done', [APPResponseController::class, 'doneResponses'])->name('app.responses.done');
+    Route::get('app/responses-done', [APPResponseController::class, 'doneResponses'])->name('app.responses.done');
     Route::post('app/responses ', [APPResponseController::class, 'store'])->name('app.responses.store');
     Route::post('app/responses/{response}/change-status ', [APPResponseController::class, 'changeStatus'])->name('app.responses.changeStatus');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
@@ -166,7 +166,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('app/repairs ', [APPRepairController::class, 'store'])->name('app.responses.store');
     Route::post('app/repairs ', [APPRepairController::class, 'store'])->name('app.responses.store');
     Route::get('app/repairs ', [APPRepairController::class, 'index'])->name('app.repairs.index');
-     Route::get('app/repairs/done', [APPRepairController::class, 'doneRepairs'])->name('app.repairs.done');
+     Route::get('app/repairs-done', [APPRepairController::class, 'doneRepairs'])->name('app.repairs.done');
     Route::get('app/repairs/{repair} ', [APPRepairController::class, 'show'])->name('app.repairs.show');
 
     Route::post('app/repairs/{repair}/change-status ', [APPRepairController::class, 'changeStatus'])->name('app.repairs.changeStatus');
