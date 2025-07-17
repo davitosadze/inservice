@@ -22,6 +22,7 @@ class ResponseController extends Controller
 
         $allResponses = Response::with(['user', 'purchaser', 'region', 'performer'])
         ->orderBy('id', 'desc')
+        ->where('status', '!=', 3)
         ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'))
         ->get();
     
@@ -45,6 +46,35 @@ class ResponseController extends Controller
         return response($paginated);
 
 
+    }
+
+    public function doneResponses(Request $request) {
+        $client = Auth::user()->getClient();
+
+        $allResponses = Response::with(['user', 'purchaser', 'region', 'performer'])
+            ->orderBy('id', 'desc')
+            ->where('status', 3) 
+            ->whereDate('created_at', '>=', Carbon::parse('first day of January'))
+            ->get();
+        
+        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+        
+        $filtered = $allResponses->filter(function ($response) use ($clientPurchasers) {
+            return in_array($response->formatted_name, $clientPurchasers);
+        });
+        
+        // Manual pagination
+        $page = request()->get('page', 1);
+        $perPage = 10;
+        $paginated = new LengthAwarePaginator(
+            $filtered->forPage($page, $perPage)->values(),
+            $filtered->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+        
+        return response($paginated);
     }
 
     public function show($id)
