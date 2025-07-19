@@ -46,6 +46,8 @@ class ResponseController extends Controller
                 ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
                 ['field' => "job_time", 'headerName' => 'დრო'],
                 ['field' => "purchaser_address", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
+                ['field' => "content", 'headerName' => 'შინაარსი.', "valueGetter" => 'data.content'],
+            
             ],
             'model' => 'responses',
             'url' => [

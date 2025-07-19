@@ -34,6 +34,15 @@ class Response extends Model
         "end_time",
         "type"
     ];
+
+    const STATUS_CREATED = 1;
+    const STATUS_ACT_CREATED = 2;
+    const STATUS_CONFIRMED = 3;
+    const STATUS_CLIENT_PENDING = 4;
+    const STATUS_ACT_FILLED_FROM_APP = 5;
+    const STATUS_CREATED_FROM_APP = 9;
+    const STATUS_ARRIVED = 10;
+    
     protected $appends = ["formatted_name", "job_time"];
 
     use HasFactory;
