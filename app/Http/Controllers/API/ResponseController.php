@@ -20,42 +20,35 @@ class ResponseController extends Controller
     public function index(Request $request)
     {
 
-        if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
-            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc')
-                ->whereIn("status", [1, 5, 10])
-                ->where("performer_id", Auth::user()->id);
-        } elseif (Auth::user()->roles->contains('name', 'ტექნიკური მენეჯერი - შეზღუდული')) {
-            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])
-            ->orderBy('id', 'desc')
-            ->where("user_id", Auth::user()->id);
-        } elseif(Auth::user()->roles->contains('name', 'დირექტორი')) {
-            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc');
-        } else {
-            if($request->get('type') == 'done'){
-                $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc');
-            } else {
-                $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])
-                ->where("manager_id", Auth::user()->id)
-                ->orWhere('manager_id', null)
-                ->orderBy('id', 'desc');
-            }
-        }
+    $user = Auth::user();
+    $type = $request->get("type");
 
+    $responsesQuery = Response::with(['user', 'purchaser', 'region', 'systemOne', 'systemTwo', 'performer'])
+        ->orderBy('id', 'desc');
 
-        if ($request->get("type") == "done") {
-            $responses = $responses->where("status", 3)
-                ->orWhere("status", 0)
-                                ->take(10)
+    // Case 1: Show all done responses (status 0 or 3)
+    if ($type === 'done') {
+            $responses = $responsesQuery->whereIn('status', [0, 3])->take(200)->get();
 
+    // Case 2: Show all client-pending responses (status 4)
+    } elseif ($type === 'client-pending') {
+        $responses = $responsesQuery->where('status', 4)->get();
+
+    // Case 3: Filter based on responses_limited flag
+    } else {
+        $statusesToInclude = [1, 2, 5, 9, 10]; // all statuses except done & client-pending
+
+        if ($user->responses_limited) {
+            $responses = $responsesQuery
+                ->where('manager_id', $user->id)
+                ->whereIn('status', $statusesToInclude)
                 ->get();
-        } elseif($request->get('type') == 'client-pending') {
-            $responses = $responses->where("status", 4)
-                ->get();
-
         } else {
-            $responses = $responses->whereIn("status", [1, 2, 9, 5, 10])
+            $responses = $responsesQuery
+                ->whereIn('status', $statusesToInclude)
                 ->get();
         }
+    }
         return response($responses->toArray());
     }
 
