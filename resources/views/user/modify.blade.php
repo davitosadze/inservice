@@ -103,6 +103,18 @@
 
                             <hr />
 
+                            <label for="name">რეაგირებების შეზღუდვა</label>
+                            <hr>
+                            <div class="form-group">
+                                <div class="form-check form-check-inline">
+                                    <input @checked($model->responses_limited) value="1" class="form-check-input"
+                                        type="checkbox" name="responses_limited" id="responses_limited">
+                                    <label class="form-check-label" for="responses_limited">რეაგირებების შეზღუდვა</label>
+                                </div>
+                            </div>
+
+
+                            <hr>
                             <label for="name">მიუთითეთ თუ მენეჯერია</label>
                             <hr>
                             <div class="form-group">

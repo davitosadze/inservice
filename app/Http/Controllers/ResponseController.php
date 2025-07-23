@@ -102,7 +102,6 @@ class ResponseController extends Controller
 
  
 
-
         return view('responses.index', ['additional' => $additional, 'setting' => $setting, 'responses' => $responses]);
     }
 

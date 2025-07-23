@@ -118,6 +118,7 @@ class UserController extends Controller
             if (File::exists($from . $model)) File::delete($from . $model);
         });
 
+        $model->responses_limited = $request->responses_limited ?: 0;
         $model->password = $request->inter_password;
 
         $model->save();

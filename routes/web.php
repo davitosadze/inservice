@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActController;
 use App\Http\Controllers\Api\ClientStatisticController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\RoleController;
@@ -93,6 +94,19 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
     Route::post("responses/{response}/assign-manager", [ResponseController::class, 'assignManager'])->name('responses.assign-manager');
 
+    // Test Mail Route
+    Route::get('/test-mail', function () {
+        try {
+            Mail::raw('This is a test email from InService application.', function ($message) {
+                $message->from('noreply@inservice.ge', 'InService')
+                        ->to('davitosadze7@gmail.com')
+                        ->subject('Test Email from InService');
+            });
+            return 'Test email sent successfully to davitosadze7@gmail.com';
+        } catch (\Exception $e) {
+            return 'Failed to send email: ' . $e->getMessage();
+        }
+    })->name('test.mail');
 
     // Repairs
     Route::post("repairs/{repair}/assign-performer", [RepairController::class, "assignPerformer"])->name('repairs.assign-performer');

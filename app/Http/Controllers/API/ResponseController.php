@@ -20,6 +20,7 @@ class ResponseController extends Controller
     public function index(Request $request)
     {
 
+
         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
             $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc')
                 ->whereIn("status", [1, 5, 10])
