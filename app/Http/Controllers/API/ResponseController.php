@@ -44,7 +44,9 @@ class ResponseController extends Controller
 
         if ($request->get("type") == "done") {
             $responses = $responses->where("status", 3)
-                // ->orWhere("status", 0)
+                ->orWhere("status", 0)
+                                ->take(10)
+
                 ->get();
         } elseif($request->get('type') == 'client-pending') {
             $responses = $responses->where("status", 4)
