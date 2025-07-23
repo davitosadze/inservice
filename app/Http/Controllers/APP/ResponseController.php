@@ -122,7 +122,7 @@ class ResponseController extends Controller
 
         if($request->get('status') == 3) {
             $user = $response->user;
-            // $user->notify(new NewResponseNotification($user,$response));
+            $user->notify(new NewResponseNotification($user,$response));
         }
 
         return response()->json(["success" => true], 200);
@@ -175,7 +175,7 @@ class ResponseController extends Controller
         ]);
 
         $user = auth()->user();
-        // $user->notify(new NewResponseNotification($user,$response));
+        $user->notify(new NewResponseNotification($user,$response));
     
 
         return response()->json([

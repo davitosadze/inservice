@@ -122,7 +122,7 @@ class RepairController extends Controller
 
         if($request->get('status') == 3) {
             $user = $repair->user;
-            // $user->notify(new NewRepairNotification($user,$repair));
+            $user->notify(new NewRepairNotification($user,$repair));
         }
         return response()->json(["success" => true], 200);
     }
@@ -173,7 +173,7 @@ class RepairController extends Controller
         ]);
 
         $user = auth()->user();
-        // $user->notify(new NewRepairNotification($user,$repair));
+        $user->notify(new NewRepairNotification($user,$repair));
 
         return response()->json([
             "success" => true,
