@@ -8,6 +8,7 @@ use App\Models\Repair;
 use App\Models\DeviceBrand;
 use App\Models\DeviceType;
 use App\Models\Location;
+use App\Notifications\NewRepairNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -55,6 +56,9 @@ class RepairActController extends Controller
 
                 if ($request->approve == 1) {
                     $repair->status = 3;
+
+                    $user = $repair->user;
+                    $user->notify(new NewRepairNotification($user,$repair));
                 } elseif ($request->on_repair == 1) {
                     $repair->status = 3;
                     $repair->on_repair = 1;
