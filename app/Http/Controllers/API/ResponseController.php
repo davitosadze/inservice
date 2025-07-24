@@ -26,8 +26,14 @@ class ResponseController extends Controller
     $responsesQuery = Response::with(['user', 'purchaser', 'region', 'systemOne', 'systemTwo', 'performer'])
         ->orderBy('id', 'desc');
 
+         if (Auth::user()->roles->contains('name', 'ინჟინერი')) {
+            $responses = Response::with(['user', 'purchaser', 'region',  'systemOne', 'systemTwo', 'performer'])->orderBy('id', 'desc')
+                ->whereIn("status", [1, 5, 10])
+                ->where("performer_id", Auth::user()->id);
+        } elseif
+
     // Case 1: Show all done responses (status 0 or 3)
-    if ($type === 'done') {
+     ($type === 'done') {
             $responses = $responsesQuery->whereIn('status', [0, 3])->take(200)->get();
 
     // Case 2: Show all client-pending responses (status 4)
