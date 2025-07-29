@@ -6,6 +6,7 @@ use App\Models\Response;
 use App\Models\Repair;
 use App\Notifications\NewRepairNotification;
 use App\Notifications\NewResponseNotification;
+use App\Models\ServiceNotifiable;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,7 +39,8 @@ class UpdateStatuses implements ShouldQueue
             ]);
             
             $user = $response->user;
-            $user->notify(new NewResponseNotification($user,$response));
+            $serviceNotifiable = new ServiceNotifiable();
+            $serviceNotifiable->notify(new NewResponseNotification($user,$response));
 
             Log::info("Response #{$response->id} status updated from 4 to 3 (expired after 12 hours)");
         }

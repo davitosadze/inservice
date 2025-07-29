@@ -34,7 +34,7 @@ class NewResponseNotification extends Notification implements ShouldQueue
             return $mail
                 ->from('noreply@inservice.ge', 'InService')
                 ->cc('service@inservice.ge')
-                ->subject('ახალი შეკვეთა - QR' . $id)
+                ->subject('შეკვეთა - QR' . $id)
                 ->line('შეკვეთა #QR' . $id . ' შემოვიდა')
                 ->line('სახელი: ' . $this->user->name)
                 ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
@@ -50,7 +50,7 @@ class NewResponseNotification extends Notification implements ShouldQueue
             return $mail
                 ->from('noreply@inservice.ge', 'InService')
                 ->cc('service@inservice.ge')
-                ->subject('შეკვეთა დასრულებულია - QR' . $id)
+                ->subject('შეკვეთა - QR' . $id)
                 ->line('თქვენი შეკვეთა #QR' . $id . ' დასრულებულია')
                 ->line('სახელი: ' . $this->user->name)
                 ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
@@ -71,7 +71,7 @@ class NewResponseNotification extends Notification implements ShouldQueue
 
     public function routeNotificationForMail($notifiable)
     {
-        // Override the recipient email to always send to davitosadze7@gmail.com
+        // Route to noreply as main recipient
         return 'noreply@inservice.ge';
     }
 }

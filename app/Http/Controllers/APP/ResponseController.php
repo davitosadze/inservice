@@ -7,6 +7,7 @@ use App\Models\Chat;
 use App\Models\Purchaser;
 use App\Models\Response;
 use App\Notifications\NewResponseNotification;
+use App\Models\ServiceNotifiable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -122,7 +123,8 @@ class ResponseController extends Controller
 
         if($request->get('status') == 3) {
             $user = $response->user;
-            $user->notify(new NewResponseNotification($user,$response));
+            $serviceNotifiable = new ServiceNotifiable();
+            $serviceNotifiable->notify(new NewResponseNotification($user,$response));
         }
 
         return response()->json(["success" => true], 200);
@@ -175,7 +177,8 @@ class ResponseController extends Controller
         ]);
 
         $user = auth()->user();
-        $user->notify(new NewResponseNotification($user,$response));
+        $serviceNotifiable = new ServiceNotifiable();
+        $serviceNotifiable->notify(new NewResponseNotification($user,$response));
     
 
         return response()->json([

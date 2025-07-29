@@ -11,6 +11,7 @@ use App\Models\Repair;
 use App\Models\RepairAct;
 use App\Models\Response as ModelsResponse;
 use App\Notifications\NewResponseNotification;
+use App\Models\ServiceNotifiable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -61,7 +62,8 @@ class ActController extends Controller
                     $response->status = 3;
 
                     $user = $response->user;
-                    $user->notify(new NewResponseNotification($user,$response));
+                    $serviceNotifiable = new ServiceNotifiable();
+                    $serviceNotifiable->notify(new NewResponseNotification($user,$response));
 
                     $response->end_time =  Carbon::now();
 
