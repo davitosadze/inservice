@@ -56,7 +56,8 @@ class UpdateStatuses implements ShouldQueue
             ]);
             
             $user = $repair->user;
-            $user->notify(new NewRepairNotification($user,$repair));
+            $serviceNotifiable = new ServiceNotifiable();
+            $serviceNotifiable->notify(new NewRepairNotification($user,$repair));
 
             Log::info("Repair #{$repair->id} status updated from 4 to 3 (expired after 12 hours)");
         }

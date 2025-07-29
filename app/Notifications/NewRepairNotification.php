@@ -47,7 +47,7 @@ class NewRepairNotification extends Notification implements ShouldQueue
             return $mail
                 ->from('noreply@inservice.ge', 'Inservice')
                 ->cc('service@inservice.ge')
-                ->subject('ახალი შეკვეთა - PR' . $id)
+                ->subject('შეკვეთა - PR' . $id)
                 ->line('შეკვეთა #PR' . $id . ' შემოვიდა')
                 ->line('სახელი: ' . $this->user->name)
                 ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
@@ -63,7 +63,7 @@ class NewRepairNotification extends Notification implements ShouldQueue
             return $mail
                 ->from('noreply@inservice.ge', 'Inservice')
                 ->cc('service@inservice.ge')                
-                ->subject('შეკვეთა დასრულებულია - PR' . $id)
+                ->subject('შეკვეთა - PR' . $id)
                 ->line('თქვენი შეკვეთა #PR' . $id . ' დასრულებულია')
                 ->line('სახელი: ' . $this->user->name)
                 ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)

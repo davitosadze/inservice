@@ -7,6 +7,7 @@ use App\Models\Chat;
 use App\Models\Purchaser;
 use App\Models\Repair;
 use App\Notifications\NewRepairNotification;
+use App\Models\ServiceNotifiable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -122,7 +123,8 @@ class RepairController extends Controller
 
         if($request->get('status') == 3) {
             $user = $repair->user;
-            $user->notify(new NewRepairNotification($user,$repair));
+            $serviceNotifiable = new ServiceNotifiable();
+            $serviceNotifiable->notify(new NewRepairNotification($user,$repair));
         }
         return response()->json(["success" => true], 200);
     }
@@ -173,7 +175,8 @@ class RepairController extends Controller
         ]);
 
         $user = auth()->user();
-        $user->notify(new NewRepairNotification($user,$repair));
+        $serviceNotifiable = new ServiceNotifiable();
+        $serviceNotifiable->notify(new NewRepairNotification($user,$repair));
 
         return response()->json([
             "success" => true,
