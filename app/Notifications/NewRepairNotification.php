@@ -46,9 +46,9 @@ class NewRepairNotification extends Notification implements ShouldQueue
         if ($this->repair?->status == 10) {
             return $mail
                 ->from('noreply@inservice.ge', 'Inservice')
-                ->cc('service@inservice.ge')
+                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - PR' . $id)
-                ->line('შეკვეთა #PR' . $id . ' შემოვიდა')
+                ->line('შეკვეთა #PR' . $id . ' მიღებულია')
                 ->line('სახელი: ' . $this->user->name)
                 ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
                 ->line('დამატებითი სახელი: ' . $this->repair?->subject_name)
@@ -62,7 +62,7 @@ class NewRepairNotification extends Notification implements ShouldQueue
         if ($this->repair?->status == 3) {
             return $mail
                 ->from('noreply@inservice.ge', 'Inservice')
-                ->cc('service@inservice.ge')                
+                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - PR' . $id)
                 ->line('თქვენი შეკვეთა #PR' . $id . ' დასრულებულია')
                 ->line('სახელი: ' . $this->user->name)
@@ -73,7 +73,7 @@ class NewRepairNotification extends Notification implements ShouldQueue
                 ->line('ადგილზე მისვლის დრო ფაქტიური: ' . $this->repair?->time)
                 ->line('რეაგირების დასრულების დრო: ' . $this->repair?->end_time)
                 ->line('სამუშაოს აღწერა: ' . $this->repair?->job_description)
-                ->line('დეტალები:')
+                ->line('შინაარსი:')
                 ->line($this->repair?->content)
                 ->line('დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.')
                 ->action('ნახეთ შეკვეთა', url('/repairs/' . $id));

@@ -33,23 +33,23 @@ class NewResponseNotification extends Notification implements ShouldQueue
         if ($this->response?->status == 9) {
             return $mail
                 ->from('noreply@inservice.ge', 'InService')
-                ->cc('service@inservice.ge')
+                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - QR' . $id)
-                ->line('შეკვეთა #QR' . $id . ' შემოვიდა')
+                ->line('შეკვეთა #QR' . $id . ' მიღებულია')
                 ->line('სახელი: ' . $this->user->name)
                 ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
                 ->line('დამატებითი სახელი: ' . $this->response?->subject_name)
                 ->line('მისამართი: ' . $this->response?->subject_address)
-                ->line('დეტალები:')
+                ->line('შინაარსი:')
                 ->line($this->response?->content)
-                ->line('დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.')
+                ->line('<small>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.:</small>')
                 ->action('ნახეთ შეკვეთა', url('/responses/' . $id));
         }
 
         if ($this->response?->status == 3) {
             return $mail
                 ->from('noreply@inservice.ge', 'InService')
-                ->cc('service@inservice.ge')
+                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - QR' . $id)
                 ->line('თქვენი შეკვეთა #QR' . $id . ' დასრულებულია')
                 ->line('სახელი: ' . $this->user->name)
@@ -60,9 +60,9 @@ class NewResponseNotification extends Notification implements ShouldQueue
                 ->line('ადგილზე მისვლის დრო ფაქტიური: ' . $this->response?->time)
                 ->line('რეაგირების დასრულების დრო: ' . $this->response?->end_time)
                 ->line('სამუშაოს აღწერა: ' . $this->response?->job_description)
-                ->line('დეტალები:')
+                ->line('შინაარსი:')
                 ->line($this->response?->content)
-                ->line('დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.')
+                ->line('<small>დეტალები:</small>')
                 ->action('ნახეთ შეკვეთა', url('/responses/' . $id));
         }
 
