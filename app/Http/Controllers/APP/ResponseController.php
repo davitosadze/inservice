@@ -63,12 +63,24 @@ class ResponseController extends Controller
 
     public function doneResponses(Request $request) {
         $client = Auth::user()->getClient();
+        $search = request()->get('search');
 
-        $allResponses = Response::with(['user', 'purchaser', 'region', 'performer'])
+        $query = Response::with(['user', 'purchaser', 'region', 'performer'])
             ->orderBy('id', 'desc')
             ->where('status', 3) 
-            ->whereDate('created_at', '>=', Carbon::parse('first day of January'))
-            ->get();
+            ->whereDate('created_at', '>=', Carbon::parse('first day of January'));
+
+        // Add search functionality
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'LIKE', "%{$search}%")
+                  ->orWhere('subject_name', 'LIKE', "%{$search}%")
+                  ->orWhere('subject_address', 'LIKE', "%{$search}%")
+                  ->orWhere('name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $allResponses = $query->get();
         
         $clientPurchasers = json_decode($client->purchaser, true) ?: [];
         
