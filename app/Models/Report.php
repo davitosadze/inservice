@@ -21,7 +21,9 @@ class Report extends Model
         "name",
         "subject_name",
         "subject_address",
-        "identification_num"
+        "identification_num",
+        "response_id",
+        "repair_id"
     ];
     
     protected $appends = [
@@ -35,6 +37,14 @@ class Report extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function response() {
+        return $this->belongsTo(Response::class);
+    }
+
+    public function repair() {
+        return $this->belongsTo(Repair::class);
     }
 
     public function getUidAttribute () {

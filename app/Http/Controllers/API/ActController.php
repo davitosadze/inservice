@@ -62,9 +62,11 @@ class ActController extends Controller
                     $response->status = 3;
 
                     $user = $response->user;
+
+     
                     $serviceNotifiable = new ServiceNotifiable();
                     $serviceNotifiable->notify(new NewResponseNotification($user,$response));
-
+ 
                     $response->end_time =  Carbon::now();
 
                 } elseif ($request->on_repair == 1) {

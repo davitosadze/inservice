@@ -37,10 +37,12 @@ class UpdateStatuses implements ShouldQueue
             $response->update([
                 'status' => 3,
             ]);
-            
-            $user = $response->user;
-            $serviceNotifiable = new ServiceNotifiable();
-            $serviceNotifiable->notify(new NewResponseNotification($user,$response));
+ 
+                $user = $response->user;
+                $serviceNotifiable = new ServiceNotifiable();
+                $serviceNotifiable->notify(new NewResponseNotification($user,$response));
+
+ 
 
             Log::info("Response #{$response->id} status updated from 4 to 3 (expired after 12 hours)");
         }

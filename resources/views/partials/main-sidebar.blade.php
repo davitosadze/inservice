@@ -245,6 +245,16 @@
                             </li>
                         @endif
 
+                     @if (Auth::user()->can('ლოკაციის ნახვა'))
+                                        <li class="nav-item">
+                                            <a href="{{ route('settings.index') }}"
+                                                class="nav-link {{ request()->routeIs('settings.*') ? ' active' : '' }}">
+                                                <i class="fab nav-icon fa-elementor"></i>
+                                                <p>იმეილები</p>
+                                            </a>
+                                        </li>
+                                    @endif
+
 
                         @if (Auth::user()->can('რემონტის მოწყობილობის ნახვა'))
                             <li class="nav-item">
@@ -330,6 +340,8 @@
                                             </a>
                                         </li>
                                     @endif
+
+               
 
                                 </ul>
                             </li>

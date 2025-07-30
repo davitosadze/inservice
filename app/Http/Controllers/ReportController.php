@@ -7,6 +7,8 @@ use File;
 use App\Models\Purchaser;
 use App\Models\Report;
 use App\Models\ReportItem;
+use App\Models\Response as ResponseModel;
+use App\Models\Repair;
 
 use Illuminate\Http\Request;
 
@@ -15,6 +17,8 @@ use ImageOptimizer;
 use Illuminate\Support\Arr;
 
 use Illuminate\Http\Response;
+
+use Exception;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -287,7 +291,15 @@ class ReportController extends Controller
         }
 
         $additional = [
-            'purchasers' => Purchaser::get()->toArray()
+            'purchasers' => Purchaser::get()->toArray(),
+            'responses' => ResponseModel::where('status', '!=', 3)
+                ->orderBy('id', 'desc')
+                ->get(['id', 'name', 'subject_name', 'subject_address'])
+                ->toArray(),
+            'repairs' => Repair::where('status', '!=', 3)
+                ->orderBy('id', 'desc')
+                ->get(['id', 'name', 'subject_name', 'subject_address'])
+                ->toArray()
         ];
 
         $setting = ['url' => ['request' => ['index' => route('reports.index')]]];

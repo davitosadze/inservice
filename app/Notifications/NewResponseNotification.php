@@ -27,43 +27,38 @@ class NewResponseNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
+        // Only send email if response has by_client set to true
+        if (!$this->response?->by_client) {
+            return null;
+        }
+
         $mail = new MailMessage();
         $id = $this->response?->id;
 
         if ($this->response?->status == 9) {
             return $mail
-                ->from('noreply@inservice.ge', 'InService')
+                ->from('noreply@inservice.ge', 'Inservice')
                 ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - QR' . $id)
-                ->line('შეკვეთა #QR' . $id . ' მიღებულია')
-                ->line('სახელი: ' . $this->user->name)
-                ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
-                ->line('დამატებითი სახელი: ' . $this->response?->subject_name)
-                ->line('მისამართი: ' . $this->response?->subject_address)
-                ->line('შინაარსი:')
-                ->line($this->response?->content)
-                ->line('<small>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.:</small>')
-                ->action('ნახეთ შეკვეთა', url('/responses/' . $id));
+                ->view('emails.response-notification', [
+                    'response' => $this->response,
+                    'user' => $this->user,
+                    'id' => $id,
+                    'status' => 'new'
+                ]);
         }
 
         if ($this->response?->status == 3) {
             return $mail
-                ->from('noreply@inservice.ge', 'InService')
+                ->from('noreply@inservice.ge', 'Inservice')
                 ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - QR' . $id)
-                ->line('თქვენი შეკვეთა #QR' . $id . ' დასრულებულია')
-                ->line('სახელი: ' . $this->user->name)
-                ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
-                ->line('დამატებითი სახელი: ' . $this->response?->subject_name)
-                ->line('მისამართი: ' . $this->response?->subject_address)
-                ->line('შეკვეთის გაფორმების დრო: ' . $this->response?->created_at)
-                ->line('ადგილზე მისვლის დრო ფაქტიური: ' . $this->response?->time)
-                ->line('რეაგირების დასრულების დრო: ' . $this->response?->end_time)
-                ->line('სამუშაოს აღწერა: ' . $this->response?->job_description)
-                ->line('შინაარსი:')
-                ->line($this->response?->content)
-                ->line('<small>დეტალები:</small>')
-                ->action('ნახეთ შეკვეთა', url('/responses/' . $id));
+                ->view('emails.response-notification', [
+                    'response' => $this->response,
+                    'user' => $this->user,
+                    'id' => $id,
+                    'status' => 'completed'
+                ]);
         }
 
         return null;  

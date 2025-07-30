@@ -17,11 +17,19 @@ class OptionController extends Controller
     {
         $option = Option::first();
         if ($option) {
-            $option->price_increase = $request->get("price_increase");
-            $option->save();
+            if($request->get('price_increase')){
+                $option->price_increase = $request->get("price_increase");
+            }
+            if($request->get('email')){
+                $option->email = $request->get("email");
+            }
+             $option->save();
         } else {
             Option::create(
-                ["price_increase" => $request->get("price_increase")]
+                [
+                    "price_increase" => $request->get("price_increase"),
+                    "email" => $request->get("email")
+                ]
             );
         }
 

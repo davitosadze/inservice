@@ -40,6 +40,11 @@ class NewRepairNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        // Only send email if repair's response has by_client set to 1
+        if (!$this->repair?->response?->by_client) {
+            return null;
+        }
+
         $mail = new MailMessage();
         $id = $this->repair?->id;
 
@@ -48,15 +53,12 @@ class NewRepairNotification extends Notification implements ShouldQueue
                 ->from('noreply@inservice.ge', 'Inservice')
                 ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - PR' . $id)
-                ->line('შეკვეთა #PR' . $id . ' მიღებულია')
-                ->line('სახელი: ' . $this->user->name)
-                ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
-                ->line('დამატებითი სახელი: ' . $this->repair?->subject_name)
-                ->line('მისამართი: ' . $this->repair?->subject_address)
-                ->line('დეტალები:')
-                ->line($this->repair?->content)
-                ->line('დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.')
-                ->action('ნახეთ შეკვეთა', url('/repairs/' . $id));
+                ->view('emails.repair-notification', [
+                    'repair' => $this->repair,
+                    'user' => $this->user,
+                    'id' => $id,
+                    'status' => 'new'
+                ]);
         }
 
         if ($this->repair?->status == 3) {
@@ -64,19 +66,12 @@ class NewRepairNotification extends Notification implements ShouldQueue
                 ->from('noreply@inservice.ge', 'Inservice')
                 ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - PR' . $id)
-                ->line('თქვენი შეკვეთა #PR' . $id . ' დასრულებულია')
-                ->line('სახელი: ' . $this->user->name)
-                ->line('კომპანიის სახელი: ' . $this->user->getClient()?->client_name)
-                ->line('დამატებითი სახელი: ' . $this->repair?->subject_name)
-                ->line('მისამართი: ' . $this->repair?->subject_address)
-                ->line('შეკვეთის გაფორმების დრო: ' . $this->repair?->created_at)
-                ->line('ადგილზე მისვლის დრო ფაქტიური: ' . $this->repair?->time)
-                ->line('რეაგირების დასრულების დრო: ' . $this->repair?->end_time)
-                ->line('სამუშაოს აღწერა: ' . $this->repair?->job_description)
-                ->line('შინაარსი:')
-                ->line($this->repair?->content)
-                ->line('დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.')
-                ->action('ნახეთ შეკვეთა', url('/repairs/' . $id));
+                ->view('emails.repair-notification', [
+                    'repair' => $this->repair,
+                    'user' => $this->user,
+                    'id' => $id,
+                    'status' => 'completed'
+                ]);
         }
 
         return null;  

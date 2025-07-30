@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\ClientExpense;
+use App\Models\Option;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -212,7 +214,7 @@ class ClientsController extends Controller
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => $validatedData['password'],  
-            'inter_passwrod' => $validatedData['password'],  
+            'inter_password' => $validatedData['password'],  
             'status' => 0,  
         ]);
 
@@ -230,9 +232,80 @@ class ClientsController extends Controller
         if (!$user->hasRole('კლიენტი')) {
             $user->assignRole('კლიენტი');
         }
+
+        // Send notification email to admin
+        try {
+            $adminEmail = Option::first()->email ?? null;
+            if ($adminEmail) {
+                $registrationData = [
+                    'name' => $validatedData['name'],
+                    'email' => $validatedData['email'],
+                    'companyCode' => $validatedData['companyCode'],
+                    'company_name' => $client->client_name,
+                    'user_id' => $user->id,
+                    'registration_time' => now()->format('Y-m-d H:i:s')
+                ];
+
+                Mail::raw(
+                    "ახალი კლიენტი დარეგისტრირდა:\n\n" .
+                    "სახელი: " . $registrationData['name'] . "\n" .
+                    "ელ. ფოსტა: " . $registrationData['email'] . "\n" .
+                    "კომპანიის კოდი: " . $registrationData['companyCode'] . "\n" .
+                    "კომპანიის სახელი: " . $registrationData['company_name'] . "\n" .
+                    "მომხმარებლის ID: " . $registrationData['user_id'] . "\n" .
+                    "რეგისტრაციის დრო: " . $registrationData['registration_time'],
+                    function ($message) use ($adminEmail) {
+                        $message->from('noreply@inservice.ge', 'Inservice')
+                                ->to($adminEmail)
+                                ->subject('ახალი კლიენტის რეგისტრაცია');
+                    }
+                );
+            }
+        } catch (Exception $e) {
+            Log::error('Failed to send client registration email: ' . $e->getMessage());
+        }
         
         return response()->json(['message' => 'დაელოდეთ ვერიფიკაციას', 'user' => $user], 200);
     
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => ['required', 'email', 'exists:users,email'],
+        ]);
+
+        $user = User::where('email', $validatedData['email'])->first();
+        
+        if (!$user) {
+            return response()->json(['message' => 'მომხმარებელი ვერ მოიძებნა'], 404);
+        }
+
+        // Check if user has კლიენტი role
+        if (!$user->hasRole('კლიენტი')) {
+            return response()->json(['message' => 'მხოლოდ კლიენტებს შეუძლიათ პაროლის აღდგენა'], 403);
+        }
+
+        try {
+            // Send email with inter_password
+            Mail::raw(
+                "თქვენი პაროლის აღდგენის მოთხოვნა:\n\n" .
+                "სახელი: " . $user->name . "\n" .
+                "ელ. ფოსტა: " . $user->email . "\n" .
+                "თქვენი პაროლი: " . $user->inter_password . "\n\n" .
+                "გამოიყენეთ ეს პაროლი სისტემაში შესასვლელად.",
+                function ($message) use ($user) {
+                    $message->from('noreply@inservice.ge', 'Inservice')
+                            ->to($user->email)
+                            ->subject('პაროლის აღდგენა - Inservice');
+                }
+            );
+
+            return response()->json(['message' => 'პაროლი გამოგზავნილია თქვენს ელ. ფოსტაზე'], 200);
+        } catch (Exception $e) {
+            Log::error('Failed to send forgot password email: ' . $e->getMessage());
+            return response()->json(['message' => 'შეცდომა ელ. ფოსტის გაგზავნისას'], 500);
+        }
     }
 
 

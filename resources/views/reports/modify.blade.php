@@ -110,6 +110,40 @@
                                         </div>
                                     </div>
 
+                                    <hr />
+
+                                    <p class="lead">დაკავშირებული რეაგირებები და რემონტები</p>
+
+                                    <div class="row mb-2" style="align-items: center;">
+                                        <div class="col-4"><b>რეაგირებები :</b></div>
+                                        <div class="col-8">
+                                            <select name="response_id" class="form-control response-selector">
+                                                <option value="">--- არჩევა არ არის სავალდებულო ---</option>
+                                                @foreach ($additional['responses'] as $response)
+                                                    <option value="{{ $response['id'] }}"
+                                                        @selected(old('response_id', $model->response_id) == $response['id'])>
+                                                        QR{{ $response['id'] }} - {{ $response['name'] }} / {{ $response['subject_name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2" style="align-items: center;">
+                                        <div class="col-4"><b>რემონტები :</b></div>
+                                        <div class="col-8">
+                                            <select name="repair_id" class="form-control repair-selector">
+                                                <option value="">--- არჩევა არ არის სავალდებულო ---</option>
+                                                @foreach ($additional['repairs'] as $repair)
+                                                    <option value="{{ $repair['id'] }}"
+                                                        @selected(old('repair_id', $model->repair_id) == $repair['id'])>
+                                                        PR{{ $repair['id'] }} - {{ $repair['name'] }} / {{ $repair['subject_name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </address>
                             </div>
 
@@ -175,6 +209,8 @@
 
                 $(document).ready(function() {
                     $('.version').select2();
+                    $('.response-selector').select2();
+                    $('.repair-selector').select2();
                 });
 
                 $('.version').on('select2:select', function(e) {

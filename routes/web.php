@@ -33,6 +33,7 @@ use App\Http\Controllers\RepairDeviceController;
 use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\ServiceActController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SystemController;
 
 /*
@@ -94,19 +95,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
     Route::post("responses/{response}/assign-manager", [ResponseController::class, 'assignManager'])->name('responses.assign-manager');
 
-    // Test Mail Route
-    Route::get('/test-mail', function () {
-        try {
-            Mail::raw('This is a test email from InService application.', function ($message) {
-                $message->from('noreply@inservice.ge', 'InService')
-                        ->to('davitosadze7@gmail.com')
-                        ->subject('Test Email from InService');
-            });
-            return 'Test email sent successfully to davitosadze7@gmail.com';
-        } catch (\Exception $e) {
-            return 'Failed to send email: ' . $e->getMessage();
-        }
-    })->name('test.mail');
+ 
 
     // Repairs
     Route::post("repairs/{repair}/assign-performer", [RepairController::class, "assignPerformer"])->name('repairs.assign-performer');
@@ -150,6 +139,9 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
     // Performers
     Route::resource("performers", PerformerController::class);
+
+    // Settings
+    Route::get("settings", [SettingController::class, 'index'])->name('settings.index');
 
     // Systems
     Route::resource("systems", SystemController::class);

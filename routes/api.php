@@ -41,6 +41,7 @@ Route::post("app/statistics", [AppStatisticController::class, 'index']);
 Route::get('app/purchaser-names', [PurchaserController::class, "purchaserNames"]);
 Route::post('app/upload-media', [MediaController::class, "uploadMedia"]);
 Route::post("app/clients/register", [ClientsController::class, 'registerClient']);
+Route::post("app/clients/forgot-password", [ClientsController::class, 'forgotPassword']);
 
 Route::get('/instructions', [InstructionController::class, 'index']);
 Route::get('/instructions/{id}', [InstructionController::class, 'show']);
