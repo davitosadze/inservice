@@ -69,6 +69,9 @@ class NewRepairNotification extends Notification implements ShouldQueue
             // Attach report PDF if available
             $this->attachReportPdf($mail);
             
+            // Attach chat PDF if available
+            $this->attachChatPdf($mail);
+            
             return $mail;
         }
 
@@ -89,6 +92,9 @@ class NewRepairNotification extends Notification implements ShouldQueue
             
             // Attach report PDF if available
             $this->attachReportPdf($mail);
+            
+            // Attach chat PDF if available
+            $this->attachChatPdf($mail);
             
             return $mail;
         }
@@ -204,6 +210,54 @@ class NewRepairNotification extends Notification implements ShouldQueue
             Log::error('Failed to attach report PDF to repair email: ' . $e->getMessage(), [
                 'repair_id' => $this->repair->id,
                 'report_id' => $report->id ?? null,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
+
+    /**
+     * Attach chat PDF to the mail message if chat exists
+     */
+    private function attachChatPdf(MailMessage $mail)
+    {
+        try {
+            $chat = $this->repair->chat();
+            
+            Log::info('Checking chat for repair: ' . $this->repair->id, [
+                'chat_exists' => $chat ? 'yes' : 'no',
+                'chat_id' => $chat->id ?? 'null'
+            ]);
+            
+            if ($chat) {
+                // Load chat with messages (exactly like ChatController)
+                $chatModel = \App\Models\Chat::with('messages.user')->find($chat->id);
+                
+                if ($chatModel && $chatModel->messages->count() > 0) {
+                    $filename = "ჩატის ისტორია " . $chatModel->id . '.pdf';
+
+                    // Generate PDF using the exact same logic as ChatController
+                    $pdf = PDF::setOptions([
+                        'isRemoteEnabled' => true, 
+                        'dpi' => 150, 
+                        'defaultFont' => 'sans-serif'
+                    ])->loadView('chats.pdf', ['chat' => $chatModel]);
+
+                    // Attach PDF to email
+                    $mail->attachData($pdf->output(), $filename, [
+                        'mime' => 'application/pdf',
+                    ]);
+                    
+                    Log::info('Chat PDF attached to repair email for repair: ' . $this->repair->id);
+                } else {
+                    Log::info('Chat exists but has no messages for repair: ' . $this->repair->id);
+                }
+            }
+        } catch (\Exception $e) {
+            // Log error but don't fail the email sending
+            Log::error('Failed to attach chat PDF to repair email: ' . $e->getMessage(), [
+                'repair_id' => $this->repair->id,
+                'chat_id' => $chat->id ?? null,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
