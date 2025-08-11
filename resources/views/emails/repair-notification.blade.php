@@ -35,6 +35,12 @@
             border-radius: 5px;
             margin: 20px 0;
         }
+        .button.green {
+            background-color: #28a745;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
         .info-line {
             margin: 10px 0;
             padding: 5px 0;
@@ -54,7 +60,7 @@
             <h2>შეკვეთა #PR{{ $id }} მიღებულია</h2>
             
             <div class="info-line">
-                <span class="label">სახელი:</span>  {{ $repair?->performer?->name }}
+                <span class="label">სახელი:</span>  {{ $repair?->user?->name }}
             </div>
             
             <div class="info-line">
@@ -82,7 +88,7 @@
             <h2>თქვენი შეკვეთა #PR{{ $id }} დასრულებულია</h2>
             
             <div class="info-line">
-                <span class="label">სახელი:</span> {{ $repair?->performer?->name }}
+                <span class="label">სახელი:</span> {{ $repair?->user?->name }}
             </div>
             
             <div class="info-line">
@@ -119,6 +125,14 @@
             </div>
             
             <p>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.</p>
+            
+            @if($repair?->chat)
+                <div class="button-container">
+                    <a href="{{ url('/chats/' . $repair->chat->id . '/pdf') }}" class="button green">
+                        📄 ჩატის ისტორიის ნახვა
+                    </a>
+                </div>
+            @endif
             
             <a href="{{ url('https://mondo.inservice.ge/repairs/' . $id) }}" class="button">ნახეთ შეკვეთა</a>
         @endif

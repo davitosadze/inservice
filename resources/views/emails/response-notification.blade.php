@@ -35,6 +35,12 @@
             border-radius: 5px;
             margin: 20px 0;
         }
+        .button.green {
+            background-color: #28a745;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
         .info-line {
             margin: 10px 0;
             padding: 5px 0;
@@ -54,11 +60,11 @@
             <h2>შეკვეთა #QR{{ $id }} მიღებულია</h2>
             
             <div class="info-line">
-                <span class="label">სახელი:</span> {{ $response?->performer?->name }}
+                <span class="label">სახელი:</span> {{ $response?->user?->name }}
             </div>
             
             <div class="info-line">
-                <span class="label">კომპანიის სახელი:</span> {{ $user->getClient()?->client_name }}
+                <span class="label">კომპანიის სახელი:</span> {{ $response->name }}
             </div>
             
             <div class="info-line">
@@ -68,13 +74,17 @@
             <div class="info-line">
                 <span class="label">მისამართი:</span> {{ $response?->subject_address }}
             </div>
-            
+
+            <div class="info-line">
+                <span class="label">შეკვეთის გაფორმების დრო:</span> {{ $response?->created_at }}
+            </div>
+
             <div class="info-line">
                 <span class="label">შინაარსი:</span><br>
                 {{ $response?->content }}
             </div>
             
-            <p><small>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.</small></p>
+            <p>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.</p>
             
             <a href="{{ url('/responses/' . $id) }}" class="button">ნახეთ შეკვეთა</a>
             
@@ -82,11 +92,11 @@
             <h2>თქვენი შეკვეთა #QR{{ $id }} დასრულებულია</h2>
             
             <div class="info-line">
-                <span class="label">სახელი:</span> {{ $response?->performer?->name }}
+                <span class="label">სახელი:</span> {{ $response?->user?->name }}
             </div>
             
             <div class="info-line">
-                <span class="label">კომპანიის სახელი:</span> {{ $user->getClient()?->client_name }}
+                <span class="label">კომპანიის სახელი:</span> {{ $response->name }}
             </div>
             
             <div class="info-line">
@@ -110,15 +120,24 @@
             </div>
             
             <div class="info-line">
-                <span class="label">სამუშაოს აღწერა:</span> {{ $response?->job_description }}
+                <span class="label">სამუშაოს აღწერა:</span> {{ $response?->act?->note ?? 'არ არის მითითებული' }}
             </div>
             
             <div class="info-line">
                 <span class="label">შინაარსი:</span><br>
                 {{ $response?->content }}
             </div>
-            
+
+
             <p><small>დეტალები:</small></p>
+            
+            @if($response?->chat())
+                <div class="button-container">
+                    <a href="{{ url('/chats/history/' . $response->chat()->id . '/pdf') }}" class="button green">
+                        📄 ჩატის ისტორიის ნახვა
+                    </a>
+                </div>
+            @endif
             
             <a href="{{ url('https://mondo.inservice.ge/orders/' . $id) }}" class="button">ნახეთ შეკვეთა</a>
         @endif

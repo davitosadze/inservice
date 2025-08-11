@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ChatController extends Controller
 {
@@ -39,6 +40,34 @@ class ChatController extends Controller
             ->findOrFail($id);
             
         return view('chats.show', compact('chat'));
+    }
+
+    public function pdf($id)
+    {
+        $chat = Chat::with(['messages.user', 'response', 'repair'])
+            ->findOrFail($id);
+
+        // Get the related item (response or repair) info
+        $relatedItem = null;
+        $relatedItemType = '';
+        
+        if ($chat->type === 'response' && $chat->response) {
+            $relatedItem = $chat->response;
+            $relatedItemType = 'რეაგირება';
+        } elseif ($chat->type === 'repair' && $chat->repair) {
+            $relatedItem = $chat->repair;
+            $relatedItemType = 'რემონტი';
+        }
+
+        $name = 'chat_history_' . $chat->id . '.pdf';
+
+        $pdf = PDF::setOptions([
+            'isRemoteEnabled' => true, 
+            'dpi' => 150, 
+            'defaultFont' => 'sans-serif'
+        ])->loadView('chats.pdf', compact('chat', 'relatedItem', 'relatedItemType'));
+
+        return $pdf->stream($name);
     }
 
     public function reply(Request $request, $id)

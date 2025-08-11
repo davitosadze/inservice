@@ -104,6 +104,15 @@ protected $appends = ['act_note'];
             return $this->belongsTo(Response::class, 'from_id');
         }
 
+        public function invoice() {
+            return Invoice::where('repair_id', $this->id)->first() ?? null;
+        }
+
+        public function report() {
+            return Report::where('repair_id', $this->id)
+                    ->first() ?? null;
+        }
+
         /**
          * Get the related Service if from is 'service'
          */
@@ -113,7 +122,7 @@ protected $appends = ['act_note'];
         }
 
         public function chat() {
-            return Chat::where('type', 'repair')
+            return \App\Models\Chat::where('type', 'repair')
                 ->where('item_id', $this->id)
                 ->first() ?? null;
         }

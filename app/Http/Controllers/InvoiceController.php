@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Category;
 use App\Models\Purchaser;
+use App\Models\Response;
+use App\Models\Repair;
 
 use App\Exports\InvoiceExport;
 use App\Exports\InvoiceNewFormExport;
@@ -250,7 +252,17 @@ class InvoiceController extends Controller
         $additional = [
             'purchasers' => Purchaser::where('single', '!=', 1)->with(['specialAttributes'])->get()->toArray(),
             'categories' => Category::with(['category_attributes.category'])->get()->toArray(),
-            'price_increase' => Option::first() ? Option::first()->price_increase : 0
+            'price_increase' => Option::first() ? Option::first()->price_increase : 0,
+            'responses' => Response::where('status', '!=', 3)
+                ->orderBy('id', 'desc')
+                ->take(200)
+                ->get(['id', 'subject_name', 'subject_address'])
+                ->toArray(),
+            'repairs' => Repair::where('status', '!=', 3)
+                ->orderBy('id', 'desc')
+                ->take(200)
+                ->get(['id', 'subject_name', 'subject_address'])
+                ->toArray()
         ];
         $setting = [
             'url' => [

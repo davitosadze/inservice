@@ -137,6 +137,60 @@
                     </button>
                     <!-- /.row -->
 
+                    <!-- Response and Repair Assignment Section -->
+                    <hr />
+                    <p class="lead">დავალების მიბმა (არასავალდებულო)</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="response_select"
+                                    ><b>რეაგირება:</b></label
+                                >
+                                <select
+                                    id="response_select"
+                                    class="form-control select2"
+                                    v-model="v$.model.$model.response_id"
+                                >
+                                    <option value="">აირჩიეთ რეაგირება</option>
+                                    <option
+                                        v-for="response in additional.responses"
+                                        :key="response.id"
+                                        :value="response.id"
+                                    >
+                                        #QR{{ response.id }} -
+                                        {{ response.name }} ({{
+                                            response.subject_name
+                                        }})
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="repair_select"
+                                    ><b>რემონტი:</b></label
+                                >
+                                <select
+                                    id="repair_select"
+                                    class="form-control select2"
+                                    v-model="v$.model.$model.repair_id"
+                                >
+                                    <option value="">აირჩიეთ რემონტი</option>
+                                    <option
+                                        v-for="repair in additional.repairs"
+                                        :key="repair.id"
+                                        :value="repair.id"
+                                    >
+                                        #RP{{ repair.id }} -
+                                        {{ repair.name }} ({{
+                                            repair.subject_name
+                                        }})
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div
                             class="col text-end d-flex align-items-center justify-content-end"
@@ -161,71 +215,80 @@
                         <div class="col-12 table-responsive">
                             <p class="lead">მასალები</p>
 
-                            <table class="table table-striped" style="background: #edebe4; color: #fff">
-  <thead>
-    <tr>
-      <th style="width: 30%">დასახელება</th>
-      <th style="width: 20%">აღწერა</th>
-      <th>ერთეული</th>
-      <th>რაოდენობა</th>
-      <th style="text-align: center">მასალის ფასი</th>
-      <th style="text-align: center">მომსახურების ფასი</th>
-      <th>ჯამი</th>
-      <th>ქმედება</th>
-    </tr>
-  </thead>
+                            <table
+                                class="table table-striped"
+                                style="background: #edebe4; color: #fff"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%">დასახელება</th>
+                                        <th style="width: 20%">აღწერა</th>
+                                        <th>ერთეული</th>
+                                        <th>რაოდენობა</th>
+                                        <th style="text-align: center">
+                                            მასალის ფასი
+                                        </th>
+                                        <th style="text-align: center">
+                                            მომსახურების ფასი
+                                        </th>
+                                        <th>ჯამი</th>
+                                        <th>ქმედება</th>
+                                    </tr>
+                                </thead>
 
-  <draggable
-    v-model="m.category_attributes"
-    tag="tbody"
-    item-key="id"
-    :disabled="step"
-  >
-    <template #item="{ element }">
-      <request-single-attribute
-        @action_focus="try_focus"
-        @action_blur="try_blur"
-        @action_price="price"
-        @action_remove="remove"
-        :keys="keys"
-        :join-in-tree="attributeJoinedTree(element)"
-        :item="element"
-        :model="m"
-      />
-    </template>
-  </draggable>
+                                <draggable
+                                    v-model="m.category_attributes"
+                                    tag="tbody"
+                                    item-key="id"
+                                    :disabled="step"
+                                >
+                                    <template #item="{ element }">
+                                        <request-single-attribute
+                                            @action_focus="try_focus"
+                                            @action_blur="try_blur"
+                                            @action_price="price"
+                                            @action_remove="remove"
+                                            :keys="keys"
+                                            :join-in-tree="
+                                                attributeJoinedTree(element)
+                                            "
+                                            :item="element"
+                                            :model="m"
+                                        />
+                                    </template>
+                                </draggable>
 
-  <tbody>
-    <tr class="calculator">
-      <th colspan="4">დაჯამება :</th>
-      <th>
-        <input
-          class="form-control"
-          type="text"
-          readonly
-          v-model="agr.price"
-        />
-      </th>
-      <td>
-        <input
-          class="form-control"
-          type="text"
-          readonly
-          v-model="agr.service_price"
-        />
-      </td>
-      <td>
-        <input
-          class="form-control"
-          type="text"
-          readonly
-          v-model="agr.calc"
-        />
-      </td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+                                <tbody>
+                                    <tr class="calculator">
+                                        <th colspan="4">დაჯამება :</th>
+                                        <th>
+                                            <input
+                                                class="form-control"
+                                                type="text"
+                                                readonly
+                                                v-model="agr.price"
+                                            />
+                                        </th>
+                                        <td>
+                                            <input
+                                                class="form-control"
+                                                type="text"
+                                                readonly
+                                                v-model="agr.service_price"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                class="form-control"
+                                                type="text"
+                                                readonly
+                                                v-model="agr.calc"
+                                            />
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
                             <button
                                 type="button"
@@ -290,56 +353,91 @@
                     <h3>კალკულატორი</h3>
                     <hr />
                     <div class="overflow-x-auto">
-                        <table class="table-auto border-collapse border border-gray-400 w-full">
-  <thead>
-    <tr class="bg-gray-200">
-      <th class="border border-gray-400 p-2">ტიპი</th>
-      <th class="border border-gray-400 p-2">შესასყიდი მასალის ფასი</th>
-      <th class="border border-gray-400 p-2">ფასნამატი</th>
-      <th class="border border-gray-400 p-2">გასაყიდი ჯამი</th>
-      <th class="border border-gray-400 p-2">
-        ფასდაკლება პროცენტულად (არაუმეტეს 7%)
-      </th>
-      <th class="border border-gray-400 p-2">ფასდაკლების თანხა</th>
-      <th class="border border-gray-400 p-2">სრულყოფილი გასაყიდი ფასი</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <select v-model="calculatorType" id="calculatorType" class="form-control">
-          <option value="0">
-            ფინანსური ოპერაცია რომლის დროსაც დღგ-ს ვითვლით (მასალა)
-          </option>
-          <option value="1">
-            ფინანსური ოპერაცია რომლის დროსაც მხოლოდ დღგ-ს ვიხდით (მეწარმე)
-          </option>
-          <option value="2">
-            ფინანსური ოპერაცია რომლის დროსაც საშემოსავლოს და დღგ-ს ვიხდით (ფიზ. პირი)
-          </option>
-        </select>
-      </td>
-      <td class="border border-gray-400 p-2 bg-gray-300">
-        <input type="number" v-model.number="minPayment" class="w-full text-center" />
-      </td>
-      <td class="border border-gray-400 p-2 bg-gray-300">
-        {{ priceIncrease }}
-      </td>
-      <td class="border border-gray-400 p-2">{{ sellSum }}</td>
-      <td class="border border-gray-400 p-2">
-        <input
-          type="number"
-          v-model.number="discountPercentage"
-          @input="validateDiscount"
-          class="w-full text-center"
-        />
-      </td>
-      <td class="border border-gray-400 p-2">{{ discountAmount }}</td>
-      <td class="border border-gray-400 p-2">{{ finalPrice }} ლარი</td>
-    </tr>
-  </tbody>
-</table>
-
+                        <table
+                            class="table-auto border-collapse border border-gray-400 w-full"
+                        >
+                            <thead>
+                                <tr class="bg-gray-200">
+                                    <th class="border border-gray-400 p-2">
+                                        ტიპი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        შესასყიდი მასალის ფასი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        ფასნამატი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        გასაყიდი ჯამი
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        ფასდაკლება პროცენტულად (არაუმეტეს 7%)
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        ფასდაკლების თანხა
+                                    </th>
+                                    <th class="border border-gray-400 p-2">
+                                        სრულყოფილი გასაყიდი ფასი
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select
+                                            v-model="calculatorType"
+                                            id="calculatorType"
+                                            class="form-control"
+                                        >
+                                            <option value="0">
+                                                ფინანსური ოპერაცია რომლის დროსაც
+                                                დღგ-ს ვითვლით (მასალა)
+                                            </option>
+                                            <option value="1">
+                                                ფინანსური ოპერაცია რომლის დროსაც
+                                                მხოლოდ დღგ-ს ვიხდით (მეწარმე)
+                                            </option>
+                                            <option value="2">
+                                                ფინანსური ოპერაცია რომლის დროსაც
+                                                საშემოსავლოს და დღგ-ს ვიხდით
+                                                (ფიზ. პირი)
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td
+                                        class="border border-gray-400 p-2 bg-gray-300"
+                                    >
+                                        <input
+                                            type="number"
+                                            v-model.number="minPayment"
+                                            class="w-full text-center"
+                                        />
+                                    </td>
+                                    <td
+                                        class="border border-gray-400 p-2 bg-gray-300"
+                                    >
+                                        {{ priceIncrease }}
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        {{ sellSum }}
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        <input
+                                            type="number"
+                                            v-model.number="discountPercentage"
+                                            @input="validateDiscount"
+                                            class="w-full text-center"
+                                        />
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        {{ discountAmount }}
+                                    </td>
+                                    <td class="border border-gray-400 p-2">
+                                        {{ finalPrice }} ლარი
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <!-- /.invoice -->
@@ -363,6 +461,8 @@ import Util from "Util";
 import useVuelidate from "@vuelidate/core";
 import { required, maxLength } from "@vuelidate/validators";
 import draggable from "../vendors/vuedraggable/src/vuedraggable";
+import "select2/dist/css/select2.css";
+import "select2";
 
 export default {
     props: ["user", "model", "setting", "additional"],
@@ -399,6 +499,14 @@ export default {
                 subj_address: "",
                 identification_num: "",
             };
+
+        // Initialize response_id and repair_id if not set
+        if (this.model.response_id === undefined) {
+            this.model.response_id = "";
+        }
+        if (this.model.repair_id === undefined) {
+            this.model.repair_id = "";
+        }
     },
     mounted() {
         if (this.m.category_attributes.length && Util._isEmpty(this.agr)) {
@@ -406,6 +514,11 @@ export default {
         }
         this.v$.model.$touch();
         this.v$.m.$touch();
+
+        // Initialize Select2 for response and repair selectors
+        this.$nextTick(() => {
+            this.initializeSelect2();
+        });
     },
     data() {
         return {
@@ -951,6 +1064,34 @@ export default {
             return (window.location.href =
                 this.setting.url.request.index.replace("api/", ""));
         },
+
+        initializeSelect2() {
+            // Initialize Select2 for response selector
+            if ($("#response_select").length) {
+                $("#response_select")
+                    .select2({
+                        placeholder: "აირჩიეთ რეაგირება",
+                        allowClear: true,
+                        width: "100%",
+                    })
+                    .on("change", (e) => {
+                        this.model.response_id = e.target.value || null;
+                    });
+            }
+
+            // Initialize Select2 for repair selector
+            if ($("#repair_select").length) {
+                $("#repair_select")
+                    .select2({
+                        placeholder: "აირჩიეთ რემონტი",
+                        allowClear: true,
+                        width: "100%",
+                    })
+                    .on("change", (e) => {
+                        this.model.repair_id = e.target.value || null;
+                    });
+            }
+        },
     },
 };
 </script>
@@ -1010,6 +1151,39 @@ table.table-striped tr.calculator {
 table {
     border-collapse: collapse;
     width: 100%;
+}
+
+/* Select2 styling improvements */
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+    border-radius: 0.25rem !important;
+    border: 1px solid #ced4da !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 36px !important;
+    padding-left: 12px !important;
+    color: #495057 !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+    right: 10px !important;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__placeholder {
+    color: #6c757d !important;
+}
+
+.select2-dropdown {
+    border-radius: 0.25rem !important;
+    border: 1px solid #ced4da !important;
 }
 </style>
 

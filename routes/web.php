@@ -173,4 +173,8 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
 });
 
+// Token-authenticated route for chat PDF (outside auth middleware)
+Route::get('/chats/history/{id}/pdf', [App\Http\Controllers\Chat\ChatController::class, 'pdf'])
+    ->name('chats.pdf');
+
 require __DIR__ . '/auth.php';

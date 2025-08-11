@@ -265,6 +265,7 @@ class ResponseController extends Controller
     public function edit($id)
     {
         $model = Response::firstOrNew(['id' => $id]);
+
         $this->authorize('view', $model);
 
         if (!$model['id'] && $id != 'new') {

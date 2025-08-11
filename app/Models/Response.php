@@ -96,11 +96,20 @@ class Response extends Model
     }
 
     public function chat() {
-        return Chat::where('type', 'response')
+        return \App\Models\Chat::where('type', 'response')
             ->where('item_id', $this->id)
             ->first() ?? null;
     }
 
+    public function invoice() {
+        return Invoice::where('response_id', $this->id)->first() ?? null;
+    }
+
+   public function report() {
+    return Report::where('response_id', $this->id)
+            ->first() ?? null;
+    
+   }
     public function getJobTimeAttribute()
     {
         $diff = Carbon::parse($this->time)->diff($this->updated_at);

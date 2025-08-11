@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\CategoryAttribute;
+use App\Models\Evaluation;
+use App\Models\Purchaser;
+use App\Models\Response;
+use App\Models\Repair;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +31,9 @@ class Invoice extends Model
         "uuid",
         "parent_uuid",
         "warranty_period",
-        "title"
+        "title",
+        "response_id",
+        "repair_id"
     ];
 
     protected $attributes = [
@@ -49,10 +57,19 @@ class Invoice extends Model
         return $this->belongsTo(User::class);
     }
 
-
     public function purchaser()
     {
         return $this->belongsTo(Purchaser::class);
+    }
+
+    public function response()
+    {
+        return $this->belongsTo(Response::class);
+    }
+
+    public function repair()
+    {
+        return $this->belongsTo(Repair::class);
     }
 
     public function getPurchaserAttribute()
