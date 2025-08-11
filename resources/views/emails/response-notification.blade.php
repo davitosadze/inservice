@@ -86,7 +86,7 @@
             
             <p>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.</p>
             
-            <a href="{{ url('/responses/' . $id) }}" class="button">ნახეთ შეკვეთა</a>
+            <a href="{{ url('https://mondo.inservice.ge/orders/' . $id) }}" class="button">ნახეთ შეკვეთა</a>
             
         @elseif($status === 'completed')
             <h2>თქვენი შეკვეთა #QR{{ $id }} დასრულებულია</h2>
