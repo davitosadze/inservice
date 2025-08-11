@@ -79,7 +79,6 @@ class NewRepairNotification extends Notification implements ShouldQueue
                 ->subject('შეკვეთა - PR' . $id)
                 ->view('emails.repair-notification', [
                     'repair' => $this->repair,
-                    'chat' => $this->repair?->chat,
                     'user' => $this->user,
                     'id' => $id,
                     'status' => 'completed'
