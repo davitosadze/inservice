@@ -205,10 +205,23 @@ class NewResponseNotification extends Notification implements ShouldQueue
             ]);
             
             if ($chat) {
-                // Load chat with messages (exactly like ChatController)
-                $chatModel = \App\Models\Chat::with('messages.user')->find($chat->id);
+                // Load chat with messages and related models (exactly like ChatController)
+                $chatModel = \App\Models\Chat::with(['messages.user', 'response', 'repair'])
+                    ->find($chat->id);
                 
                 if ($chatModel && $chatModel->messages->count() > 0) {
+                    // Get the related item (response or repair) info - same logic as ChatController
+                    $relatedItem = null;
+                    $relatedItemType = '';
+                    
+                    if ($chatModel->type === 'response' && $chatModel->response) {
+                        $relatedItem = $chatModel->response;
+                        $relatedItemType = 'რეაგირება';
+                    } elseif ($chatModel->type === 'repair' && $chatModel->repair) {
+                        $relatedItem = $chatModel->repair;
+                        $relatedItemType = 'რემონტი';
+                    }
+                    
                     $filename = "ჩატის ისტორია " . $chatModel->id . '.pdf';
 
                     // Generate PDF using the exact same logic as ChatController
@@ -216,7 +229,7 @@ class NewResponseNotification extends Notification implements ShouldQueue
                         'isRemoteEnabled' => true, 
                         'dpi' => 150, 
                         'defaultFont' => 'sans-serif'
-                    ])->loadView('chats.pdf', ['chat' => $chatModel]);
+                    ])->loadView('chats.pdf', ['chat' => $chatModel, 'relatedItem' => $relatedItem, 'relatedItemType' => $relatedItemType]);
 
                     // Attach PDF to email
                     $mail->attachData($pdf->output(), $filename, [
