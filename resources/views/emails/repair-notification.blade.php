@@ -126,9 +126,9 @@
             
             <p>დეტალების გასაცნობად ეწვიეთ შეკვეთების გვერდს.</p>
             
-            @if($repair?->chat)
+            @if($repair?->chat())
                 <div class="button-container">
-                    <a href="{{ url('/chats/' . $repair->chat->id . '/pdf') }}" class="button green">
+                    <a href="{{ url('/chats/history/' . $repair->chat()->id . '/pdf') }}" class="button green">
                         📄 ჩატის ისტორიის ნახვა
                     </a>
                 </div>
