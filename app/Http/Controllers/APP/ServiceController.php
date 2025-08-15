@@ -6,25 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Purchaser;
 use App\Models\Service;
-use App\Notifications\NewRepairNotification;
+use App\Notifications\NewResponseNotification;
 use App\Models\ServiceNotifiable;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Validator;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class ServiceController extends Controller
 {
-    public function index(Request $request)
-    {
+    public function index() {
         $client = Auth::user()->getClient();
         $search = request()->get('search');
 
         $query = Service::with(['user', 'purchaser', 'region', 'performer'])
-            ->orderBy('id', 'desc')
-            ->where('status', '!=', 3)
-            ->whereDate('created_at', '>=', Carbon::parse('first day of January'));
+        ->orderBy('id', 'desc')
+        ->where('status', '!=', 3)
+        ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'));
 
         // Add search functionality
         if ($search) {
@@ -37,11 +36,11 @@ class ServiceController extends Controller
         }
 
         $allServices = $query->get();
-        
+    
         $clientPurchasers = json_decode($client->purchaser, true) ?: [];
         
         $filtered = $allServices->filter(function ($service) use ($clientPurchasers) {
-            return in_array($service->purchaser_id, $clientPurchasers);
+            return in_array($service->formatted_name, $clientPurchasers);
         });
         
         // Manual pagination
@@ -54,11 +53,11 @@ class ServiceController extends Controller
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
         );
-        
+            
         return response($paginated);
     }
 
-    public function doneServices(Request $request){
+    public function doneServices(Request $request) {
         $client = Auth::user()->getClient();
         $search = request()->get('search');
 
@@ -82,7 +81,7 @@ class ServiceController extends Controller
         $clientPurchasers = json_decode($client->purchaser, true) ?: [];
         
         $filtered = $allServices->filter(function ($service) use ($clientPurchasers) {
-            return in_array($service->purchaser_id, $clientPurchasers);
+            return in_array($service->formatted_name, $clientPurchasers);
         });
         
         // Manual pagination
@@ -139,11 +138,10 @@ class ServiceController extends Controller
         $service->status = $request->get('status');
         $service->save();
 
-        if($request->get('status') == 3) {
-            $user = $service->user;
-            $serviceNotifiable = new ServiceNotifiable();
-            $serviceNotifiable->notify(new NewRepairNotification($user,$service));
-        }
+        $user = $service->user;
+        $serviceNotifiable = new ServiceNotifiable();
+        $serviceNotifiable->notify(new NewResponseNotification($user,$service));
+
         return response()->json(["success" => true], 200);
     }
 
@@ -156,7 +154,7 @@ class ServiceController extends Controller
             'description' => 'required|string|max:1000',
             'type' => 'required|in:1,2',
         ]);
-
+        
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -181,16 +179,17 @@ class ServiceController extends Controller
             "subject_name" => $purchaser->subj_name,
             "subject_address" => $purchaser->subj_address,
             "name" => $purchaser->name,
+            "identification_num" => $purchaser->identification_num,
             "purchaser_id" => $purchaser->id,
-            "job_description" => $request->get('description'),
-            "status" => 10,
+            "content" => $request->get('description'),
+            "status" => 9,
             "user_id" => Auth::user()->id,
             "type" => $type,
         ]);
 
         $user = auth()->user();
         $serviceNotifiable = new ServiceNotifiable();
-        $serviceNotifiable->notify(new NewRepairNotification($user,$service));
+        $serviceNotifiable->notify(new NewResponseNotification($user,$service));
 
         return response()->json([
             "success" => true,

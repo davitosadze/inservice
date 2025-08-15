@@ -161,11 +161,11 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('app/responses/{response}/change-status ', [APPResponseController::class, 'changeStatus'])->name('app.responses.changeStatus');
     
     // App Services
+    Route::get('app/services/{service} ', [APPServiceController::class, 'show'])->name('app.services.show');
     Route::post('app/services/{service}/attend ', [APPServiceController::class, 'arrived'])->name('app.services.arrived');
-    Route::post('app/services ', [APPServiceController::class, 'store'])->name('app.services.store');
     Route::get('app/services ', [APPServiceController::class, 'index'])->name('app.services.index');
     Route::get('app/services-done', [APPServiceController::class, 'doneServices'])->name('app.services.done');
-    Route::get('app/services/{service} ', [APPServiceController::class, 'show'])->name('app.services.show');
+    Route::post('app/services ', [APPServiceController::class, 'store'])->name('app.services.store');
     Route::post('app/services/{service}/change-status ', [APPServiceController::class, 'changeStatus'])->name('app.services.changeStatus');
 
  
