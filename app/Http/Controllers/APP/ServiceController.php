@@ -36,19 +36,13 @@ class ServiceController extends Controller
         }
 
         $allServices = $query->get();
-    
-        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
-        
-        $filtered = $allServices->filter(function ($service) use ($clientPurchasers) {
-            return in_array($service->formatted_name, $clientPurchasers);
-        });
         
         // Manual pagination
         $page = request()->get('page', 1);
         $perPage = 10;
         $paginated = new LengthAwarePaginator(
-            $filtered->forPage($page, $perPage)->values(),
-            $filtered->count(),
+            $allServices->forPage($page, $perPage)->values(),
+            $allServices->count(),
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
@@ -78,18 +72,12 @@ class ServiceController extends Controller
 
         $allServices = $query->get();
         
-        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
-        
-        $filtered = $allServices->filter(function ($service) use ($clientPurchasers) {
-            return in_array($service->formatted_name, $clientPurchasers);
-        });
-        
         // Manual pagination
         $page = request()->get('page', 1);
         $perPage = 10;
         $paginated = new LengthAwarePaginator(
-            $filtered->forPage($page, $perPage)->values(),
-            $filtered->count(),
+            $allServices->forPage($page, $perPage)->values(),
+            $allServices->count(),
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
