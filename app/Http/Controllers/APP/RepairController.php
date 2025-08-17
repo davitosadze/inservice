@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\Purchaser;
 use App\Models\Repair;
+use App\Models\Response;
 use App\Notifications\NewRepairNotification;
 use App\Models\ServiceNotifiable;
 use Carbon\Carbon;
@@ -118,7 +119,7 @@ class RepairController extends Controller
         // Get response creation time if from exists and is 'response'
         $responseCreationTime = null;
         if ($repair->from === 'response' && $repair->from_id) {
-            $fromResponse = $purchaser->responses()->where('id', $repair->from_id)->first();
+            $fromResponse = Response::find($repair->from_id);
             $responseCreationTime = $fromResponse ? $fromResponse->created_at : null;
         }
         
