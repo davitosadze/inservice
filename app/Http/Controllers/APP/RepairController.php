@@ -107,16 +107,30 @@ class RepairController extends Controller
         $purchaser = $repair->purchaser;
          
         $lastService = $purchaser->services()->where('status', 3)->orderBy('id', 'desc')->first();
-        $lastResponse = $purchaser->responses()->where('status', 3)->orderBy('id', 'desc')->first();
+        $lastResponse = $purchaser->responses()
+            ->where('status', 3)
+            ->where('id', '<', $repair->id)
+            ->orderBy('id', 'desc')
+            ->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
         $lastServiceDate = $lastService ? $lastService->created_at : null;
+        
+        // Get response creation time if from exists and is 'response'
+        $responseCreationTime = null;
+        if ($repair->from === 'response' && $repair->from_id) {
+            $fromResponse = $purchaser->responses()->where('id', $repair->from_id)->first();
+            $responseCreationTime = $fromResponse ? $fromResponse->created_at : null;
+        }
+        
         $additionalData = [
             'last_service_date' => $lastServiceDate,
             'last_response_date' => $lastResponseDate,
             'last_response_content' => $lastResponse ? $lastResponse->act?->note : null,
             'last_response_job_description' => $lastResponse ? $lastResponse->content : null,
             'chat_id' => Chat::where('item_id', $repair->id)->where('type', 'repair')->first() ? Chat::where('item_id', $repair->id)->where('type', 'repair')->first()->id : null,
-
+            'from' => $repair->from,
+            'from_id' => $repair->from_id,
+            'response_creation_time' => $responseCreationTime,
         ];
 
         if (!$repair) {
