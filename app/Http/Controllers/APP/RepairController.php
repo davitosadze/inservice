@@ -110,7 +110,6 @@ class RepairController extends Controller
         $lastService = $purchaser->services()->where('status', 3)->orderBy('id', 'desc')->first();
         $lastResponse = $purchaser->responses()
             ->where('status', 3)
-            ->where('id', '<', $repair->id)
             ->orderBy('id', 'desc')
             ->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
