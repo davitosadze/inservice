@@ -363,6 +363,7 @@
                 <div class="address">
                     {{ isset($model['purchaser']) ? $model['purchaser']['subj_address'] : '_________________' }}</div>
             </div>
+            <br/>
         </div>
 
         <div id="company" style="width:45%; border: 1px solid #fff;">
