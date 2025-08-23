@@ -181,6 +181,12 @@ class InvoiceController extends Controller
         }
     }
 
+    public function excel($id)
+    {
+        $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
+        $name = "ინვოისი " . $model['uuid'] . '.xlsx';
+        return Excel::download(new ReservingExport($model), $name);
+    }
 
     public function pdf(Request $request, $id)
     {
