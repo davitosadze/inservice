@@ -372,7 +372,7 @@
                     <img style="max-width: 100%;" src="{{ url('/inservice-logo.png') }}">
                 </div>
 
-                <div style="float:right; width: 77%;">
+                <div style="float:right; width: 100%;">
                     <h2 class="name"><b>მომწოდებელი:</b> შპს " ინსერვისი "</h2>
                     <div><b>ს/კ:</b> 206346685</div>
                     <div><b>მისამართი:</b> თბილისი, წერეთლის 115ა</div>
