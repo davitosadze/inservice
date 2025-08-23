@@ -97,7 +97,7 @@
 <table style="width: 1200px;">
     <thead>
         <tr>
-            <td valign="center" colspan="4" height="100px">
+            <td valign="center" colspan="4" height="130px">
                 <p>{{ $model['purchaser']['name'] }}</p>
                 <p>{{ $model['purchaser']['subj_name'] }}</p>
                 <p>{{ $model['purchaser']['identification_num'] }}</p>
