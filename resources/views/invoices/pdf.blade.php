@@ -342,7 +342,7 @@
             <!--  <img src="logo.png"> -->
         </div>
 
-        <div id="client" style="width:45%; word-wrap: break-word; border: 1px solid #fff;">
+        <div id="client" style="width:35%; word-wrap: break-word; border: 1px solid #fff;">
             <div style="padding: 0 0.5em">
                 <h2 class="name">{{ isset($model['purchaser']) ? $model['purchaser']['name'] : '___' }}</h2>
                 <div class="name">
@@ -357,11 +357,11 @@
 
 
 
-        <div id="company" style="width:55%; border: 1px solid #fff;">
+        <div id="company" style="width:65%; border: 1px solid #fff;">
 
             <div style="padding: 0 0.5em" class="clearfix">
                 <div style="float: left; width: 40%; ">
-                    <img style="margin-right:200px; max-width: 100%;" src="{{ url('/inservice-new.png') }}">
+                    <img style="margin-right:100px; max-width: 100%;" src="{{ url('/inservice-new.png') }}">
                 </div>
 
                 <div style="float:right; width: 77%;">
