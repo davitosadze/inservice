@@ -368,11 +368,11 @@
         <div id="company" style="width:45%; border: 1px solid #fff;">
 
             <div style="padding: 0 0.5em" class="clearfix">
-                <div style="float: left; width: 23%; ">
+                <div style="float: left; width: 10%; ">
                     <img style="max-width: 100%;" src="{{ url('/inservice-logo.png') }}">
                 </div>
 
-                <div style="float:right; width: 100%;">
+                <div style="float:right; width: 90%;">
                     <h2 class="name"><b>მომწოდებელი:</b> შპს " ინსერვისი "</h2>
                     <div><b>ს/კ:</b> 206346685</div>
                     <div><b>მისამართი:</b> თბილისი, წერეთლის 115ა</div>
