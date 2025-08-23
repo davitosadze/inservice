@@ -361,7 +361,7 @@
 
             <div style="padding: 0 0.5em" class="clearfix">
                 <div style="float: left; width: 40%; ">
-                    <img style="margin-right:100px; max-width: 100%;" src="{{ url('/inservice-new.png') }}">
+                    <img style="margin-right:50px; max-width: 100%;" src="{{ url('/inservice-new.png') }}">
                 </div>
 
                 <div style="float:right; width: 77%;">
