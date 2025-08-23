@@ -48,8 +48,10 @@
             border-right: 5px solid #ffd05a;
             border-left: 5px solid #ffd05a;
 
-            padding: 10px 0;
+            padding: 20px 0;
             margin-bottom: 20px;
+            min-height: 120px;
+            overflow: hidden;
             /*border-bottom: 1px solid #AAAAAA;*/
         }
 
@@ -65,6 +67,8 @@
         #company {
             float: right;
             text-align: right;
+            padding: 10px 0;
+            min-height: 80px;
             /*padding-right: 5px;*/
         }
 
@@ -77,6 +81,8 @@
         #client {
             /*padding-left: 5px;*/
             float: left;
+            padding: 10px 0;
+            min-height: 80px;
         }
 
         #client .to {
@@ -363,7 +369,6 @@
                 <div class="address">
                     {{ isset($model['purchaser']) ? $model['purchaser']['subj_address'] : '_________________' }}</div>
             </div>
-            <br/>
         </div>
 
         <div id="company" style="width:45%; border: 1px solid #fff;">
@@ -385,7 +390,7 @@
             </div>
         </div>
 
-
+        <div style="clear: both;"></div>
     </header>
     <hr />
     <main>
