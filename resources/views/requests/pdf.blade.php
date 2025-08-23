@@ -367,9 +367,11 @@
 
         <div id="company" style="width:45%; border: 1px solid #fff;">
 
-           <div style="padding: 0 0.5em" class="clearfix">
+             <div id="company" style="width:65%; border: 1px solid #fff;">
+
+            <div style="padding: 0 0.5em" class="clearfix">
                 <div style="float: left; width: 23%; ">
-                    <img style="max-width: 100%;" src="{{ url('/inservice-new.png') }}">
+                    <img style="width: 100%;" src="{{ url('/inservice-new.png') }}">
                 </div>
 
                 <div style="float:right; width: 77%;">
