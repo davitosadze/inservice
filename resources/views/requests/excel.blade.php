@@ -103,7 +103,7 @@
                 <p>{{ $model['purchaser']['identification_num'] }}</p>
                 <p>{{ $model['purchaser']['subj_address'] }}</p>
             </td>
-            <td style="text-align: right; font-weight:100;" colspan="10" valign="center">
+            <td style="text-align: right; font-weight:100;" colspan="13" valign="center">
                 <p>მომწოდებელი: შპს " ინსერვისი "</p>
                 <p>ს/კ: 206346685</p>
                 <p>მისამართი: თბილისი, წერეთლის 115ა</p>
