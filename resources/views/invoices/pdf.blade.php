@@ -360,7 +360,7 @@
         <div id="company" style="width:65%; border: 1px solid #fff;">
 
             <div style="padding: 0 0.5em" class="clearfix">
-                <div style="float: left; width: 40%; ">
+                <div style="float: left; width: 23%; ">
                     <img style="margin-right:50px; max-width: 100%;" src="{{ url('/inservice-new.png') }}">
                 </div>
 
