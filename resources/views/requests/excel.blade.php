@@ -103,10 +103,10 @@
                 <p>{{ $model['purchaser']['identification_num'] }}</p>
                 <p>{{ $model['purchaser']['subj_address'] }}</p>
             </td>
-            <td style="text-align: right; font-weight:100;" colspan="13" valign="center">
+            <td style="text-align: right; font-weight:100; width: 300px;" colspan="10" valign="center">
                 <p>მომწოდებელი: შპს " ინსერვისი "</p>
                 <p>ს/კ: 206346685</p>
-                <p>მისამართი: თბილისი, წერეთლის 115ა</p>
+                <p style="white-space: nowrap;">მისამართი: თბილისი, წერეთლის 115ა</p>
                 <p>ანგ. # GE96 TB54 2053 6020 1000 03</p>
                 <p>ანგ. # GE94 BG00 0000 0609 8583 91</p>
                 <p>ანგ. # GE75 CD03 6000 0057 2676 23</p>
