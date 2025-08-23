@@ -379,7 +379,6 @@
 
 
     </header>
-    <hr />
     <main>
         <div id="details" class="clearfix">
 

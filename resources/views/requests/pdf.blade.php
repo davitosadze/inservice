@@ -48,10 +48,8 @@
             border-right: 5px solid #ffd05a;
             border-left: 5px solid #ffd05a;
 
-            padding: 20px 0;
+            padding: 10px 0;
             margin-bottom: 20px;
-            min-height: 120px;
-            overflow: hidden;
             /*border-bottom: 1px solid #AAAAAA;*/
         }
 
@@ -67,8 +65,6 @@
         #company {
             float: right;
             text-align: right;
-            padding: 10px 0;
-            min-height: 80px;
             /*padding-right: 5px;*/
         }
 
@@ -81,8 +77,6 @@
         #client {
             /*padding-left: 5px;*/
             float: left;
-            padding: 10px 0;
-            min-height: 80px;
         }
 
         #client .to {
@@ -390,9 +384,8 @@
             </div>
         </div>
 
-        <div style="clear: both;"></div>
+
     </header>
-    <hr />
     <main>
         <div id="details" class="clearfix">
 
