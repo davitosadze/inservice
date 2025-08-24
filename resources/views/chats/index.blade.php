@@ -37,7 +37,7 @@
                                 @if($chat->item)
                                     <tr>
                                         <td>{{ $chat->id }}</td>
-                                        <td>{{ $chat->user->name }}</td>
+                                        <td>{{ $chat->user?->name ?? 'მომხმარებელი არ არსებობს' }}</td>
                                         <td>
                                             @if($chat->type == 'response')
 
