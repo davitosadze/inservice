@@ -114,6 +114,7 @@ class ServiceController extends Controller
             'subject_address' => ['required'],
             'region_id' => ['required'],
             'performer_id' => ['required'],
+            'estimated_arrival_time' => ['required_with:performer_id'],
             'name' => ['required'],
             'identification_num' => ['required'],
         ]);

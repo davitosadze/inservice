@@ -27,7 +27,8 @@ class Service extends Model
         "system_two",
         "status",
         "device_type",
-        'on_repair'
+        'on_repair',
+        'estimated_arrival_time'
     ];
     use HasFactory;
     protected $appends = ["job_time"];
