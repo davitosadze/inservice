@@ -13,9 +13,8 @@ class ChatController extends Controller
     public function startChat(Request $request)
     {
         $request->validate([
-            'type' => 'required',
-            'item_id' => 'required',
-            'type' => 'required'
+            'type' => 'required|in:response,repair,service',
+            'item_id' => 'required'
         ]);
 
         $chat = Chat::create([

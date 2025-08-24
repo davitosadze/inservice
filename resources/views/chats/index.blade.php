@@ -40,12 +40,15 @@
                                         <td>{{ $chat->user?->name ?? 'მომხმარებელი არ არსებობს' }}</td>
                                         <td>
                                             @if($chat->type == 'response')
-
-                                             <a href="{{ route('responses.show', $chat->response?->id) }}">{{ 'რეაგირება ' . $chat->response?->id . " - " . $chat->response?->name }}</a></td>
-                                            @else 
-                                             <a href="{{ route('repairs.show', $chat->repair?->id) }}">{{ 'რემონტი ' . $chat->repair?->id . " - " . $chat->repair?->name }}</a></td>
-
+                                             <a href="{{ route('responses.show', $chat->response?->id) }}">{{ 'რეაგირება ' . $chat->response?->id . " - " . $chat->response?->name }}</a>
+                                            @elseif($chat->type == 'repair')
+                                             <a href="{{ route('repairs.show', $chat->repair?->id) }}">{{ 'რემონტი ' . $chat->repair?->id . " - " . $chat->repair?->name }}</a>
+                                            @elseif($chat->type == 'service')
+                                             <a href="{{ route('services.show', $chat->service?->id) }}">{{ 'გეგმიური ' . $chat->service?->id . " - " . $chat->service?->name }}</a>
+                                            @else
+                                             <span>უცნობი ტიპი: {{ $chat->type }}</span>
                                             @endif
+                                        </td>
                                         <td>{{ $chat->created_at->format('d/m/Y H:i') }}</td>
                                         <td>
                                             <a href="{{ route('chats.show', $chat->id) }}" 
