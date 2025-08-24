@@ -23,7 +23,8 @@ class ServiceController extends Controller
         $query = Service::with(['user', 'purchaser', 'region', 'performer'])
         ->orderBy('id', 'desc')
         ->where('status', '!=', 3)
-        ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'));
+        ->whereDate('created_at', '>=', Carbon::parse('2025-01-01'))
+        ->whereNotNull('estimated_arrival_time');
 
         // Add search functionality
         if ($search) {
