@@ -23,6 +23,8 @@ class Chat extends Model
                 return $this->belongsTo(Repair::class, 'item_id', 'id');
             case 'response':
                 return $this->belongsTo(Response::class, 'item_id', 'id');
+            case 'service':
+                return $this->belongsTo(Service::class, 'item_id', 'id');
             default:
                 return null;
         }
@@ -36,6 +38,11 @@ class Chat extends Model
     public function response(): BelongsTo
     {
         return $this->belongsTo(Response::class, 'item_id', 'id');
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class, 'item_id', 'id');
     }
 
     public function user(): BelongsTo

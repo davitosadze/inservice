@@ -14,7 +14,7 @@ class ChatController extends Controller
     public function index()
     {
         $this->authorize("view", Chat::class);
-        $chats = Chat::with(['user', 'response'])
+        $chats = Chat::with(['user', 'response', 'repair', 'service'])
             ->latest()
             ->paginate(20);
             
@@ -36,7 +36,7 @@ class ChatController extends Controller
 
     public function show($id)
     {
-        $chat = Chat::with(['messages.user', 'response'])
+        $chat = Chat::with(['messages.user', 'response', 'repair', 'service'])
             ->findOrFail($id);
             
         return view('chats.show', compact('chat'));
@@ -44,10 +44,10 @@ class ChatController extends Controller
 
     public function pdf($id)
     {
-        $chat = Chat::with(['messages.user', 'response', 'repair'])
+        $chat = Chat::with(['messages.user', 'response', 'repair', 'service'])
             ->findOrFail($id);
 
-        // Get the related item (response or repair) info
+        // Get the related item (response, repair, or service) info
         $relatedItem = null;
         $relatedItemType = '';
         
@@ -57,6 +57,9 @@ class ChatController extends Controller
         } elseif ($chat->type === 'repair' && $chat->repair) {
             $relatedItem = $chat->repair;
             $relatedItemType = 'რემონტი';
+        } elseif ($chat->type === 'service' && $chat->service) {
+            $relatedItem = $chat->service;
+            $relatedItemType = 'გეგმიური';
         }
 
         $name = 'chat_history_' . $chat->id . '.pdf';
