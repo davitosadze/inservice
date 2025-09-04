@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('repair_devices', function (Blueprint $table) {
+        Schema::create('client_expenses', function (Blueprint $table) {
             $table->id();
-            $table->string("name")->nullable();
-            $table->unsignedBigInteger("user_id")->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
+            $table->decimal("amount")->default(0)->nullable();
+            $table->bigInteger('client_id')->unsigned()->nullable();
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repair_devices');
+        Schema::dropIfExists('client_expenses');
     }
 };

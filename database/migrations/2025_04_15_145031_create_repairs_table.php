@@ -25,7 +25,7 @@ return new class extends Migration
             $table->bigInteger('purchaser_id')->nullable();
             $table->bigInteger('performer_id')->nullable();
             $table->bigInteger('region_id')->nullable();
-            $table->unsignedInteger("user_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer("status")->default(0)->nullable();
             $table->integer("on_repair")->default(0)->nullable();

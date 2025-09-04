@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('evaluations', function (Blueprint $table) {
-            $table->integer("warranty_period")->default(0)->nullable();
+        Schema::create('calendar_events', function (Blueprint $table) {
+            $table->id();
+            $table->string("title")->nullable();
+            $table->date("date")->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('evaluations', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('calendar_events');
     }
 };

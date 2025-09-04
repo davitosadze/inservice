@@ -36,7 +36,7 @@ return new class extends Migration
             $table->text("position")->nullable();
             $table->text("additional_information")->nullable();
             $table->string("uuid")->nullable();
-            $table->unsignedInteger("user_id")->nullable();
+            $table->unsignedBigInteger("user_id")->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->text("signature")->nullable();
             $table->integer('is_mobile')->default(0)->nullable();

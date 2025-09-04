@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('responses', function (Blueprint $table) {
-            $table->unsignedBigInteger("user_id")->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->date("guarantee_start_date")->nullable();
+            $table->date("guarantee_end_date")->nullable();
+            $table->string("unique_id")->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('responses', function (Blueprint $table) {
+        Schema::table('clients', function (Blueprint $table) {
             //
         });
     }

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('responses', function (Blueprint $table) {
             $table->id();
             $table->text("content")->nullable();
             $table->text("exact_location")->nullable();
@@ -25,18 +25,6 @@ return new class extends Migration
             $table->bigInteger('purchaser_id')->nullable();
             $table->bigInteger('performer_id')->nullable();
             $table->bigInteger('region_id')->nullable();
-            $table->unsignedBigInteger("user_id")->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer("status")->default(0)->nullable();
-            $table->integer("on_repair")->default(0)->nullable();
-            $table->integer("device_type")->default(0)->nullable();
-
-            $table->string("subject_name")->nullable();
-            $table->string("subject_address")->nullable();
-            $table->string("name")->nullable();
-            $table->string("identification_num")->nullable();
-
-
             $table->timestamps();
         });
     }
@@ -48,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('responses');
     }
 };
