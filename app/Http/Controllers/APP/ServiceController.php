@@ -92,7 +92,7 @@ class ServiceController extends Controller
         $service = Service::with(['user', 'purchaser', 'region', 'performer', 'act'])->find($id);
         $purchaser = $service->purchaser;
          
-        $lastService = $purchaser->services()->where('status', 3)->orderBy('id', 'desc')->first();
+        $lastService =  $purchaser->services()->where('status', 3)->where('id', '<', $service->id)->orderBy('id', 'desc')->first();
         $lastResponse = $purchaser->responses()->where('status', 3)->orderBy('id', 'desc')->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
         $lastServiceDate = $lastService ? $lastService->created_at : null;
