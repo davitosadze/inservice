@@ -31,7 +31,7 @@ class AdminOrderModal {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="adminOrderModalLabel">შეკვეთის შექმნა (ადმინი)</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" id="closeModalBtn" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -84,7 +84,7 @@ class AdminOrderModal {
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">დახურვა</button>
+                            <button type="button" class="btn btn-secondary" id="closeModalFooterBtn">დახურვა</button>
                             <button type="button" class="btn btn-primary" id="submitOrder">
                                 <span id="submitText">შექმნა</span>
                                 <span id="submitSpinner" class="spinner-border spinner-border-sm ml-2" style="display: none;"></span>
@@ -106,6 +106,10 @@ class AdminOrderModal {
         
         // Form submission
         document.getElementById('submitOrder').addEventListener('click', () => this.handleSubmit());
+        
+        // Close modal functionality
+        document.getElementById('closeModalBtn').addEventListener('click', () => this.hide());
+        document.getElementById('closeModalFooterBtn').addEventListener('click', () => this.hide());
         
         // Form validation on input
         ['description', 'subj_name', 'subj_address'].forEach(field => {
@@ -160,12 +164,16 @@ class AdminOrderModal {
                 this.branches = data.branches || [];
                 this.populateBranchSelect();
             } else {
-                console.error('Failed to load branches');
-                this.showError('ფილიალების ჩატვირთვა ვერ მოხერხდა');
+                console.error('Failed to load branches:', response.status, response.statusText);
+                // Still allow the modal to work with manual branch entry
+                this.branches = [];
+                this.populateBranchSelect();
             }
         } catch (error) {
             console.error('Error loading branches:', error);
-            this.showError('ფილიალების ჩატვირთვა ვერ მოხერხდა');
+            // Still allow the modal to work with manual branch entry
+            this.branches = [];
+            this.populateBranchSelect();
         } finally {
             this.loadingBranches = false;
         }
@@ -175,12 +183,20 @@ class AdminOrderModal {
         const select = document.getElementById('branch_select');
         select.innerHTML = '<option value="">აირჩიეთ ფილიალი...</option>';
         
-        this.branches.forEach(branch => {
+        if (this.branches.length === 0) {
             const option = document.createElement('option');
-            option.value = branch.id;
-            option.textContent = branch.subj_address || branch.subj_name || branch.name;
+            option.value = '';
+            option.textContent = 'ფილიალები ვერ ჩაიტვირთა - გამოიყენეთ არასაკონტრაქტო ტიპი';
+            option.disabled = true;
             select.appendChild(option);
-        });
+        } else {
+            this.branches.forEach(branch => {
+                const option = document.createElement('option');
+                option.value = branch.id;
+                option.textContent = branch.subj_address || branch.subj_name || branch.name;
+                select.appendChild(option);
+            });
+        }
     }
     
     validateForm() {
@@ -294,10 +310,11 @@ class AdminOrderModal {
                 this.showSuccess('შეკვეთა წარმატებით შეიქმნა!');
                 this.resetForm();
                 
-                // Refresh the page after 2 seconds
+                // Close modal and refresh the page after 1.5 seconds
                 setTimeout(() => {
+                    this.hide();
                     window.location.reload();
-                }, 2000);
+                }, 1500);
             } else {
                 this.showError(data.message || 'შეკვეთის შექმნა ვერ მოხერხდა');
             }
@@ -368,7 +385,35 @@ class AdminOrderModal {
     }
     
     show() {
-        $('#adminOrderModal').modal('show');
+        // Use vanilla JavaScript instead of jQuery modal
+        const modal = document.getElementById('adminOrderModal');
+        if (modal) {
+            modal.style.display = 'block';
+            modal.classList.add('show');
+            document.body.classList.add('modal-open');
+            
+            // Create backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'adminOrderModalBackdrop';
+            backdrop.addEventListener('click', () => this.hide());
+            document.body.appendChild(backdrop);
+        }
+    }
+    
+    hide() {
+        const modal = document.getElementById('adminOrderModal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+            
+            // Remove backdrop
+            const backdrop = document.getElementById('adminOrderModalBackdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
+        }
     }
 }
 
