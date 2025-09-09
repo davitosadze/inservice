@@ -193,10 +193,15 @@ class RepairActController extends Controller
         try {
 
             $act = RepairAct::find($id);
-            $act->repair->status = 1;
+            $repair = $act->repair;
+            $repair->status = 1;
+            $repair->time = null;
+            
+            $purchaser = $repair->purchaser;
+            $purchaser->arrival_time = null;
+            $purchaser->save();
 
-
-            if ($act->repair->save()) {
+            if ($repair->save()) {
                 $result['success'] = true;
                 $result['result'] = $id;
                 $result['status'] = Response::HTTP_CREATED;
