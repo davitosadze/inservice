@@ -219,4 +219,59 @@ class ResponseController extends Controller
             "message" => "Response created successfully"
         ], 200);
     }
+
+    public function storeAsAdmin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'branch_id' => 'required_if:type,1|exists:purchasers,id',
+            'subj_name' => 'required_if:type,2',
+            'subj_address' => 'required_if:type,2',
+            'description' => 'required|string|max:1000',
+            'type' => 'required|in:1,2',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $type = $request->get('type');
+        if($request->get('type') == 1) {
+            $purchaser = Purchaser::find($request->get('branch_id'));
+        } else {
+            // For type 2, we need to create a generic purchaser since admin doesn't have a specific client
+            $purchaser = Purchaser::create([
+                "name" => "ადმინისგან შექმნილი",
+                "subj_name" => $request->get('subj_name'),
+                "subj_address" => $request->get('subj_address'),
+                "identification_num" => "000000000",
+                "single" => 1,
+            ]);
+        }
+
+        $response = Response::create([
+            "subject_name" => $purchaser->subj_name,
+            "subject_address" => $purchaser->subj_address,
+            "name" => $purchaser->name,
+            "identification_num" => $purchaser->identification_num,
+            "by_client" => 1,  // Keep client status as 1 as requested
+            "purchaser_id" => $purchaser->id,
+            "content" => $request->get('description'),
+            "status" => 9,
+            "user_id" => Auth::user()->id,  // Admin user
+            "type" => $type,
+        ]);
+
+        $user = auth()->user();
+
+        $serviceNotifiable = new ServiceNotifiable();
+        $serviceNotifiable->notify(new NewResponseNotification($user, $response));
+
+        return response()->json([
+            "success" => true,
+            "message" => "Admin client order created successfully"
+        ], 200);
+    }
 }

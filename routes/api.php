@@ -179,6 +179,9 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::post('app/repairs/{repair}/change-status ', [APPRepairController::class, 'changeStatus'])->name('app.repairs.changeStatus');
 
+    // Admin client orders
+    Route::post('admin/client-order', [APPResponseController::class, 'storeAsAdmin'])->name('admin.client-order.store');
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {

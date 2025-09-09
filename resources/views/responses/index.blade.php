@@ -38,10 +38,13 @@
 
             @if (Auth::user()->can('რეაგირების შექმნა'))
                 <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
+                    <div class="input-group input-group-sm" style="width: 300px;">
                         <button href="{{ request()->url() }}/new/edit" id="create"
                             class="btn btn-sm btn-outline-success">
                             <i class="fas fa-shield-alt"></i> დამატება
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary ml-2" id="createClientOrder">
+                            <i class="fas fa-plus"></i> კლიენტის შეკვეთა
                         </button>
                     </div>
                 </div>
@@ -215,6 +218,7 @@
 
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="{{ asset('js/admin-order-modal.js') }}"></script>
 
 <script>
     $('#renderer').hide();
@@ -239,6 +243,18 @@
     target.addEventListener("click", function(e) {
         window.location.href = e.target.getAttribute("href")
     })
+
+    // Add event listener for client order button
+    document.addEventListener('DOMContentLoaded', function() {
+        const createClientOrderBtn = document.getElementById('createClientOrder');
+        if (createClientOrderBtn) {
+            createClientOrderBtn.addEventListener('click', function() {
+                if (window.adminOrderModal) {
+                    window.adminOrderModal.show();
+                }
+            });
+        }
+    });
 
     function confirmDelete(button) {
         if (confirm('ნამდვილად გსურთ რეაგირების წაშლა?')) {
