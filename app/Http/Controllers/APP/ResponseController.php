@@ -228,6 +228,7 @@ class ResponseController extends Controller
             'subj_address' => 'required_if:type,2',
             'description' => 'required|string|max:1000',
             'type' => 'required|in:1,2',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -260,7 +261,7 @@ class ResponseController extends Controller
             "purchaser_id" => $purchaser->id,
             "content" => $request->get('description'),
             "status" => 9,
-            "user_id" => Auth::user()->id,  // Admin user
+            "user_id" => $request->get('user_id'),  // Selected user
             "type" => $type,
         ]);
 

@@ -4,6 +4,8 @@ class AdminOrderModal {
         this.modal = null;
         this.activeType = 1;
         this.branches = [];
+        this.users = [];
+        this.selectedBranch = null;
         this.formValues = {
             description: '',
             branch_id: 0,
@@ -22,6 +24,7 @@ class AdminOrderModal {
         this.createModal();
         this.attachEventListeners();
         this.loadBranches();
+        this.loadUsers();
     }
     
     createModal() {
@@ -48,6 +51,61 @@ class AdminOrderModal {
                     width: 100% !important;
                     height: 100% !important;
                     background-color: rgba(0, 0, 0, 0.5) !important;
+                }
+                .branch-selector-container {
+                    position: relative;
+                }
+                .branch-dropdown {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: white;
+                    border: 1px solid #ced4da;
+                    border-top: none;
+                    border-radius: 0 0 0.25rem 0.25rem;
+                    max-height: 300px;
+                    z-index: 1000;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                .branch-search-container {
+                    padding: 10px;
+                    border-bottom: 1px solid #eee;
+                }
+                .branch-list {
+                    max-height: 250px;
+                    overflow-y: auto;
+                }
+                .branch-item {
+                    padding: 12px;
+                    border-bottom: 1px solid #f8f9fa;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                }
+                .branch-item:hover {
+                    background-color: #f8f9fa;
+                }
+                .branch-item:last-child {
+                    border-bottom: none;
+                }
+                .branch-item-name {
+                    font-weight: 600;
+                    color: #495057;
+                    font-size: 14px;
+                }
+                .branch-item-address {
+                    color: #6c757d;
+                    font-size: 13px;
+                    margin-top: 2px;
+                }
+                .branch-item-id {
+                    color: #868e96;
+                    font-size: 12px;
+                    margin-top: 2px;
+                }
+                .branch-item-selected {
+                    background-color: #e3f2fd;
+                    border-left: 3px solid #2196f3;
                 }
             </style>
             <div class="modal fade" id="adminOrderModal" tabindex="-1" role="dialog" aria-labelledby="adminOrderModalLabel" aria-hidden="true">
@@ -80,9 +138,17 @@ class AdminOrderModal {
                                 <!-- Branch Selection for Type 1 -->
                                 <div class="form-group" id="branchGroup">
                                     <label for="branch_select">ფილიალი</label>
-                                    <select class="form-control" id="branch_select" name="branch_id">
-                                        <option value="">აირჩიეთ ფილიალი...</option>
-                                    </select>
+                                    <div class="branch-selector-container">
+                                        <input type="text" class="form-control" id="branchSearch" placeholder="ძიება ფილიალებში..." readonly>
+                                        <div id="branchDropdown" class="branch-dropdown" style="display: none;">
+                                            <div class="branch-search-container">
+                                                <input type="text" class="form-control form-control-sm" id="branchSearchInput" placeholder="ძიება...">
+                                            </div>
+                                            <div id="branchList" class="branch-list">
+                                                <!-- Branch items will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="invalid-feedback" id="branchError"></div>
                                 </div>
                                 
@@ -99,6 +165,16 @@ class AdminOrderModal {
                                     <div class="invalid-feedback" id="subjAddressError"></div>
                                 </div>
                                 
+                                <!-- User Selection Field -->
+                                <div class="form-group">
+                                    <label for="user_select">შეკვეთის მფლობელი</label>
+                                    <select class="form-control" id="user_select" name="user_id">
+                                        <option value="">აირჩიეთ მომხმარებელი...</option>
+                                    </select>
+                                    <div class="invalid-feedback" id="userError"></div>
+                                    <small class="form-text text-muted">შეკვეთის მფლობელი იქნება ამ მომხმარებელის სახელზე</small>
+                                </div>
+
                                 <!-- Description Field -->
                                 <div class="form-group">
                                     <label for="description">სამუშაოს აღწერა</label>
@@ -136,14 +212,25 @@ class AdminOrderModal {
         document.getElementById('closeModalFooterBtn').addEventListener('click', () => this.hide());
         
         // Form validation on input
-        ['description', 'subj_name', 'subj_address'].forEach(field => {
+        ['description', 'subj_name', 'subj_address', 'user_id'].forEach(field => {
             const element = document.getElementById(field);
             if (element) {
                 element.addEventListener('input', () => this.clearError(field));
             }
         });
         
-        document.getElementById('branch_select').addEventListener('change', () => this.clearError('branch_id'));
+        document.getElementById('user_select').addEventListener('change', () => this.clearError('user_id'));
+        
+        // Branch selector events
+        document.getElementById('branchSearch').addEventListener('click', () => this.toggleBranchDropdown());
+        document.getElementById('branchSearchInput').addEventListener('input', (e) => this.filterBranches(e.target.value));
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.branch-selector-container')) {
+                this.closeBranchDropdown();
+            }
+        });
     }
     
     switchType(type) {
@@ -178,41 +265,154 @@ class AdminOrderModal {
                 const data = await response.json();
                 // Handle both direct array and paginated response
                 this.branches = data.data || data || [];
-                this.populateBranchSelect();
+                this.populateBranchList();
             } else {
                 console.error('Failed to load branches:', response.status, response.statusText);
                 // Still allow the modal to work with manual branch entry
                 this.branches = [];
-                this.populateBranchSelect();
+                this.populateBranchList();
             }
         } catch (error) {
             console.error('Error loading branches:', error);
             // Still allow the modal to work with manual branch entry
             this.branches = [];
-            this.populateBranchSelect();
+            this.populateBranchList();
         } finally {
             this.loadingBranches = false;
         }
     }
     
-    populateBranchSelect() {
-        const select = document.getElementById('branch_select');
-        select.innerHTML = '<option value="">აირჩიეთ ფილიალი...</option>';
+    async loadUsers() {
+        try {
+            const response = await fetch('/api/users', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                this.users = data.data || data || [];
+                this.populateUserSelect();
+            } else {
+                console.error('Failed to load users:', response.status, response.statusText);
+                this.users = [];
+                this.populateUserSelect();
+            }
+        } catch (error) {
+            console.error('Error loading users:', error);
+            this.users = [];
+            this.populateUserSelect();
+        }
+    }
+    
+    populateUserSelect() {
+        const select = document.getElementById('user_select');
+        select.innerHTML = '<option value="">აირჩიეთ მომხმარებელი...</option>';
         
-        if (this.branches.length === 0) {
+        if (this.users.length === 0) {
             const option = document.createElement('option');
             option.value = '';
-            option.textContent = 'ფილიალები ვერ ჩაიტვირთა - გამოიყენეთ არასაკონტრაქტო ტიპი';
+            option.textContent = 'მომხმარებლები ვერ ჩაიტვირთა';
             option.disabled = true;
             select.appendChild(option);
         } else {
-            this.branches.forEach(branch => {
+            this.users.forEach(user => {
                 const option = document.createElement('option');
-                option.value = branch.id;
-                option.textContent = branch.subj_address || branch.subj_name || branch.name;
+                option.value = user.id;
+                option.textContent = `${user.name} (${user.email || 'N/A'})`;
                 select.appendChild(option);
             });
         }
+    }
+    
+    populateBranchList(filteredBranches = null) {
+        const branchList = document.getElementById('branchList');
+        const branches = filteredBranches || this.branches;
+        
+        branchList.innerHTML = '';
+        
+        if (branches.length === 0) {
+            const emptyItem = document.createElement('div');
+            emptyItem.className = 'branch-item';
+            emptyItem.innerHTML = `
+                <div class="branch-item-name">ფილიალები ვერ ჩაიტვირთა</div>
+                <div class="branch-item-address">გამოიყენეთ არასაკონტრაქტო ტიპი</div>
+            `;
+            branchList.appendChild(emptyItem);
+        } else {
+            branches.forEach(branch => {
+                const branchItem = document.createElement('div');
+                branchItem.className = 'branch-item';
+                branchItem.dataset.branchId = branch.id;
+                
+                branchItem.innerHTML = `
+                    <div class="branch-item-name">${branch.name || 'N/A'}</div>
+                    <div class="branch-item-address">${branch.subj_address || 'მისამართი არ არის მითითებული'}</div>
+                    <div class="branch-item-id">ID: ${branch.id} | ${branch.subj_name || 'N/A'}</div>
+                `;
+                
+                branchItem.addEventListener('click', () => this.selectBranch(branch));
+                branchList.appendChild(branchItem);
+            });
+        }
+    }
+    
+    toggleBranchDropdown() {
+        const dropdown = document.getElementById('branchDropdown');
+        const isVisible = dropdown.style.display === 'block';
+        
+        if (isVisible) {
+            this.closeBranchDropdown();
+        } else {
+            dropdown.style.display = 'block';
+            this.populateBranchList();
+            document.getElementById('branchSearchInput').focus();
+        }
+    }
+    
+    closeBranchDropdown() {
+        const dropdown = document.getElementById('branchDropdown');
+        dropdown.style.display = 'none';
+        document.getElementById('branchSearchInput').value = '';
+    }
+    
+    filterBranches(searchTerm) {
+        if (!searchTerm.trim()) {
+            this.populateBranchList();
+            return;
+        }
+        
+        const filtered = this.branches.filter(branch => {
+            const searchText = searchTerm.toLowerCase();
+            return (
+                (branch.name || '').toLowerCase().includes(searchText) ||
+                (branch.subj_address || '').toLowerCase().includes(searchText) ||
+                (branch.subj_name || '').toLowerCase().includes(searchText) ||
+                branch.id.toString().includes(searchText)
+            );
+        });
+        
+        this.populateBranchList(filtered);
+    }
+    
+    selectBranch(branch) {
+        this.selectedBranch = branch;
+        this.formValues.branch_id = branch.id;
+        
+        const branchSearch = document.getElementById('branchSearch');
+        branchSearch.value = `${branch.name} - ${branch.subj_address || branch.subj_name}`;
+        
+        // Update selected state
+        document.querySelectorAll('.branch-item').forEach(item => {
+            item.classList.remove('branch-item-selected');
+        });
+        document.querySelector(`[data-branch-id="${branch.id}"]`)?.classList.add('branch-item-selected');
+        
+        this.closeBranchDropdown();
+        this.clearError('branch_id');
     }
     
     validateForm() {
@@ -225,9 +425,13 @@ class AdminOrderModal {
             errors.description = 'აღწერა უნდა იყოს მინიმუმ 5 სიმბოლო';
         }
         
+        const userId = document.getElementById('user_select').value;
+        if (!userId) {
+            errors.user_id = 'მომხმარებელი სავალდებულოა';
+        }
+        
         if (this.activeType === 1) {
-            const branchId = document.getElementById('branch_select').value;
-            if (!branchId) {
+            if (!this.selectedBranch || !this.formValues.branch_id) {
                 errors.branch_id = 'ფილიალი სავალდებულოა';
             }
         } else {
@@ -254,8 +458,18 @@ class AdminOrderModal {
         
         // Display new errors
         Object.keys(this.errors).forEach(field => {
-            const errorElement = document.getElementById(field === 'branch_id' ? 'branchError' : `${field}Error`);
-            const inputElement = document.getElementById(field === 'branch_id' ? 'branch_select' : field);
+            let errorElement, inputElement;
+            
+            if (field === 'branch_id') {
+                errorElement = document.getElementById('branchError');
+                inputElement = document.getElementById('branchSearch');
+            } else if (field === 'user_id') {
+                errorElement = document.getElementById('userError');
+                inputElement = document.getElementById('user_select');
+            } else {
+                errorElement = document.getElementById(`${field}Error`);
+                inputElement = document.getElementById(field);
+            }
             
             if (errorElement && inputElement) {
                 errorElement.textContent = this.errors[field];
@@ -266,8 +480,18 @@ class AdminOrderModal {
     }
     
     clearError(field) {
-        const errorElement = document.getElementById(field === 'branch_id' ? 'branchError' : `${field}Error`);
-        const inputElement = document.getElementById(field === 'branch_id' ? 'branch_select' : field);
+        let errorElement, inputElement;
+        
+        if (field === 'branch_id') {
+            errorElement = document.getElementById('branchError');
+            inputElement = document.getElementById('branchSearch');
+        } else if (field === 'user_id') {
+            errorElement = document.getElementById('userError');
+            inputElement = document.getElementById('user_select');
+        } else {
+            errorElement = document.getElementById(`${field}Error`);
+            inputElement = document.getElementById(field);
+        }
         
         if (errorElement && inputElement) {
             errorElement.textContent = '';
@@ -281,7 +505,7 @@ class AdminOrderModal {
     }
     
     clearAllErrors() {
-        ['description', 'branch_id', 'subj_name', 'subj_address'].forEach(field => {
+        ['description', 'branch_id', 'subj_name', 'subj_address', 'user_id'].forEach(field => {
             this.clearError(field);
         });
     }
@@ -301,11 +525,12 @@ class AdminOrderModal {
             // Prepare request body
             const requestBody = {
                 description: document.getElementById('description').value,
-                type: this.activeType
+                type: this.activeType,
+                user_id: document.getElementById('user_select').value
             };
             
             if (this.activeType === 1) {
-                requestBody.branch_id = document.getElementById('branch_select').value;
+                requestBody.branch_id = this.selectedBranch?.id || null;
             } else {
                 requestBody.subj_name = document.getElementById('subj_name').value;
                 requestBody.subj_address = document.getElementById('subj_address').value;
@@ -391,6 +616,8 @@ class AdminOrderModal {
             subj_name: '',
             subj_address: ''
         };
+        this.selectedBranch = null;
+        document.getElementById('branchSearch').value = '';
         this.clearAllErrors();
         this.switchType(1);
         
