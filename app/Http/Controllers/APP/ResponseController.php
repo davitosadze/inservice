@@ -108,11 +108,16 @@ class ResponseController extends Controller
         $response = Response::with(['user', 'purchaser', 'region', 'performer', 'act'])->find($id);
         $purchaser = $response->purchaser;
          
-        $lastService = $purchaser->services()->where('status', 3)->orderBy('id', 'desc')->first();
+        $lastService = $purchaser->services()
+            ->where('status', 3)
+            ->where('created_at', '<', $response->created_at)
+            ->orderBy('id', 'desc')
+            ->first();
         // Get the previous response before the current one
         $lastResponse = $purchaser->responses()
             ->where('status', 3)
             ->where('id', '<', $response->id)
+            ->where('created_at', '<', $response->created_at)
             ->orderBy('id', 'desc')
             ->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   

@@ -107,9 +107,14 @@ class RepairController extends Controller
         $repair = Repair::with(['user', 'purchaser', 'region', 'performer', 'act'])->find($id);
         $purchaser = $repair->purchaser;
          
-        $lastService = $purchaser->services()->where('status', 3)->orderBy('id', 'desc')->first();
+        $lastService = $purchaser->services()
+            ->where('status', 3)
+            ->where('created_at', '<', $repair->created_at)
+            ->orderBy('id', 'desc')
+            ->first();
         $lastResponse = $purchaser->responses()
             ->where('status', 3)
+            ->where('created_at', '<', $repair->created_at)
             ->orderBy('id', 'desc')
             ->first();
         $lastResponseDate = $lastResponse ? $lastResponse->created_at : null;   
