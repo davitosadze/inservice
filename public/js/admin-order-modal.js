@@ -6,6 +6,7 @@ class AdminOrderModal {
         this.branches = [];
         this.users = [];
         this.selectedBranch = null;
+        this.selectedUser = null;
         this.formValues = {
             description: '',
             branch_id: 0,
@@ -52,10 +53,10 @@ class AdminOrderModal {
                     height: 100% !important;
                     background-color: rgba(0, 0, 0, 0.5) !important;
                 }
-                .branch-selector-container {
+                .branch-selector-container, .user-selector-container {
                     position: relative;
                 }
-                .branch-dropdown {
+                .branch-dropdown, .user-dropdown {
                     position: absolute;
                     top: 100%;
                     left: 0;
@@ -68,24 +69,24 @@ class AdminOrderModal {
                     z-index: 1000;
                     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
                 }
-                .branch-search-container {
+                .branch-search-container, .user-search-container {
                     padding: 10px;
                     border-bottom: 1px solid #eee;
                 }
-                .branch-list {
+                .branch-list, .user-list {
                     max-height: 250px;
                     overflow-y: auto;
                 }
-                .branch-item {
+                .branch-item, .user-item {
                     padding: 12px;
                     border-bottom: 1px solid #f8f9fa;
                     cursor: pointer;
                     transition: background-color 0.2s;
                 }
-                .branch-item:hover {
+                .branch-item:hover, .user-item:hover {
                     background-color: #f8f9fa;
                 }
-                .branch-item:last-child {
+                .branch-item:last-child, .user-item:last-child {
                     border-bottom: none;
                 }
                 .branch-item-name {
@@ -103,9 +104,71 @@ class AdminOrderModal {
                     font-size: 12px;
                     margin-top: 2px;
                 }
-                .branch-item-selected {
+                .branch-item-selected, .user-item-selected {
                     background-color: #e3f2fd;
                     border-left: 3px solid #2196f3;
+                }
+                .user-item-name {
+                    font-weight: 600;
+                    color: #495057;
+                    font-size: 14px;
+                }
+                .user-item-email {
+                    color: #6c757d;
+                    font-size: 13px;
+                    margin-top: 2px;
+                }
+                .user-item-id {
+                    color: #868e96;
+                    font-size: 12px;
+                    margin-top: 2px;
+                }
+                
+                /* Mobile responsive styles */
+                @media (max-width: 768px) {
+                    #adminOrderModal .modal-dialog {
+                        margin: 0;
+                        max-width: 100%;
+                        height: 100vh;
+                        width: 100vw;
+                    }
+                    
+                    #adminOrderModal .modal-content {
+                        height: 100vh;
+                        border-radius: 0;
+                        border: none;
+                    }
+                    
+                    #adminOrderModal .modal-body {
+                        padding: 15px;
+                        overflow-y: auto;
+                        flex: 1;
+                    }
+                    
+                    #adminOrderModal .modal-header {
+                        padding: 15px;
+                        flex-shrink: 0;
+                    }
+                    
+                    #adminOrderModal .modal-footer {
+                        padding: 15px;
+                        flex-shrink: 0;
+                    }
+                    
+                    .branch-dropdown, .user-dropdown {
+                        position: fixed !important;
+                        top: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        bottom: 0 !important;
+                        max-height: none !important;
+                        z-index: 1060 !important;
+                        border-radius: 0 !important;
+                    }
+                    
+                    .branch-list, .user-list {
+                        max-height: calc(100vh - 100px) !important;
+                    }
                 }
             </style>
             <div class="modal fade" id="adminOrderModal" tabindex="-1" role="dialog" aria-labelledby="adminOrderModalLabel" aria-hidden="true">
@@ -168,9 +231,17 @@ class AdminOrderModal {
                                 <!-- User Selection Field -->
                                 <div class="form-group">
                                     <label for="user_select">შეკვეთის მფლობელი</label>
-                                    <select class="form-control" id="user_select" name="user_id">
-                                        <option value="">აირჩიეთ მომხმარებელი...</option>
-                                    </select>
+                                    <div class="user-selector-container">
+                                        <input type="text" class="form-control" id="userSearch" placeholder="ძიება მომხმარებლებში..." readonly>
+                                        <div id="userDropdown" class="user-dropdown" style="display: none;">
+                                            <div class="user-search-container">
+                                                <input type="text" class="form-control form-control-sm" id="userSearchInput" placeholder="ძიება...">
+                                            </div>
+                                            <div id="userList" class="user-list">
+                                                <!-- User items will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="invalid-feedback" id="userError"></div>
                                     <small class="form-text text-muted">შეკვეთის მფლობელი იქნება ამ მომხმარებელის სახელზე</small>
                                 </div>
@@ -219,16 +290,21 @@ class AdminOrderModal {
             }
         });
         
-        document.getElementById('user_select').addEventListener('change', () => this.clearError('user_id'));
+        // User selector events
+        document.getElementById('userSearch').addEventListener('click', () => this.toggleUserDropdown());
+        document.getElementById('userSearchInput').addEventListener('input', (e) => this.filterUsers(e.target.value));
         
         // Branch selector events
         document.getElementById('branchSearch').addEventListener('click', () => this.toggleBranchDropdown());
         document.getElementById('branchSearchInput').addEventListener('input', (e) => this.filterBranches(e.target.value));
         
-        // Close dropdown when clicking outside
+        // Close dropdowns when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.branch-selector-container')) {
                 this.closeBranchDropdown();
+            }
+            if (!e.target.closest('.user-selector-container')) {
+                this.closeUserDropdown();
             }
         });
     }
@@ -295,37 +371,102 @@ class AdminOrderModal {
             if (response.ok) {
                 const data = await response.json();
                 this.users = data.data || data || [];
-                this.populateUserSelect();
+                this.populateUserList();
             } else {
                 console.error('Failed to load users:', response.status, response.statusText);
                 this.users = [];
-                this.populateUserSelect();
+                this.populateUserList();
             }
         } catch (error) {
             console.error('Error loading users:', error);
             this.users = [];
-            this.populateUserSelect();
+            this.populateUserList();
         }
     }
     
-    populateUserSelect() {
-        const select = document.getElementById('user_select');
-        select.innerHTML = '<option value="">აირჩიეთ მომხმარებელი...</option>';
+    populateUserList(filteredUsers = null) {
+        const userList = document.getElementById('userList');
+        const users = filteredUsers || this.users;
         
-        if (this.users.length === 0) {
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = 'მომხმარებლები ვერ ჩაიტვირთა';
-            option.disabled = true;
-            select.appendChild(option);
+        userList.innerHTML = '';
+        
+        if (users.length === 0) {
+            const emptyItem = document.createElement('div');
+            emptyItem.className = 'user-item';
+            emptyItem.innerHTML = `
+                <div class="user-item-name">მომხმარებლები ვერ ჩაიტვირთა</div>
+                <div class="user-item-email">სცადეთ თავიდან ჩატვირთვა</div>
+            `;
+            userList.appendChild(emptyItem);
         } else {
-            this.users.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = `${user.name} (${user.email || 'N/A'})`;
-                select.appendChild(option);
+            users.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+                userItem.dataset.userId = user.id;
+                
+                userItem.innerHTML = `
+                    <div class="user-item-name">${user.name || 'N/A'}</div>
+                    <div class="user-item-email">${user.email || 'ელ. ფოსტა არ არის მითითებული'}</div>
+                    <div class="user-item-id">ID: ${user.id}</div>
+                `;
+                
+                userItem.addEventListener('click', () => this.selectUser(user));
+                userList.appendChild(userItem);
             });
         }
+    }
+    
+    toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        const isVisible = dropdown.style.display === 'block';
+        
+        if (isVisible) {
+            this.closeUserDropdown();
+        } else {
+            dropdown.style.display = 'block';
+            this.populateUserList();
+            document.getElementById('userSearchInput').focus();
+        }
+    }
+    
+    closeUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        dropdown.style.display = 'none';
+        document.getElementById('userSearchInput').value = '';
+    }
+    
+    filterUsers(searchTerm) {
+        if (!searchTerm.trim()) {
+            this.populateUserList();
+            return;
+        }
+        
+        const filtered = this.users.filter(user => {
+            const searchText = searchTerm.toLowerCase();
+            return (
+                (user.name || '').toLowerCase().includes(searchText) ||
+                (user.email || '').toLowerCase().includes(searchText) ||
+                user.id.toString().includes(searchText)
+            );
+        });
+        
+        this.populateUserList(filtered);
+    }
+    
+    selectUser(user) {
+        this.selectedUser = user;
+        
+        const userSearch = document.getElementById('userSearch');
+        userSearch.value = `${user.name} - ${user.email || 'ID: ' + user.id}`;
+        
+        // Update selected state
+        document.querySelectorAll('.user-item').forEach(item => {
+            item.classList.remove('user-item-selected');
+        });
+        document.querySelector(`[data-user-id="${user.id}"]`)?.classList.add('user-item-selected');
+        
+        this.closeUserDropdown();
+        this.clearError('user_id');
     }
     
     populateBranchList(filteredBranches = null) {
@@ -425,8 +566,7 @@ class AdminOrderModal {
             errors.description = 'აღწერა უნდა იყოს მინიმუმ 5 სიმბოლო';
         }
         
-        const userId = document.getElementById('user_select').value;
-        if (!userId) {
+        if (!this.selectedUser) {
             errors.user_id = 'მომხმარებელი სავალდებულოა';
         }
         
@@ -465,7 +605,7 @@ class AdminOrderModal {
                 inputElement = document.getElementById('branchSearch');
             } else if (field === 'user_id') {
                 errorElement = document.getElementById('userError');
-                inputElement = document.getElementById('user_select');
+                inputElement = document.getElementById('userSearch');
             } else {
                 errorElement = document.getElementById(`${field}Error`);
                 inputElement = document.getElementById(field);
@@ -487,7 +627,7 @@ class AdminOrderModal {
             inputElement = document.getElementById('branchSearch');
         } else if (field === 'user_id') {
             errorElement = document.getElementById('userError');
-            inputElement = document.getElementById('user_select');
+            inputElement = document.getElementById('userSearch');
         } else {
             errorElement = document.getElementById(`${field}Error`);
             inputElement = document.getElementById(field);
@@ -526,7 +666,7 @@ class AdminOrderModal {
             const requestBody = {
                 description: document.getElementById('description').value,
                 type: this.activeType,
-                user_id: document.getElementById('user_select').value
+                user_id: this.selectedUser?.id || null
             };
             
             if (this.activeType === 1) {
@@ -617,7 +757,9 @@ class AdminOrderModal {
             subj_address: ''
         };
         this.selectedBranch = null;
+        this.selectedUser = null;
         document.getElementById('branchSearch').value = '';
+        document.getElementById('userSearch').value = '';
         this.clearAllErrors();
         this.switchType(1);
         
