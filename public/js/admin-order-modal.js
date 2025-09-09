@@ -26,6 +26,30 @@ class AdminOrderModal {
     
     createModal() {
         const modalHTML = `
+            <style>
+                .modal-backdrop.show {
+                    opacity: 0.5 !important;
+                    background-color: #000 !important;
+                }
+                .modal.show {
+                    display: block !important;
+                }
+                .modal-open {
+                    overflow: hidden !important;
+                }
+                #adminOrderModal {
+                    z-index: 1050 !important;
+                }
+                #adminOrderModalBackdrop {
+                    z-index: 1040 !important;
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    background-color: rgba(0, 0, 0, 0.5) !important;
+                }
+            </style>
             <div class="modal fade" id="adminOrderModal" tabindex="-1" role="dialog" aria-labelledby="adminOrderModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -142,26 +166,18 @@ class AdminOrderModal {
         try {
             this.loadingBranches = true;
             
-            // Get dates for the request (last 30 days)
-            const today = new Date();
-            const startDate = new Date(today);
-            startDate.setDate(today.getDate() - 30);
-            
-            const response = await fetch('/api/clients/statistics', {
-                method: 'POST',
+            const response = await fetch('/api/purchasers', {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    start_date: startDate.toISOString().split('T')[0],
-                    end_date: today.toISOString().split('T')[0]
-                })
+                }
             });
             
             if (response.ok) {
                 const data = await response.json();
-                this.branches = data.branches || [];
+                // Handle both direct array and paginated response
+                this.branches = data.data || data || [];
                 this.populateBranchSelect();
             } else {
                 console.error('Failed to load branches:', response.status, response.statusText);
@@ -389,13 +405,23 @@ class AdminOrderModal {
         const modal = document.getElementById('adminOrderModal');
         if (modal) {
             modal.style.display = 'block';
+            modal.style.zIndex = '1050';
             modal.classList.add('show');
             document.body.classList.add('modal-open');
             
             // Create backdrop
             const backdrop = document.createElement('div');
-            backdrop.className = 'modal-backdrop fade show';
             backdrop.id = 'adminOrderModalBackdrop';
+            backdrop.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                display: block;
+            `;
             backdrop.addEventListener('click', () => this.hide());
             document.body.appendChild(backdrop);
         }
