@@ -79,10 +79,17 @@ class ActController extends Controller
                         "from_id" => $response->id,
                         "from" => "response",
                     ]));
-                    // $actData = array_merge($model->toArray(), [
-                    //     'repair_id' => $repair->id, // Assign the repair_id to the act
-                    // ]);
-                    // RepairAct::create($actData);
+                    
+                    // Copy only specified act details to repair act
+                    $actData = [
+                        'repair_id' => $repair->id,
+                        'location_id' => $model->location_id,
+                        'device_type_id' => $model->device_type_id,
+                        'device_brand_id' => $model->device_brand_id,
+                        'device_model' => $model->device_model,
+                        'inventory_code' => $model->inventory_code,
+                    ];
+                    RepairAct::create($actData);
                 } else {
                     if (!$request->get('is_app')) {
                         $response->status = 2;
