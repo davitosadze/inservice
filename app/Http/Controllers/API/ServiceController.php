@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Exports\ResponseExport;
+use App\Exports\ServiceExport;
 use App\Http\Controllers\Controller;
 
 use App\Models\Service;
@@ -48,7 +48,7 @@ class ServiceController extends Controller
 
 
         $name = "სერვისი";
-        return Excel::download(new ResponseExport($from, $to), "" . $name . ".xlsx");
+        return Excel::download(new ServiceExport($from, $to), "" . $name . ".xlsx");
     }
 
     public function destroy($id)
