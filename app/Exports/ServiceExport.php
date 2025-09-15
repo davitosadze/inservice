@@ -8,7 +8,7 @@ use App\Exports\Sheets\ResponseFirstSheet;
 use App\Exports\Sheets\ResponsePercentageSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ResponseExport implements WithMultipleSheets
+class ServiceExport implements WithMultipleSheets
 {
     /**
      * @return \Illuminate\Support\Collection
