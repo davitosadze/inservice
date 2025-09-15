@@ -2,10 +2,10 @@
 
 namespace App\Exports;
 
-use App\Exports\Sheets\ResponseBySystemExport;
-use App\Exports\Sheets\ResponseChartSheet;
-use App\Exports\Sheets\ResponseFirstSheet;
-use App\Exports\Sheets\ResponsePercentageSheet;
+use App\Exports\Sheets\ServiceBySystemExport;
+use App\Exports\Sheets\ServiceChartSheet;
+use App\Exports\Sheets\ServiceFirstSheet;
+use App\Exports\Sheets\ServicePercentageSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class ServiceExport implements WithMultipleSheets
@@ -28,10 +28,10 @@ class ServiceExport implements WithMultipleSheets
         $from = $this->from;
         $to = $this->to;
 
-        $sheets[] = new ResponseFirstSheet($from, $to);
-        $sheets[] = new ResponseChartSheet($from, $to);
-        $sheets[] = new ResponseBySystemExport($from, $to);
-        $sheets[] = new ResponsePercentageSheet($from, $to);
+        $sheets[] = new ServiceFirstSheet($from, $to);
+        $sheets[] = new ServiceChartSheet($from, $to);
+        $sheets[] = new ServiceBySystemExport($from, $to);
+        $sheets[] = new ServicePercentageSheet($from, $to);
         return $sheets;
     }
 }

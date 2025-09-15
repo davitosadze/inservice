@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Exports\Sheets;
+
+use App\Models\Service;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+
+class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, WithTitle, WithEvents
+{
+
+    private $from;
+    private $to;
+
+    public function __construct($from, $to)
+    {
+        $this->from = $from;
+        $this->to = $to;
+    }
+
+    public function collection()
+    {
+        $from = $this->from;
+        $to = $this->to;
+        return Service::whereBetween("created_at", [$from, $to])->get();
+    }
+
+    public function title(): string
+    {
+        return 'All';
+    }
+    public function map($service): array
+    {
+
+        return [
+            $service->id,
+            $service->region?->name,
+            $service->name,
+            $service->subject_address,
+            $service->subject_name,
+            $service->content,
+            $service->exact_location,
+            $service->job_description,
+            $service->requisites,
+            $service->time,
+            $service->inventory_number,
+            $service->performer?->name,
+            $service->date,
+            $service->system_one,
+            $service->system_two,
+            $service->status,
+            $service->device_type,
+            $service->on_repair ? 'Yes' : 'No',
+            $service->estimated_arrival_time,
+        ];
+    }
+
+
+    public function headings(): array
+    {
+        return [
+            "id",
+            "რეგიონი",
+            "კლიენტი",
+            "მისამართი",
+            "ობიექტი",
+            "შინაარსი",
+            "ზუსტი ლოკაცია",
+            "სამუშაოს აღწერა",
+            "რეკვიზიტები",
+            "ფილიალში გამოცხადების დრო",
+            "ინვენტარის ნომერი",
+            "შემსრულებელი",
+            "თარიღი",
+            "სისტემა 1",
+            "სისტემა 2",
+            "სტატუსი",
+            "მოწყობილობის ტიპი",
+            "შეკეთებაზე",
+            "მოსალოდნელი ჩამოსვლის დრო"
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $cellRange = 'A1:S1'; // Assuming your headings are in A1:S1
+                foreach (range('A', 'S') as $columnID) {
+                    $event->sheet->getDelegate()->getColumnDimension($columnID)->setAutoSize(true);
+                }
+
+                $event->sheet->getStyle($cellRange)->applyFromArray([
+                    'font' => [
+                        'color' => ['rgb' => 'FFFFFF'], // white color text
+                        'size' => 12, // Font size in points
+
+                    ],
+                    'fill' => [
+                        'fillType' => Fill::FILL_SOLID,
+                        'startColor' => ['rgb' => '008000'], // green background color
+                    ],
+
+                ]);
+            },
+        ];
+    }
+}
