@@ -51,11 +51,8 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
             $service->inventory_number,
             $service->performer?->name,
             $service->date,
-            $service->system_one,
-            $service->system_two,
             $service->status,
             $service->device_type,
-            $service->on_repair ? 'Yes' : 'No',
             $service->estimated_arrival_time,
         ];
     }
@@ -77,11 +74,8 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
             "ინვენტარის ნომერი",
             "შემსრულებელი",
             "თარიღი",
-            "სისტემა 1",
-            "სისტემა 2",
             "სტატუსი",
             "მოწყობილობის ტიპი",
-            "შეკეთებაზე",
             "მოსალოდნელი ჩამოსვლის დრო"
         ];
     }
@@ -91,8 +85,8 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
 
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $cellRange = 'A1:S1'; // Assuming your headings are in A1:S1
-                foreach (range('A', 'S') as $columnID) {
+                $cellRange = 'A1:P1'; // Assuming your headings are in A1:P1
+                foreach (range('A', 'P') as $columnID) {
                     $event->sheet->getDelegate()->getColumnDimension($columnID)->setAutoSize(true);
                 }
 

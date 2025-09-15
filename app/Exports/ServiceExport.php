@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Exports\Sheets\ServiceBySystemExport;
 use App\Exports\Sheets\ServiceChartSheet;
 use App\Exports\Sheets\ServiceFirstSheet;
 use App\Exports\Sheets\ServicePercentageSheet;
@@ -30,7 +29,6 @@ class ServiceExport implements WithMultipleSheets
 
         $sheets[] = new ServiceFirstSheet($from, $to);
         $sheets[] = new ServiceChartSheet($from, $to);
-        $sheets[] = new ServiceBySystemExport($from, $to);
         $sheets[] = new ServicePercentageSheet($from, $to);
         return $sheets;
     }
