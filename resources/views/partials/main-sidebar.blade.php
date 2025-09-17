@@ -82,6 +82,14 @@
 
                 <hr>
 
+                @if (Auth::user()->can('სერვისის ნახვა'))
+                    <li class="nav-item">
+                        <a href="{{ route('calendar.index') }}" class="nav-link {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                            <i class="fas fa-calendar-alt nav-icon"></i>
+                            <p>კალენდარი</p>
+                        </a>
+                    </li>
+                @endif
 
                 @if (Auth::user()->can('სერვისის ნახვა'))
                     <li class="nav-item">

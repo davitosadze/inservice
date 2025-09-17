@@ -55,6 +55,8 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
 
     Route::get("/dashboard", [DashboardController::class, 'index'])->name('dashboard');
+    Route::get("/calendar", [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get("/calendar/data", [CalendarController::class, 'getCalendarData'])->name('calendar.data');
 
      Route::get("/profile", [UserController::class, 'profile'])->name('profile');
 

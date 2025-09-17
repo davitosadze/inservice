@@ -3,11 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarEvent;
+use App\Models\Repair;
+use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
+    public function index()
+    {
+        return view('calendar.index');
+    }
+
+    public function getCalendarData(Request $request)
+    {
+        $month = $request->get('month', now()->month);
+        $year = $request->get('year', now()->year);
+
+        $startOfMonth = Carbon::create($year, $month, 1)->startOfDay();
+        $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay();
+
+        $repairs = Repair::whereNotNull('estimated_arrival_time')
+            ->whereBetween('estimated_arrival_time', [$startOfMonth, $endOfMonth])
+            ->with(['purchaser', 'performer'])
+            ->get();
+
+        $services = Service::whereNotNull('estimated_arrival_time')
+            ->whereBetween('estimated_arrival_time', [$startOfMonth, $endOfMonth])
+            ->with(['purchaser', 'performer'])
+            ->get();
+
+        $calendarData = [];
+
+        foreach ($repairs as $repair) {
+            $date = Carbon::parse($repair->estimated_arrival_time)->format('Y-m-d');
+            if (!isset($calendarData[$date])) {
+                $calendarData[$date] = [];
+            }
+            $calendarData[$date][] = [
+                'type' => 'repair',
+                'id' => $repair->id,
+                'title' => $repair->content ?? 'რემონტი',
+                'purchaser' => $repair->purchaser->name ?? '',
+                'performer' => $repair->performer->name ?? '',
+                'time' => Carbon::parse($repair->estimated_arrival_time)->format('H:i'),
+                'sort_time' => Carbon::parse($repair->estimated_arrival_time)->format('H:i')
+            ];
+        }
+
+        foreach ($services as $service) {
+            $date = Carbon::parse($service->estimated_arrival_time)->format('Y-m-d');
+            if (!isset($calendarData[$date])) {
+                $calendarData[$date] = [];
+            }
+            $calendarData[$date][] = [
+                'type' => 'service',
+                'id' => $service->id,
+                'title' => $service->content ?? 'სერვისი',
+                'purchaser' => $service->purchaser->name ?? '',
+                'performer' => $service->performer->name ?? '',
+                'time' => Carbon::parse($service->estimated_arrival_time)->format('H:i'),
+                'sort_time' => Carbon::parse($service->estimated_arrival_time)->format('H:i')
+            ];
+        }
+
+        // Sort events by time within each day
+        foreach ($calendarData as $date => &$events) {
+            usort($events, function($a, $b) {
+                return strcmp($a['sort_time'], $b['sort_time']);
+            });
+        }
+
+        return response()->json($calendarData);
+    }
+
     public function events($purchaser_id)
     {
         $events = CalendarEvent::where("purchaser_id", $purchaser_id)->with('response')->get();
