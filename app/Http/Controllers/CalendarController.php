@@ -23,15 +23,24 @@ class CalendarController extends Controller
         $startOfMonth = Carbon::create($year, $month, 1)->startOfDay();
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay();
 
-        $repairs = Repair::whereNotNull('estimated_arrival_time')
-            ->whereBetween('estimated_arrival_time', [$startOfMonth, $endOfMonth])
-            ->with(['purchaser', 'performer'])
-            ->get();
+        $repairs = collect();
+        $services = collect();
 
-        $services = Service::whereNotNull('estimated_arrival_time')
-            ->whereBetween('estimated_arrival_time', [$startOfMonth, $endOfMonth])
-            ->with(['purchaser', 'performer'])
-            ->get();
+        // Only fetch repairs if user has repair view permission
+        if (auth()->user()->can('რემონტის ნახვა')) {
+            $repairs = Repair::whereNotNull('estimated_arrival_time')
+                ->whereBetween('estimated_arrival_time', [$startOfMonth, $endOfMonth])
+                ->with(['purchaser', 'performer'])
+                ->get();
+        }
+
+        // Only fetch services if user has service view permission
+        if (auth()->user()->can('სერვისის ნახვა')) {
+            $services = Service::whereNotNull('estimated_arrival_time')
+                ->whereBetween('estimated_arrival_time', [$startOfMonth, $endOfMonth])
+                ->with(['purchaser', 'performer'])
+                ->get();
+        }
 
         $calendarData = [];
 
