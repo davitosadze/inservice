@@ -44,7 +44,7 @@ let exit = (model) => {
 
 let specNum = (num) => {
         if (!num) return 0.00
-        let number = Math.round( ( price + Number.EPSILON ) * 100 ) / 100;
+        let number = Math.round( ( num + Number.EPSILON ) * 100 ) / 100;
         // return parseFloat(new Intl.NumberFormat('en-Us', {
         //   minimumFractionDigits: 2,
         //   maximumFractionDigits: 2
@@ -122,10 +122,17 @@ let numberFormat = (number) => {
 let agr = (arr, invoice = false) => {
     // agr = Object.entries(agr).map(([price, service_price]) => ({ price, service_price}))
     return arr.reduce((a, b) => {
-        a['price'] = numberFormat(numberFormat((a['price'] || 0)) + numberFormat(invoice ? b.pivot.price : b.pivot.evaluation_price));
-        a['calc'] = numberFormat(numberFormat((a['calc'] || 0) + parseFloat(invoice ? b.pivot.calc : b.pivot.evaluation_calc)));
-        a['service_price'] = numberFormat(numberFormat((a['service_price'] || 0)) + numberFormat(invoice ? b.pivot.service_price : b.pivot.evaluation_service_price));
-    return a
+        // Calculate sums first without multiple rounding
+        let priceSum = (a['price'] || 0) + parseFloat(invoice ? b.pivot.price : b.pivot.evaluation_price || 0);
+        let calcSum = (a['calc'] || 0) + parseFloat(invoice ? b.pivot.calc : b.pivot.evaluation_calc || 0);
+        let servicePriceSum = (a['service_price'] || 0) + parseFloat(invoice ? b.pivot.service_price : b.pivot.evaluation_service_price || 0);
+
+        // Apply rounding only once at the end
+        a['price'] = numberFormat(priceSum);
+        a['calc'] = numberFormat(calcSum);
+        a['service_price'] = numberFormat(servicePriceSum);
+
+        return a;
    }, {})
 }
 
