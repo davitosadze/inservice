@@ -27,7 +27,7 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
     {
         $from = $this->from;
         $to = $this->to;
-        return Service::whereBetween("created_at", [$from, $to])->get();
+        return Service::with('act')->whereBetween("created_at", [$from, $to])->get();
     }
 
     public function title(): string
@@ -54,6 +54,7 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
             $service->status,
             $service->device_type,
             $service->estimated_arrival_time,
+            $service->act?->note,
         ];
     }
 
@@ -76,7 +77,8 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
             "თარიღი",
             "სტატუსი",
             "მოწყობილობის ტიპი",
-            "მოსალოდნელი ჩამოსვლის დრო"
+            "მოსალოდნელი ჩამოსვლის დრო",
+            "შენიშვნა"
         ];
     }
 
@@ -85,8 +87,8 @@ class ServiceFirstSheet implements FromCollection, WithHeadings, WithMapping, Wi
 
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $cellRange = 'A1:P1'; // Assuming your headings are in A1:P1
-                foreach (range('A', 'P') as $columnID) {
+                $cellRange = 'A1:Q1'; // Assuming your headings are in A1:Q1
+                foreach (range('A', 'Q') as $columnID) {
                     $event->sheet->getDelegate()->getColumnDimension($columnID)->setAutoSize(true);
                 }
 
