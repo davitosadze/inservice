@@ -31,7 +31,7 @@ class Service extends Model
         'estimated_arrival_time'
     ];
     use HasFactory;
-    protected $appends = ["job_time"];
+    protected $appends = ["formatted_name", "job_time"];
 
     public function act()
     {
@@ -62,6 +62,11 @@ class Service extends Model
             ->where('item_id', $this->id)
             ->first() ?? null;
     }
+    public function getFormattedNameAttribute()
+    {
+        return preg_replace('/[^\p{L}]+/u', '', $this->name);
+    }
+
     public function getJobTimeAttribute()
     {
         $diff = Carbon::parse($this->time)->diff($this->updated_at);

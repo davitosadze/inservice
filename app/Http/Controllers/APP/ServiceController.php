@@ -37,18 +37,24 @@ class ServiceController extends Controller
         }
 
         $allServices = $query->get();
-        
+
+        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+
+        $filtered = $allServices->filter(function ($service) use ($clientPurchasers) {
+            return in_array($service->formatted_name, $clientPurchasers);
+        });
+
         // Manual pagination
         $page = request()->get('page', 1);
         $perPage = 10;
         $paginated = new LengthAwarePaginator(
-            $allServices->forPage($page, $perPage)->values(),
-            $allServices->count(),
+            $filtered->forPage($page, $perPage)->values(),
+            $filtered->count(),
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
         );
-            
+
         return response($paginated);
     }
 
@@ -58,7 +64,7 @@ class ServiceController extends Controller
 
         $query = Service::with(['user', 'purchaser', 'region', 'performer'])
             ->orderBy('id', 'desc')
-            ->where('status', 3) 
+            ->where('status', 3)
             ->whereDate('created_at', '>=', Carbon::parse('first day of January'));
 
         // Add search functionality
@@ -72,18 +78,24 @@ class ServiceController extends Controller
         }
 
         $allServices = $query->get();
-        
+
+        $clientPurchasers = json_decode($client->purchaser, true) ?: [];
+
+        $filtered = $allServices->filter(function ($service) use ($clientPurchasers) {
+            return in_array($service->formatted_name, $clientPurchasers);
+        });
+
         // Manual pagination
         $page = request()->get('page', 1);
         $perPage = 10;
         $paginated = new LengthAwarePaginator(
-            $allServices->forPage($page, $perPage)->values(),
-            $allServices->count(),
+            $filtered->forPage($page, $perPage)->values(),
+            $filtered->count(),
             $perPage,
             $page,
             ['path' => request()->url(), 'query' => request()->query()]
         );
-        
+
         return response($paginated);
     }
 
