@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notification;
 use App\Models\Invoice;
 use App\Models\User;
 use App\Models\Report;
+use App\Models\Option;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 
@@ -39,10 +40,13 @@ class NewResponseNotification extends Notification implements ShouldQueue
 
         $id = $this->response?->id;
 
+        // Get settings email for CC
+        $option = Option::first();
+        $settingsEmail = $option?->email;
+
         if ($this->response?->status == 9) {
             $mail = (new MailMessage())
                 ->from('noreply@inservice.ge', 'Inservice')
-                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - QR' . $id)
                 ->view('emails.response-notification', [
                     'response' => $this->response,
@@ -51,22 +55,26 @@ class NewResponseNotification extends Notification implements ShouldQueue
                     'status' => 'new'
                 ]);
 
+            // Add CC if settings email exists
+            if ($settingsEmail) {
+                $mail->cc($settingsEmail);
+            }
+
             // Attach invoice PDF if available
             $this->attachInvoicePdf($mail);
-            
+
             // Attach report PDF if available
             $this->attachReportPdf($mail);
-            
+
             // Attach chat PDF if available
             $this->attachChatPdf($mail);
-            
+
             return $mail;
         }
 
         if ($this->response?->status == 3) {
             $mail = (new MailMessage())
                 ->from('noreply@inservice.ge', 'Inservice')
-                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - QR' . $id)
                 ->view('emails.response-notification', [
                     'response' => $this->response,
@@ -75,19 +83,24 @@ class NewResponseNotification extends Notification implements ShouldQueue
                     'status' => 'completed'
                 ]);
 
+            // Add CC if settings email exists
+            if ($settingsEmail) {
+                $mail->cc($settingsEmail);
+            }
+
             // Attach invoice PDF if available
             $this->attachInvoicePdf($mail);
-            
+
             // Attach report PDF if available
             $this->attachReportPdf($mail);
-            
+
             // Attach chat PDF if available
             $this->attachChatPdf($mail);
-            
+
             return $mail;
         }
 
-        return null;  
+        return null;
     }
 
     /**
@@ -254,7 +267,7 @@ class NewResponseNotification extends Notification implements ShouldQueue
 
     public function routeNotificationForMail($notifiable)
     {
-        // Route to noreply as main recipient
-        return 'noreply@inservice.ge';
+        // Send to the client's email (user who created the response)
+        return $this->user->email ?? 'noreply@inservice.ge';
     }
 }

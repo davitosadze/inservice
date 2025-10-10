@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Option extends Model
 {
-    protected $fillable = ["price_increase"];
+    protected $fillable = ["price_increase", "email"];
     use HasFactory;
 }

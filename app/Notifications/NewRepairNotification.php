@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notification;
 use App\Models\Invoice;
 use App\Models\User;
 use App\Models\Report;
+use App\Models\Option;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 
@@ -51,10 +52,13 @@ class NewRepairNotification extends Notification implements ShouldQueue
 
         $id = $this->repair?->id;
 
+        // Get settings email for CC
+        $option = Option::first();
+        $settingsEmail = $option?->email;
+
         if ($this->repair?->status == 10) {
             $mail = (new MailMessage())
                 ->from('noreply@inservice.ge', 'Inservice')
-                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - PR' . $id)
                 ->view('emails.repair-notification', [
                     'repair' => $this->repair,
@@ -63,22 +67,26 @@ class NewRepairNotification extends Notification implements ShouldQueue
                     'status' => 'new'
                 ]);
 
+            // Add CC if settings email exists
+            if ($settingsEmail) {
+                $mail->cc($settingsEmail);
+            }
+
             // Attach invoice PDF if available
             $this->attachInvoicePdf($mail);
-            
+
             // Attach report PDF if available
             $this->attachReportPdf($mail);
-            
+
             // Attach chat PDF if available
             $this->attachChatPdf($mail);
-            
+
             return $mail;
         }
 
         if ($this->repair?->status == 3) {
             $mail = (new MailMessage())
                 ->from('noreply@inservice.ge', 'Inservice')
-                ->cc('gordogordel@gmail.com')
                 ->subject('შეკვეთა - PR' . $id)
                 ->view('emails.repair-notification', [
                     'repair' => $this->repair,
@@ -87,19 +95,24 @@ class NewRepairNotification extends Notification implements ShouldQueue
                     'status' => 'completed'
                 ]);
 
+            // Add CC if settings email exists
+            if ($settingsEmail) {
+                $mail->cc($settingsEmail);
+            }
+
             // Attach invoice PDF if available
             $this->attachInvoicePdf($mail);
-            
+
             // Attach report PDF if available
             $this->attachReportPdf($mail);
-            
+
             // Attach chat PDF if available
             $this->attachChatPdf($mail);
-            
+
             return $mail;
         }
 
-        return null;  
+        return null;
     }
 
     /**
@@ -282,13 +295,14 @@ class NewRepairNotification extends Notification implements ShouldQueue
     }
 
     /**
-     * Override the recipient email to always send to noreply@inservice.ge
+     * Override the recipient email to send to client's email
      *
      * @param  mixed  $notifiable
      * @return string
      */
     public function routeNotificationForMail($notifiable)
     {
-        return 'noreply@inservice.ge';
+        // Send to the client's email (user who created the repair)
+        return $this->user->email ?? 'noreply@inservice.ge';
     }
 }
