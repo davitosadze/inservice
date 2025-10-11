@@ -38,16 +38,6 @@
                         </a>
                     </li>
                 @endif
-                @if (Auth::user()->can('განფასების ნახვა'))
-                    <li class="nav-item">
-                        <a href="{{ route('evaluations.index') }}"
-                            class="nav-link {{ request()->routeIs('evaluations.*') ? ' active' : '' }}">
-                            <i class="fab nav-icon fa-elementor"></i>
-                            <p>განფასება</p>
-                        </a>
-                    </li>
-                @endif
-
                 @if (Auth::user()->can('რეპორტის ნახვა'))
                     <li class="nav-item">
                         <a href="{{ route('reports.index') }}"

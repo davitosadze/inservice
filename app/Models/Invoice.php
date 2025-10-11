@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\CategoryAttribute;
-use App\Models\Evaluation;
 use App\Models\Purchaser;
 use App\Models\Response;
 use App\Models\Repair;
@@ -106,7 +105,7 @@ class Invoice extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Evaluation::class, 'parent_uuid', 'uuid');
+        return $this->belongsTo(Invoice::class, 'parent_uuid', 'uuid');
     }
 
     public function getSpecialAttribute()

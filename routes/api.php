@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PurchaserController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\InvoiceController;
-use App\Http\Controllers\API\EvaluationController;
 use App\Http\Controllers\API\SpecialAttributeController;
 use App\Http\Controllers\API\CategoryAttributeController;
 use App\Http\Controllers\API\ChatController;
@@ -142,15 +141,11 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post("repair-acts/{id}/change-status", [RepairActController::class, "changeStatusNew"]);
 
 
-    Route::apiResource("evaluations", EvaluationController::class);
-
     Route::apiResource("categories", CategoryController::class);
     Route::resource("invoices", InvoiceController::class);
     Route::delete("invoices/destroy-attribute/{id}", [InvoiceController::class, 'destroy_attribute'])->name('invoices.destroy_attribute');
 
     Route::apiResource("category-attributes", CategoryAttributeController::class);
-
-    Route::delete("requests/destroy-attribute/{id}", [EvaluationController::class, 'destroy_attribute'])->name('requests.destroy_attribute');
 
     // Application
     Route::get('app/responses/{response} ', [APPResponseController::class, 'show'])->name('app.responses.show');

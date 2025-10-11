@@ -14,7 +14,6 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PurchaserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\SpecialAttributeController;
 use App\Http\Controllers\CategoryAttributeController;
 use App\Http\Controllers\ClientsController;
@@ -86,8 +85,6 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::post("calendar/update-event/{event_id}", [CalendarController::class, 'updateEvent']);
     Route::delete("calendar/events/{event}", [CalendarController::class, 'delete']);
 
-    Route::resource("evaluations", EvaluationController::class);
-
     Route::resource("reports", ReportController::class);
     Route::post("reports/uploads", [ReportController::class, 'upload']);
     Route::get("reports/uploads2/{report_item}", [ReportController::class, 'upload2']);
@@ -152,9 +149,6 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::get("options", [OptionController::class, "index"])->name("options.index");
     Route::post("options", [OptionController::class, "store"])->name("options.store");
 
-
-    Route::get("evaluations/pdf/{id}", [EvaluationController::class, 'pdf'])->name('evaluations.pdf');
-    Route::get("evaluations/excel/{id}", [EvaluationController::class, 'excel'])->name('evaluations.excel');
 
     Route::resource("invoices", InvoiceController::class);
     Route::get("invoices/pdf/{id}", [InvoiceController::class, 'pdf'])->name('invoices.pdf');

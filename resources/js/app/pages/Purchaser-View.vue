@@ -511,7 +511,6 @@ export default {
     mounted() {
         this.fetchEvents();
         this.fetchFolderStructure();
-        console.log(this.additional.evaluations);
         this.v$.model.$touch();
     },
     data() {

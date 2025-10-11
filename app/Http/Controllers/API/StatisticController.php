@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Evaluation;
 use App\Models\Invoice;
 use App\Models\Response;
 use App\Models\Service;
@@ -32,8 +31,6 @@ class StatisticController extends Controller
             $userObject["name"] = $user->name;
 
             $invoices = $user->invoices()->whereBetween('created_at', [$start_date, $end_date])->get();
-            $evaluations = $user->evaluations()->whereBetween('created_at', [$start_date, $end_date])->get();
-            $user_evaluations_sum = 0;
             $user_invoices_sum = 0;
 
 
@@ -41,12 +38,7 @@ class StatisticController extends Controller
                 $user_invoices_sum +=  $this->getItemSum($invoice->id, "invoice");
             }
 
-            foreach ($evaluations as $evaluation) {
-
-                $user_evaluations_sum += $this->getItemSum($evaluation->id, "evaluation");
-            }
             $userObject["invoices"] = (int)($user_invoices_sum);
-            $userObject["evaluations"] = (int)($user_evaluations_sum);
             $stats["customers"][] = $userObject;
         }
 
@@ -122,46 +114,25 @@ class StatisticController extends Controller
 
     public function getItemSum($id, $type)
     {
-        if ($type == "invoice") {
-            $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        } else {
-            $model = Evaluation::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
-        }
+        $model = Invoice::with(['purchaser', 'category_attributes.category'])->firstOrNew(['id' => $id])->toArray();
 
         $agr = ['prices' => 0, 'calc' => 0, 'service_prices' => 0];
 
         if (isset($model['category_attributes'])) {
-            if ($model["type"] == "invoice") {
-                $agr = collect($model['category_attributes'])->reduce(function ($result, $item) {
-                    if ($result === null) {
-                        $result = [
-                            'prices' => 0,
-                            'calc' => 0,
-                            'service_prices' => 0,
-                        ];
-                    }
-                    $result['prices'] += isset($item['pivot']['price']) ? $item['pivot']['price'] : 0;
-                    $result['calc'] += isset($item['pivot']['calc']) ? $item['pivot']['calc'] : 0;
-                    $result['service_prices'] += isset($item['pivot']['service_price']) ? $item['pivot']['service_price'] : 0;
+            $agr = collect($model['category_attributes'])->reduce(function ($result, $item) {
+                if ($result === null) {
+                    $result = [
+                        'prices' => 0,
+                        'calc' => 0,
+                        'service_prices' => 0,
+                    ];
+                }
+                $result['prices'] += isset($item['pivot']['price']) ? $item['pivot']['price'] : 0;
+                $result['calc'] += isset($item['pivot']['calc']) ? $item['pivot']['calc'] : 0;
+                $result['service_prices'] += isset($item['pivot']['service_price']) ? $item['pivot']['service_price'] : 0;
 
-                    return $result;
-                });
-            } else {
-                $agr = collect($model['category_attributes'])->reduce(function ($result, $item) {
-                    if ($result === null) {
-                        $result = [
-                            'prices' => 0,
-                            'calc' => 0,
-                            'service_prices' => 0,
-                        ];
-                    }
-                    $result['prices'] += isset($item['pivot']['evaluation_price']) ? $item['pivot']['evaluation_price'] : 0;
-                    $result['calc'] += isset($item['pivot']['evaluation_calc']) ? $item['pivot']['evaluation_calc'] : 0;
-                    $result['service_prices'] += isset($item['pivot']['evaluation_service_price']) ? $item['pivot']['evaluation_service_price'] : 0;
-
-                    return $result;
-                });
-            }
+                return $result;
+            });
         }
         $titles = [['title' => 'მასალის ტრანსპორტირების ჯამი :', 'key' => 'p1'], ['title' => 'ზედნადები ხარჯი :', 'key' => 'p2'], ['title' => 'მოგება :', 'key' => 'p3'], ['title' => 'გაუთველისწინებელი ხარჯი :', 'key' => 'p4'], ['title' => 'დღგ :', 'key' => 'p5']];
         $initReporteValuesRes = $this->initReporteValues($titles, $model, 'p');

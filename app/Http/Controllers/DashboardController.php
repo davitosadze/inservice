@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Evaluation;
 use App\Models\Report;
 use App\Models\Response;
 use App\Models\System;
