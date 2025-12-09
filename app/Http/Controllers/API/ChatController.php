@@ -47,8 +47,8 @@ class ChatController extends Controller
                 try {
                     $media = $message
                         ->addMedia($image)
-                        ->usingName($image->getClientOriginalName())
-                        ->usingFileName(time() . '_' . $image->getClientOriginalName())
+                        ->usingName(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME))
+                        ->usingFileName(time() . '_' . \Illuminate\Support\Str::random(10) . '.' . $image->getClientOriginalExtension())
                         ->toMediaCollection('chat_images');
                     
                     $imageUrls[] = $media->getFullUrl();

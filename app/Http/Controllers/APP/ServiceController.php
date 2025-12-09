@@ -122,7 +122,7 @@ class ServiceController extends Controller
             'last_response_date' => $lastResponseDate,
             'last_response_content' => $lastResponse ? $lastResponse->act?->note : null,
             'last_response_job_description' => $lastResponse ? $lastResponse->content : null,
-            'chat_id' => Chat::where('item_id', $service->id)->where('type', 'service')->first() ? Chat::where('item_id', $service->id)->where('type', 'service')->first()->id : null,
+            'chat_id' => Chat::where('item_id', $service->id)->where('type', 'service')->value('id'),
         ];
 
         if (!$service) {

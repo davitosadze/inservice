@@ -127,7 +127,7 @@ class ResponseController extends Controller
             'last_response_date' => $lastResponseDate,
             'last_response_content' => $lastResponse ? $lastResponse->act?->note : null,
             'last_response_job_description' => $lastResponse ? $lastResponse->content : null,
-            'chat_id' => Chat::where('item_id', $response->id)->where('type', 'response')->first() ? Chat::where('item_id', $response->id)->where('type', 'response')->first()->id : null,
+            'chat_id' => Chat::where('item_id', $response->id)->where('type', 'response')->value('id'),
         ];
 
         if (!$response) {

@@ -53,7 +53,7 @@ class ClientsController extends Controller
     {
 
 
-        $filename = mt_rand(1000000000, 9999999999) . '.' . $request->file('file')->getClientOriginalExtension();
+        $filename = \Illuminate\Support\Str::random(20) . '.' . $request->file('file')->getClientOriginalExtension();
 
         $model_id = $request->model_id;
         if (!$request->model_id) {

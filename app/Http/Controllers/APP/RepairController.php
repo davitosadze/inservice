@@ -132,7 +132,7 @@ class RepairController extends Controller
             'last_response_date' => $lastResponseDate,
             'last_response_content' => $lastResponse ? $lastResponse->act?->note : null,
             'last_response_job_description' => $lastResponse ? $lastResponse->content : null,
-            'chat_id' => Chat::where('item_id', $repair->id)->where('type', 'repair')->first() ? Chat::where('item_id', $repair->id)->where('type', 'repair')->first()->id : null,
+            'chat_id' => Chat::where('item_id', $repair->id)->where('type', 'repair')->value('id'),
             'from' => $repair->from,
             'from_id' => $repair->from_id,
             'response_creation_time' => $responseCreationTime,
