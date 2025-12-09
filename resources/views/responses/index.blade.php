@@ -2,83 +2,79 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">რეაგირებები</h1>
-                    </div><!-- /.col -->
-                    @if (Auth::user()->hasRole('ინჟინერი'))
-                        <div class="col-sm-6 mt-2">
-                            <a class="btn btn-primary" href="{{ route('responses.index') }}">რეაგირებები</a>
-                            <a class="btn ml-1 btn-outline-primary" href="{{ route('services.index') }}">სერვისები</a>
-                            <a class="btn ml-1  btn-outline-primary" href="{{ route('repairs.index') }}">რემონტები</a>
-
-                        </div>
-                    @endif
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
     </x-slot>
 
     <!-- Main content -->
     <section class="content">
 
-        <div class="card-tools">
-            <div class="input-group input-group-sm">
-                <input type="date" id="fromDate" class="form-control" placeholder="From">
-                <input type="date" id="toDate" class="form-control" placeholder="To">
-                <button id="export" class="btn btn-sm btn-outline-primary">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-
-            <br>
-
-            @if (Auth::user()->can('რეაგირების შექმნა'))
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 300px;">
-                        <button href="{{ request()->url() }}/new/edit" id="create"
-                            class="btn btn-sm btn-outline-success">
-                            <i class="fas fa-shield-alt"></i> დამატება
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-primary ml-2" id="createClientOrder">
-                            <i class="fas fa-plus"></i> კლიენტის შეკვეთა
-                        </button>
+                <!-- Response Type Tabs -->
+                <div class="response-tabs-container">
+                    <div class="response-tabs">
+                        <a class="response-tab {{ !request()->get('type') || request()->get('type') === 'pending' ? 'active' : '' }}"
+                           href="{{ route('responses.index', ['type' => 'pending']) }}">
+                            <i class="fas fa-bolt"></i>
+                            <span>მთავარი რეაგირებები</span>
+                        </a>
+                        <a class="response-tab {{ request()->get('type') === 'client-pending' ? 'active' : '' }}"
+                           href="{{ route('responses.index', ['type' => 'client-pending']) }}">
+                            <i class="fas fa-clock"></i>
+                            <span>კლიენტის მოლოდინში</span>
+                        </a>
+                        <a class="response-tab"
+                           href="{{ route('responses.new') }}">
+                            <i class="fas fa-check-circle"></i>
+                            <span>დასრულებული რეაგირებები</span>
+                        </a>
                     </div>
                 </div>
-            @endif
 
-
-                        <div class="card-tools">
-                <div class="input-group input-group-sm">
-                    <!-- ...existing export buttons... -->
+        <!-- Export Section - Desktop -->
+        <div class="export-section export-desktop mb-3">
+            <div class="export-card">
+                <div class="export-header">
+                    <i class="fas fa-file-excel"></i>
+                    <span>Export to Excel</span>
                 </div>
-
-                <!-- Add tabs for repair types -->
-                <ul class="nav nav-tabs mt-3">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->get('type') === 'pending' ? 'active' : '' }}" 
-                        href="{{ route('responses.index') }}">
-                        მთავარი რეაგირებები
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->get('type') === 'client-pending' ? 'active' : '' }}" 
-                        href="{{ route('responses.index', ['type' => 'client-pending']) }}">
-                        კლიენტის მოლოდინში
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->get('type') === 'done' ? 'active' : '' }}" 
-                        href="{{ route('responses.index', ['type' => 'done']) }}">
-                        დასრულებული რეაგირებები
-                        </a>
-                    </li>
-                </ul>
+                <div class="export-body">
+                    <div class="date-inputs">
+                        <div class="date-field">
+                            <label for="fromDateDesktop">From</label>
+                            <input type="date" id="fromDateDesktop" class="form-control">
+                        </div>
+                        <div class="date-field">
+                            <label for="toDateDesktop">To</label>
+                            <input type="date" id="toDateDesktop" class="form-control">
+                        </div>
+                        <button id="exportBtnDesktop" class="btn btn-success export-btn">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        @if (Auth::user()->can('რეაგირების შექმნა'))
+                        <button href="{{ request()->url() }}/new/edit" id="create" class="btn btn-primary action-btn">
+                            <i class="fas fa-plus"></i> დამატება
+                        </button>
+                        <button type="button" class="btn btn-info action-btn" id="createClientOrder">
+                            <i class="fas fa-user-plus"></i> კლიენტის შეკვეთა
+                        </button>
+                        @endif
+                    </div>
+                </div>
             </div>
+        </div>
 
+        <!-- Export Button - Mobile (triggers popup) -->
+        <div class="export-mobile mb-3">
+            <button id="exportMobileBtn" class="btn btn-primary export-mobile-btn">
+                <i class="fas fa-file-excel"></i> Export to Excel
+            </button>
+            @if (Auth::user()->can('რეაგირების შექმნა'))
+            <button href="{{ request()->url() }}/new/edit" id="createMobile" class="btn btn-success export-mobile-btn mt-2">
+                <i class="fas fa-plus"></i> დამატება
+            </button>
+            <button type="button" class="btn btn-info export-mobile-btn mt-2" id="createClientOrderMobile">
+                <i class="fas fa-user-plus"></i> კლიენტის შეკვეთა
+            </button>
+            @endif
+        </div>
 
             @if (app('request')->input('type') != 'done')
                 <div class="mt-2 view-switcher">
@@ -239,16 +235,35 @@
         $('#renderer').show();
     });
 
-    let target = document.querySelector("button#create");
-    target.addEventListener("click", function(e) {
-        window.location.href = e.target.getAttribute("href")
-    })
+    // Create button click handlers
+    let createBtn = document.querySelector("button#create");
+    if (createBtn) {
+        createBtn.addEventListener("click", function(e) {
+            window.location.href = e.target.closest('button').getAttribute("href")
+        })
+    }
 
-    // Add event listener for client order button
+    let createMobileBtn = document.querySelector("button#createMobile");
+    if (createMobileBtn) {
+        createMobileBtn.addEventListener("click", function(e) {
+            window.location.href = e.target.closest('button').getAttribute("href")
+        })
+    }
+
+    // Add event listener for client order buttons
     document.addEventListener('DOMContentLoaded', function() {
         const createClientOrderBtn = document.getElementById('createClientOrder');
         if (createClientOrderBtn) {
             createClientOrderBtn.addEventListener('click', function() {
+                if (window.adminOrderModal) {
+                    window.adminOrderModal.show();
+                }
+            });
+        }
+
+        const createClientOrderMobileBtn = document.getElementById('createClientOrderMobile');
+        if (createClientOrderMobileBtn) {
+            createClientOrderMobileBtn.addEventListener('click', function() {
                 if (window.adminOrderModal) {
                     window.adminOrderModal.show();
                 }
@@ -261,25 +276,69 @@
             button.closest('form').submit();
         }
     }
+
+    function handleExport(fromDate, toDate) {
+        if (fromDate && toDate) {
+            var backendLink = "{{ route('api.responses.export') }}?from=" + fromDate + "&to=" + toDate;
+            window.location.href = backendLink;
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Error',
+                text: 'Please fill both date fields',
+                confirmButtonColor: '#667eea'
+            });
+        }
+    }
+
     $(document).ready(function() {
 
         if ("{{ app('request')->input('type') }}" == "done") {
             $('#renderer').show();
-
         }
 
-        $("#export").click(function() {
-            var fromDate = $("#fromDate").val();
-            var toDate = $("#toDate").val();
+        // Desktop export
+        $("#exportBtnDesktop").click(function() {
+            var fromDate = $("#fromDateDesktop").val();
+            var toDate = $("#toDateDesktop").val();
+            handleExport(fromDate, toDate);
+        });
 
-            if (fromDate && toDate) {
-                var backendLink = "{{ route('api.responses.export') }}?from=" + fromDate + "&to=" +
-                    toDate;
-                window.location.href = backendLink;
-            } else {
-                alert("გთხოვთ შეავსოთ ორივე ველი");
-            }
-
+        // Mobile export - SweetAlert popup
+        $("#exportMobileBtn").click(function() {
+            Swal.fire({
+                title: 'Export to Excel',
+                html: `
+                    <div style="text-align: left;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #666;">From</label>
+                            <input type="date" id="swalFromDate" class="swal2-input" style="width: 100%; margin: 0;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #666;">To</label>
+                            <input type="date" id="swalToDate" class="swal2-input" style="width: 100%; margin: 0;">
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-download"></i> Export',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#11998e',
+                cancelButtonColor: '#6c757d',
+                preConfirm: () => {
+                    const fromDate = document.getElementById('swalFromDate').value;
+                    const toDate = document.getElementById('swalToDate').value;
+                    if (!fromDate || !toDate) {
+                        Swal.showValidationMessage('Please fill both date fields');
+                        return false;
+                    }
+                    return { fromDate, toDate };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    handleExport(result.value.fromDate, result.value.toDate);
+                }
+            });
         });
     });
 
@@ -338,8 +397,198 @@
     .rag-gray {
         background-color: #a9a9a9 !important;
     }
-    
+
     .rag-on-repair {
         background-color: #a020f045 !important;
+    }
+
+    /* Response Tabs Styling */
+    .response-tabs-container {
+        padding: 0 5px;
+    }
+
+    .response-tabs {
+        display: flex;
+        gap: 8px;
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 12px;
+        flex-wrap: wrap;
+    }
+
+    .response-tab {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #6c757d;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        background: transparent;
+        border: 1px solid transparent;
+    }
+
+    .response-tab:hover {
+        color: #495057;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        text-decoration: none;
+    }
+
+    .response-tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+    }
+
+    .response-tab.active:hover {
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.45);
+    }
+
+    .response-tab i {
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .response-tabs {
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .response-tab {
+            justify-content: center;
+            padding: 12px 16px;
+        }
+    }
+
+    /* Export Styling */
+    .export-section {
+        padding: 0 10px;
+    }
+
+    .export-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        padding: 15px 20px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .export-header {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .export-header i {
+        font-size: 18px;
+    }
+
+    .export-body {
+        background: white;
+        border-radius: 8px;
+        padding: 15px;
+    }
+
+    .date-inputs {
+        display: flex;
+        align-items: flex-end;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .date-field {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .date-field label {
+        display: block;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .date-field input {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 14px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .date-field input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        outline: none;
+    }
+
+    .export-btn, .action-btn {
+        border: none;
+        padding: 10px 20px;
+        font-weight: 600;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .export-btn {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .export-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .action-btn {
+        padding: 10px 16px;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .export-btn:active, .action-btn:active {
+        transform: translateY(0);
+    }
+
+    /* Mobile Export Button */
+    .export-mobile {
+        display: none;
+        padding: 0 10px;
+    }
+
+    .export-mobile-btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    /* Responsive visibility */
+    @media (max-width: 768px) {
+        .export-desktop {
+            display: none;
+        }
+
+        .export-mobile {
+            display: block;
+        }
     }
 </style>

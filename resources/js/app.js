@@ -234,6 +234,15 @@ app.component(
 );
 
 app.component(
+    "server-side-table",
+    defineAsyncComponent(() =>
+        import(
+            /*webpackChunkName: 'server-side-table' */ /* webpackPrefetch: true */ /* webpackPreload: true */ "./app/components/ServerSideTable"
+        )
+    )
+);
+
+app.component(
     "tab",
     defineAsyncComponent(() =>
         import(

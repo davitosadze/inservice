@@ -346,4 +346,35 @@ class RepairController extends Controller
         $response->delete();
         return redirect()->back();
     }
+
+    public function newIndex()
+    {
+        $this->authorize('viewAny', Repair::class);
+
+        $setting = [
+            'columns' => [
+                ['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'],
+                ['field' => "region.name", 'headerName' => 'რეგიონი', "valueGetter" => 'data.region?.name'],
+                ['field' => "name", 'headerName' => 'კლიენტის სახ.', "valueGetter" => 'data.name'],
+                ['field' => "subject_address", 'headerName' => 'ობიექტის მისამართი', "valueGetter" => 'data.subject_address'],
+                ['field' => "subject_name", 'headerName' => 'ობიექტის სახ.', "valueGetter" => 'data.subject_name'],
+                ['field' => "user.name", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user?.name'],
+                ['field' => "performer.name", 'headerName' => 'ინჟინერი', "valueGetter" => 'data.performer?.name'],
+                ['field' => "job_time", 'headerName' => 'დრო'],
+                ['field' => "created_at", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
+            ],
+            'model' => 'repairs',
+            'url' => [
+                'request' => [
+                    'index' => '/api/repairs-done-paginated',
+                    'show' => route('repairs.show', ['repair' => "new"]),
+                    'edit' => route('repairs.edit', ['repair' => "new"]),
+                    'destroy' => route('api.repairs.destroy', ['repair' => "__delete__"])
+                ]
+            ],
+            "table_view_enabled" => true,
+        ];
+
+        return view('repairs.new', ['additional' => [], 'setting' => $setting]);
+    }
 }

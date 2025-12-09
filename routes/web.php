@@ -90,6 +90,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
     Route::get("reports/uploads2/{report_item}", [ReportController::class, 'upload2']);
 
     // Responses
+    Route::get("responses-new", [ResponseController::class, 'newIndex'])->name('responses.new');
     Route::resource("responses", ResponseController::class);
     Route::get("responses/{response}/arrived", [ResponseController::class, 'arrived'])->name('responses.arrived');
     Route::post("responses/{response}/assign-manager", [ResponseController::class, 'assignManager'])->name('responses.assign-manager');
@@ -97,6 +98,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
  
 
     // Repairs
+    Route::get("repairs-new", [RepairController::class, 'newIndex'])->name('repairs.new');
     Route::post("repairs/{repair}/assign-performer", [RepairController::class, "assignPerformer"])->name('repairs.assign-performer');
     Route::post("repairs/{repair}/change-mode", [RepairController::class, "changeMode"])->name('repairs.change-mode');
     Route::resource("repairs", RepairController::class);
@@ -104,6 +106,7 @@ Route::middleware(['auth', 'has_permission'])->group(function () {
 
 
     // Services
+    Route::get("services-new", [ServiceController::class, 'newIndex'])->name('services.new');
     Route::resource("services", ServiceController::class);
     Route::get("services/{service}/arrived", [ServiceController::class, 'arrived'])->name('services.arrived');
 

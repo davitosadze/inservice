@@ -313,4 +313,36 @@ class ServiceController extends Controller
         $response->save();
         return back();
     }
+
+    public function newIndex()
+    {
+        $this->authorize('viewAny', Service::class);
+
+        $setting = [
+            'columns' => [
+                ['field' => "title", 'headerName' => '№', "valueGetter" => 'data.id', "flex" => 0.5, 'cellStyle' => ['textAlign' => 'center'], 'headerClass' => 'text-center'],
+                ['field' => "region_name", 'headerName' => 'რეგიონი', "valueGetter" => 'data.region.name'],
+                ['field' => "purchaser_name", 'headerName' => 'კლიენტის სახ.', "valueGetter" => 'data.name'],
+                ['field' => "purchaser_address", 'headerName' => 'ობიექტის მისამართი', "valueGetter" => 'data.subject_address'],
+                ['field' => "purchaser_subj_name", 'headerName' => 'ობიექტის სახ.', "valueGetter" => 'data.subject_name'],
+                ['field' => "user", 'headerName' => 'მომხმარებელი', "valueGetter" => 'data.user.name'],
+                ['field' => "technical_time", "valueGetter" => 'data.purchaser.technical_time', 'headerName' => 'გეგმიური მომსახურების დრო წთ-ში'],
+                ['field' => "cleaning_time", "valueGetter" => 'data.purchaser.cleaning_time', 'headerName' => 'გეგმიური წმენდის დრო წთ-ში'],
+                ['field' => "job_time", 'headerName' => 'ფაქტიურად დახარჯული დრო'],
+                ['field' => "created_at", 'headerName' => 'თარიღი', "valueGetter" => 'data.created_at', 'type' => ['dateColumn', 'nonEditableColumn']],
+            ],
+            'model' => 'services',
+            'url' => [
+                'request' => [
+                    'index' => '/api/services-done-paginated',
+                    'show' => route('services.show', ['service' => "new"]),
+                    'edit' => route('services.edit', ['service' => "new"]),
+                    'destroy' => route('api.services.destroy', ['service' => "__delete__"])
+                ]
+            ],
+            "table_view_enabled" => true,
+        ];
+
+        return view('services.new', ['additional' => [], 'setting' => $setting]);
+    }
 }

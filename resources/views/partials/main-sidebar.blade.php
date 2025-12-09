@@ -84,30 +84,17 @@
                 @if (Auth::user()->can('სერვისის ნახვა'))
                     <li class="nav-item">
                         <a href="{{ route('services.index', ['type' => 'pending']) }}"
-                            class="nav-link {{ request()->routeIs('services.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
+                            class="nav-link {{ request()->routeIs('services.*') ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
-                            <span>აქტიური <br> გეგმიური სამუშაოები</span>
+                            <span>გეგმიური სამუშაოები</span>
                         </a>
                     </li>
-                @endif
-
-                @if (Auth::user()->can('სერვისის ნახვა'))
-                    @if (!Auth::user()->hasRole('ინჟინერი'))
-                        <li class="nav-item">
-                            <a href="{{ route('services.index', ['type' => 'done']) }}"
-                                class="nav-link  {{ request()->routeIs('services.*') && request()->query('type') == 'done' ? 'active' : '' }}">
-                                <i class="fab nav-icon fa-elementor"></i>
-                                <span>დასრულებული <br> გეგმიური სამუშაოები</span>
-
-                            </a>
-                        </li>
-                    @endif
                 @endif
 
                 @if (Auth::user()->can('რეაგირების ნახვა'))
                     <li class="nav-item">
                         <a href="{{ route('responses.index', ['type' => 'pending']) }}"
-                            class="nav-link {{ request()->routeIs('responses.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
+                            class="nav-link {{ request()->routeIs('responses.*') ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
                             <span> სწრაფი რეაგირებები</span>
                         </a>
@@ -132,7 +119,7 @@
                 @if (Auth::user()->can('რემონტის ნახვა'))
                     <li class="nav-item">
                         <a href="{{ route('repairs.index', ['type' => 'pending']) }}"
-                            class="nav-link {{ request()->routeIs('repairs.*') && request()->query('type') == 'pending' ? 'active' : '' }}">
+                            class="nav-link {{ request()->routeIs('repairs.*') ? 'active' : '' }}">
                             <i class="fab nav-icon fa-elementor"></i>
                             <span>სარემონტო სამუშაოები</span>
                         </a>

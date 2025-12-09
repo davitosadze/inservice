@@ -111,14 +111,17 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     // Responses
     Route::get('responses/export', [ResponseController::class, "export"])->name("responses.export");
+    Route::get('responses-done-paginated', [ResponseController::class, 'doneResponsesPaginated'])->name('responses.done-paginated');
     Route::apiResource('responses', ResponseController::class);
 
     // Repairs
     Route::get('repairs/export', [RepairController::class, "export"])->name("repairs.export");
+    Route::get('repairs-done-paginated', [RepairController::class, 'doneRepairsPaginated'])->name('repairs.done-paginated');
     Route::apiResource('repairs', RepairController::class);
 
     // Services
     Route::get('services/export', [ServiceController::class, "export"])->name("services.export");
+    Route::get('services-done-paginated', [ServiceController::class, 'doneServicesPaginated'])->name('services.done-paginated');
     Route::apiResource('services', ServiceController::class);
 
     // Systems

@@ -82,4 +82,84 @@ class RepairController extends Controller
             return response()->json($result);
         }
     }
+
+    public function doneRepairsPaginated(Request $request)
+    {
+        $perPage = $request->get('perPage', 17);
+        $page = $request->get('page', 1);
+        $sortField = $request->get('sortField', 'id');
+        $sortOrder = $request->get('sortOrder', 'desc');
+
+        $query = Repair::with(['user', 'purchaser', 'region', 'performer'])
+            ->whereIn('status', [0, 3]);
+
+        // Apply filters from AG Grid
+        if ($request->has('filters')) {
+            $filters = json_decode($request->get('filters'), true);
+
+            foreach ($filters as $field => $filterData) {
+                $filterValue = $filterData['filter'] ?? null;
+                $filterType = $filterData['filterType'] ?? 'text';
+                $type = $filterData['type'] ?? 'contains';
+
+                if ($filterValue === null || $filterValue === '') {
+                    continue;
+                }
+
+                // Handle nested fields (like region.name, user.name)
+                if (strpos($field, '.') !== false) {
+                    $parts = explode('.', $field);
+                    $relation = $parts[0];
+                    $column = $parts[1];
+
+                    $query->whereHas($relation, function ($q) use ($column, $filterValue, $type) {
+                        $this->applyFilter($q, $column, $filterValue, $type);
+                    });
+                } else {
+                    // Direct field filter
+                    $this->applyFilter($query, $field, $filterValue, $type);
+                }
+            }
+        }
+
+        // Handle sorting for nested fields
+        if (strpos($sortField, '.') !== false) {
+            $query->orderBy('id', $sortOrder);
+        } else {
+            $query->orderBy($sortField, $sortOrder);
+        }
+
+        $paginated = $query->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'data' => $paginated->items(),
+            'total' => $paginated->total(),
+            'page' => $paginated->currentPage(),
+            'lastPage' => $paginated->lastPage(),
+            'perPage' => $perPage
+        ]);
+    }
+
+    private function applyFilter($query, $column, $value, $type)
+    {
+        switch ($type) {
+            case 'contains':
+                $query->where($column, 'LIKE', '%' . $value . '%');
+                break;
+            case 'equals':
+                $query->where($column, '=', $value);
+                break;
+            case 'startsWith':
+                $query->where($column, 'LIKE', $value . '%');
+                break;
+            case 'endsWith':
+                $query->where($column, 'LIKE', '%' . $value);
+                break;
+            case 'notContains':
+                $query->where($column, 'NOT LIKE', '%' . $value . '%');
+                break;
+            default:
+                $query->where($column, 'LIKE', '%' . $value . '%');
+        }
+    }
 }
