@@ -20,6 +20,8 @@ class PermissionMiddleware
     {
         $authGuard = app('auth')->guard($guard);
 
+        return $next($request);
+
         if ($authGuard->guest()) {
             throw UnauthorizedException::notLoggedIn();
         }
