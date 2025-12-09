@@ -15,6 +15,29 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/vendors/lte-core.css') }}">
+
+    <!-- Custom Sidebar Width -->
+    <style>
+        .main-sidebar {
+            width: 280px !important;
+        }
+        .content-wrapper,
+        .main-footer,
+        .main-header {
+            margin-left: 280px !important;
+        }
+        @media (max-width: 991.98px) {
+            .content-wrapper,
+            .main-footer,
+            .main-header {
+                margin-left: 0 !important;
+            }
+        }
+        .nav-sidebar .nav-link p {
+            white-space: normal;
+            line-height: 1.3;
+        }
+    </style>
     @yield('head')
     @stack('styles')
 
