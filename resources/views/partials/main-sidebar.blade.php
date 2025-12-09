@@ -3,6 +3,10 @@
     <!-- Brand Logo -->
     <a class="brand-link">
         <span class="brand-text font-weight-light">INSERVICE LLC</span>
+        <!-- Mobile Close Button -->
+        <button type="button" class="sidebar-close-btn" data-widget="pushmenu">
+            <i class="fas fa-times"></i>
+        </button>
     </a>
     <!-- Sidebar -->
     <div style="overflow-y: auto!important" class="sidebar">

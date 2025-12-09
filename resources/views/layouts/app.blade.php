@@ -16,26 +16,31 @@
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" href="{{ mix('css/vendors/lte-core.css') }}">
 
-    <!-- Custom Sidebar Width -->
+    <!-- Mobile Sidebar Close Button -->
     <style>
-        .main-sidebar {
-            width: 280px !important;
+        .sidebar-close-btn {
+            display: none;
         }
-        .content-wrapper,
-        .main-footer,
-        .main-header {
-            margin-left: 280px !important;
+        .brand-link {
+            position: relative;
         }
         @media (max-width: 991.98px) {
-            .content-wrapper,
-            .main-footer,
-            .main-header {
-                margin-left: 0 !important;
+            .sidebar-close-btn {
+                display: block;
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                color: rgba(255,255,255,0.8);
+                font-size: 20px;
+                padding: 5px 10px;
+                cursor: pointer;
             }
-        }
-        .nav-sidebar .nav-link p {
-            white-space: normal;
-            line-height: 1.3;
+            .sidebar-close-btn:hover {
+                color: #fff;
+            }
         }
     </style>
     @yield('head')
