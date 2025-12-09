@@ -238,8 +238,43 @@ function generateWeekCalendar(eventsData) {
     calendarGrid.className = 'calendar-grid week-view';
     calendarHeader.className = 'calendar-header week-view';
 
-    // Create time slots and day columns
-    for (let hour = 0; hour < 24; hour++) {
+    // Find min/max hours with events across all days of the week
+    let minHour = 24;
+    let maxHour = 0;
+    let hasEvents = false;
+
+    for (let day = 0; day < 7; day++) {
+        const currentDate = new Date(currentWeekStart);
+        currentDate.setDate(currentWeekStart.getDate() + day);
+        const dateKey = currentDate.toISOString().split('T')[0];
+
+        if (eventsData[dateKey]) {
+            eventsData[dateKey].forEach(event => {
+                hasEvents = true;
+                const eventHour = parseInt(event.time.split(':')[0]);
+                minHour = Math.min(minHour, eventHour);
+                maxHour = Math.max(maxHour, eventHour);
+            });
+        }
+    }
+
+    // Set display range with padding
+    let startHour, endHour;
+    if (hasEvents) {
+        startHour = Math.max(0, minHour - 1);  // 1 hour before first event
+        endHour = Math.min(23, maxHour + 2);   // 2 hours after last event
+    } else {
+        // Default business hours if no events
+        startHour = 8;
+        endHour = 18;
+    }
+
+    // Set dynamic grid rows based on hour count
+    const hourCount = endHour - startHour + 1;
+    calendarGrid.style.gridTemplateRows = `repeat(${hourCount}, minmax(120px, auto))`;
+
+    // Create time slots and day columns for the calculated range
+    for (let hour = startHour; hour <= endHour; hour++) {
         // Create time slot label
         const timeSlot = document.createElement('div');
         timeSlot.className = 'time-slot';
