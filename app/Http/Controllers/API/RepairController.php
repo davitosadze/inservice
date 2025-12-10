@@ -42,13 +42,19 @@ class RepairController extends Controller
 
     public function export(Request $request)
     {
+        set_time_limit(300);
+        ini_set('memory_limit', '512M');
+
         $from = Carbon::parse($request->from)->startOfDay();
         $to = Carbon::parse($request->to)->endOfDay();
 
-
+        $filters = [];
+        if ($request->has('filters')) {
+            $filters = json_decode($request->filters, true) ?? [];
+        }
 
         $name = "რემონტი";
-        return Excel::download(new RepairExport($from, $to), "" . $name . ".xlsx");
+        return Excel::download(new RepairExport($from, $to, $filters), "" . $name . ".xlsx");
     }
 
     public function destroy($id)

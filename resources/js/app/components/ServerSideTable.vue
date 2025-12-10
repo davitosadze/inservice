@@ -303,6 +303,16 @@ export default {
         onGridReady(params) {
             this.gridApi = params.api;
             this.columnApi = params.columnApi;
+
+            // Expose grid API to window for export functionality
+            if (this.setting.model === 'responses') {
+                window.responsesGridApi = params.api;
+            } else if (this.setting.model === 'services') {
+                window.servicesGridApi = params.api;
+            } else if (this.setting.model === 'repairs') {
+                window.repairsGridApi = params.api;
+            }
+
             this.fetchData();
         },
 

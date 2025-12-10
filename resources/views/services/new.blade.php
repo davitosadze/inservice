@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('exportBtnDesktop').addEventListener('click', function() {
         var fromDate = document.getElementById('fromDateDesktop').value;
         var toDate = document.getElementById('toDateDesktop').value;
-        handleExport(fromDate, toDate);
+        handleExport(fromDate, toDate, this);
     });
 
     // Mobile export - SweetAlert popup
@@ -289,15 +289,41 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                handleExport(result.value.fromDate, result.value.toDate);
+                handleExport(result.value.fromDate, result.value.toDate, document.getElementById('exportMobileBtn'));
             }
         });
     });
 
-    function handleExport(fromDate, toDate) {
+    function handleExport(fromDate, toDate, button) {
         if (fromDate && toDate) {
+            // Show loading state
+            var originalHtml = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+            // Get filters from AG Grid if available
+            var filters = {};
+            if (window.servicesGridApi) {
+                filters = window.servicesGridApi.getFilterModel() || {};
+            }
+
             var backendLink = "{{ route('api.services.export') }}?from=" + fromDate + "&to=" + toDate;
-            window.location.href = backendLink;
+            if (Object.keys(filters).length > 0) {
+                backendLink += "&filters=" + encodeURIComponent(JSON.stringify(filters));
+            }
+
+            // Create hidden iframe for download
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = backendLink;
+            document.body.appendChild(iframe);
+
+            // Reset button after delay
+            setTimeout(function() {
+                button.disabled = false;
+                button.innerHTML = originalHtml;
+                document.body.removeChild(iframe);
+            }, 3000);
         } else {
             Swal.fire({
                 icon: 'warning',

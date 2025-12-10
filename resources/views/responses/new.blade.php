@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('exportBtnDesktop').addEventListener('click', function() {
         var fromDate = document.getElementById('fromDateDesktop').value;
         var toDate = document.getElementById('toDateDesktop').value;
-        handleExport(fromDate, toDate);
+        handleExport(fromDate, toDate, this);
     });
 
     // Mobile export - SweetAlert popup
@@ -293,14 +293,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                handleExport(result.value.fromDate, result.value.toDate);
+                // Show loading popup
+                Swal.fire({
+                    title: 'Exporting...',
+                    html: '<i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Preparing your Excel file',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                handleExport(result.value.fromDate, result.value.toDate, null);
             }
         });
     });
 
-    function handleExport(fromDate, toDate) {
+    function handleExport(fromDate, toDate, buttonElement) {
         if (fromDate && toDate) {
             var backendLink = "{{ route('api.responses.export') }}?from=" + fromDate + "&to=" + toDate;
+
+            // Get filters from AG Grid if available
+            if (window.responsesGridApi) {
+                var filterModel = window.responsesGridApi.getFilterModel();
+                if (filterModel && Object.keys(filterModel).length > 0) {
+                    backendLink += "&filters=" + encodeURIComponent(JSON.stringify(filterModel));
+                }
+            }
+
+            // Show loading state
+            if (buttonElement) {
+                var originalContent = buttonElement.innerHTML;
+                buttonElement.disabled = true;
+                buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+                // Reset button after download starts
+                setTimeout(function() {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 3000);
+            }
+
             window.location.href = backendLink;
         } else {
             Swal.fire({

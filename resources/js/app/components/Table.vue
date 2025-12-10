@@ -541,6 +541,11 @@ export default {
             this.gridApi = params.api;
             this.columnApi = params.columnApi;
 
+            // Expose grid API to window for export functionality
+            if (this.setting.model === 'responses') {
+                window.responsesGridApi = params.api;
+            }
+
             // this.gridApi.sizeColumnsToFit()
 
             const updateData = (res) => params.api.setRowData(res);

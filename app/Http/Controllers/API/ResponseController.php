@@ -59,13 +59,24 @@ class ResponseController extends Controller
 
     public function export(Request $request)
     {
+        // Increase timeout for large exports (5 minutes)
+        set_time_limit(300);
+        ini_set('memory_limit', '512M');
+
         $from = Carbon::parse($request->from)->startOfDay();
         $to = Carbon::parse($request->to)->endOfDay();
 
+        // Get filters from request (JSON encoded from frontend)
+        $filters = [];
+        if ($request->has('filters')) {
+            $filters = json_decode($request->filters, true) ?? [];
+        }
 
+        // Debug: Log received filters
+        \Log::info('Export filters received', ['filters' => $filters, 'raw' => $request->filters]);
 
         $name = "რეაგირება";
-        return Excel::download(new ResponseExport($from, $to), "" . $name . ".xlsx");
+        return Excel::download(new ResponseExport($from, $to, $filters), "" . $name . ".xlsx");
     }
 
     public function destroy($id)

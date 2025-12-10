@@ -12,11 +12,28 @@ class ResponsePercentageSheet implements FromCollection, WithHeadings, WithTitle
 
     private $from;
     private $to;
+    private $filters;
 
-    public function __construct($from, $to)
+    /**
+     * Map AG Grid field names to actual database columns/relations
+     */
+    private $fieldMapping = [
+        'purchaser_name' => 'name',
+        'purchaser_address' => 'subject_address',
+        'purchaser_subj_name' => 'subject_name',
+        'region_name' => 'region.name',
+        'user' => 'user.name',
+        'performer_name' => 'performer.name',
+        'content' => 'content',
+        'job_time' => 'time',
+        'title' => 'id',
+    ];
+
+    public function __construct($from, $to, $filters = [])
     {
         $this->from = $from;
         $this->to = $to;
+        $this->filters = $filters;
     }
 
 
@@ -29,13 +46,36 @@ class ResponsePercentageSheet implements FromCollection, WithHeadings, WithTitle
      */
     public function collection()
     {
-        $from = $this->from;
-        $to = $this->to;
-        $responses = Response::select('name')
-            ->whereBetween('created_at', [$from, $to])
-            ->selectRaw('COUNT(*) as count')
-            ->groupBy('name')
-            ->get();
+        $query = Response::select('name')
+            ->whereBetween('created_at', [$this->from, $this->to])
+            ->selectRaw('COUNT(*) as count');
+
+        // Apply filters
+        foreach ($this->filters as $field => $filterData) {
+            $filterValue = $filterData['filter'] ?? null;
+            $type = $filterData['type'] ?? 'contains';
+
+            if ($filterValue === null || $filterValue === '') {
+                continue;
+            }
+
+            // Map AG Grid field to database column
+            $dbField = $this->fieldMapping[$field] ?? $field;
+
+            if (strpos($dbField, '.') !== false) {
+                $parts = explode('.', $dbField);
+                $relation = $parts[0];
+                $column = $parts[1];
+
+                $query->whereHas($relation, function ($q) use ($column, $filterValue, $type) {
+                    $this->applyFilter($q, $column, $filterValue, $type);
+                });
+            } else {
+                $this->applyFilter($query, $dbField, $filterValue, $type);
+            }
+        }
+
+        $responses = $query->groupBy('name')->get();
 
         $data = $responses->map(function ($response) {
             return [
@@ -45,6 +85,29 @@ class ResponsePercentageSheet implements FromCollection, WithHeadings, WithTitle
         });
 
         return $data;
+    }
+
+    private function applyFilter($query, $column, $value, $type)
+    {
+        switch ($type) {
+            case 'contains':
+                $query->where($column, 'LIKE', '%' . $value . '%');
+                break;
+            case 'equals':
+                $query->where($column, '=', $value);
+                break;
+            case 'startsWith':
+                $query->where($column, 'LIKE', $value . '%');
+                break;
+            case 'endsWith':
+                $query->where($column, 'LIKE', '%' . $value);
+                break;
+            case 'notContains':
+                $query->where($column, 'NOT LIKE', '%' . $value . '%');
+                break;
+            default:
+                $query->where($column, 'LIKE', '%' . $value . '%');
+        }
     }
 
     public function headings(): array
