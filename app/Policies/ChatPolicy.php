@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ChatPolicy
 {
-    use HandlesAuthorization;
+    
 
     /**
      * Create a new policy instance.

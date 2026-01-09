@@ -629,7 +629,7 @@ import $ from "jquery";
 import "select2";
 
 export default {
-    props: ["user", "model", "setting", "additional"],
+    props: ["user", "model", "setting", "extra"],
     components: {
         FileUpload,
         UploadComponent,
@@ -668,8 +668,8 @@ export default {
             email: this.model?.user?.email || "",
             password: "",
             confirmPassword: "",
-            clients: this.additional.clients,
-            branchs: this.additional.purchasers,
+            clients: this.extra.clients,
+            branchs: this.extra.purchasers,
             selectedBranchs: JSON.parse(this.model.purchaser || '[]'), // Parse existing selected branches
 
             selectBuilder: [],
@@ -709,11 +709,6 @@ export default {
         // Watch for any changes in the selected service and reflect them in the select2 dropdown
         selectedService(newValue) {
             $("#branchs").val(newValue).trigger("change");
-        },
-        selectedBranchs(newValue) {
-            // Update the model when selectedBranchs changes
-            this.model.purchaser = JSON.stringify(newValue);
-            $("#branchs").val(newValue).trigger('change');
         },
     },
     beforeDestroy() {
@@ -961,7 +956,7 @@ export default {
         },
 
         setter(name) {
-            this.selectBuilder = [{ selected: "", res: this.additional[name] }];
+            this.selectBuilder = [{ selected: "", res: this.extra[name] }];
             this.selector = name;
             this.showModal = true;
         },

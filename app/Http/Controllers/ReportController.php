@@ -28,7 +28,8 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
-use Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -117,10 +118,9 @@ class ReportController extends Controller
         $file = $request->file('image');
         $name = uniqid() . '_' . trim($file->getClientOriginalName());
 
-        $img = Image::make($file->path());
-        $img->resize(600, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($path . '/' . $name);
+        $manager = new ImageManager(new Driver());
+        $img = $manager->read($file->path());
+        $img->scale(width: 600)->save($path . '/' . $name);
 
         // $this->InterImage($file->getPathName(), $path . '/' . $name, 70);
         return ['name' => $name];

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-
+use App\Support\FormBuilder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton('form', function () {
+            return new FormBuilder();
+        });
     }
 
     /**
@@ -25,8 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
-        Paginator::useBootstrapFour();
+        Paginator::useBootstrapFive();
     }
 }

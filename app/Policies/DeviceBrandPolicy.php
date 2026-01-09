@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\Response;
 
 class DeviceBrandPolicy
 {
-    use HandlesAuthorization;
+    
 
     public function viewAny(User $user)
     {
