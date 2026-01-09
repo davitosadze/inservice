@@ -1,7 +1,7 @@
 {
     "/js/vendors/lte-core.js": "/js/vendors/lte-core.js?id=ec0f443a6e9889218dbad0d7bfb7381d",
     "/js/guest.js": "/js/guest.js?id=ad8df0f932e12f9b0d8305d3444b0105",
-    "/js/app.js": "/js/app.js?id=43b7ba574e914dc4ff4d6b476bdc82bf",
+    "/js/app.js": "/js/app.js?id=a25f1a712e5028ab12a67ff578f369da",
     "/js/manifest.js": "/js/manifest.js?id=f26f85a3c1af4d42cb5c53b9bec3574b",
     "/js/vendors/layout.js": "/js/vendors/layout.js?id=44434d41580f4ff74a5833a49e844f36",
     "/js/vendors/insert.js": "/js/vendors/insert.js?id=9d72ce314adea2c7ab6256de95d363ce",
@@ -11,7 +11,7 @@
     "/js/vendors/purchaser-view.js": "/js/vendors/purchaser-view.js?id=95cf6d4942b55582270eb50abad7b7fb",
     "/js/vendors/purchaser-attrs.js": "/js/vendors/purchaser-attrs.js?id=b546ee8db7926716ff846c65dae0a6dd",
     "/js/vendors/request-edit.js": "/js/vendors/request-edit.js?id=b7832fa695393d2b14be1fb8980d1d20",
-    "/js/vendors/client-edit.js": "/js/vendors/client-edit.js?id=281fbc36bc200bdd5af9366a10b007d9",
+    "/js/vendors/client-edit.js": "/js/vendors/client-edit.js?id=33e7096c8dc727bfb0f47be383f8d76d",
     "/js/vendors/client-view.js": "/js/vendors/client-view.js?id=de6f0d83258d1289e4e1e76179fc7ab5",
     "/js/vendors/dashboard.js": "/js/vendors/dashboard.js?id=a0dac0f297a7d0d8dedb7c7babbdcc40",
     "/js/vendors/invoice-edit.js": "/js/vendors/invoice-edit.js?id=0af08a04faa0a653fb3568256806752b",

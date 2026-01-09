@@ -103,7 +103,7 @@ class ClientsController extends Controller
         $model = Client::with(['expenses' => function ($query) {
             $query->with('media');
         }])->with('user')->firstOrNew(['id' => $id]);
-        // return $model;
+
         $this->authorize('view', $model);
 
         $clients = User::role('კლიენტი')->get();

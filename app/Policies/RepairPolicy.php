@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\Response;
 
 class RepairPolicy
 {
-    use HandlesAuthorization;
+    
 
     public function viewAny(User $user)
     {

@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\Response;
 
 class LocationPolicy
 {
-    use HandlesAuthorization;
+    
 
     public function viewAny(User $user)
     {

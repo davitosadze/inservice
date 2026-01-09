@@ -1,4 +1,3 @@
-@section('title', 'კლიენტები')
 <x-app-layout>
 
     <x-slot name="header">
@@ -21,7 +20,7 @@
         <div id="renderer">
             {!! Form::model($model, ['route' => ['api.clients.store'], 'id' => 'render']) !!}
             <layout :user='@json(auth()->user())' url="{{ request()->url() }}"
-                :model='@json($model)' :additional='@json($additional)'
+                :model='@json($model)' :extra='@json($additional)'
                 :setting='@json($setting)' name="client-edit"></layout>
             {!! Form::close() !!}
         </div>
