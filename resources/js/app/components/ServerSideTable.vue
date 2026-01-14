@@ -100,6 +100,11 @@ function alterRendererWithView(params) {
             edit: "რეაგირების რედაქტირება",
             delete: "რეაგირების წაშლა",
         },
+        repairs: {
+            view: "რემონტის ნახვა",
+            edit: "რემონტის რედაქტირება",
+            delete: "რემონტის წაშლა",
+        },
     };
 
     const modelPermissions = permissions[modelType] || permissions["responses"];
