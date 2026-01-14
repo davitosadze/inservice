@@ -58,7 +58,10 @@ class RoleController extends Controller
         $model = Role::firstOrNew(['id' => $request->id]);
         $model->fill($request->all());
         $model->save();
-        $model->syncPermissions($request->permissions);
+
+        // Get Permission models by IDs for syncPermissions
+        $permissions = \Spatie\Permission\Models\Permission::whereIn('id', $request->permissions)->get();
+        $model->syncPermissions($permissions);
 
         return redirect()->route('roles.index')->withSuccess(__('Permission created successfully.'));
     }

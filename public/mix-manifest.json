@@ -1,7 +1,7 @@
 {
     "/js/vendors/lte-core.js": "/js/vendors/lte-core.js?id=ec0f443a6e9889218dbad0d7bfb7381d",
     "/js/guest.js": "/js/guest.js?id=ad8df0f932e12f9b0d8305d3444b0105",
-    "/js/app.js": "/js/app.js?id=a25f1a712e5028ab12a67ff578f369da",
+    "/js/app.js": "/js/app.js?id=46aa4be7da4e67d1d0337c4342f6e29d",
     "/js/manifest.js": "/js/manifest.js?id=f26f85a3c1af4d42cb5c53b9bec3574b",
     "/js/vendors/layout.js": "/js/vendors/layout.js?id=44434d41580f4ff74a5833a49e844f36",
     "/js/vendors/insert.js": "/js/vendors/insert.js?id=9d72ce314adea2c7ab6256de95d363ce",
@@ -18,7 +18,7 @@
     "/js/vendors/modal.js": "/js/vendors/modal.js?id=b5f6202fd06136f998b83a2aba7ceb6f",
     "/js/vendors/alter-table.js": "/js/vendors/alter-table.js?id=0bf46903e5fb36997be1c291b42424bc",
     "/js/vendors/report-table.js": "/js/vendors/report-table.js?id=f9b922a3a53c4d46ea1fd31b6ca0c29b",
-    "/js/vendors/server-side-table.js": "/js/vendors/server-side-table.js?id=481601d1c80ef15f9067bb4b58cd6fda",
+    "/js/vendors/server-side-table.js": "/js/vendors/server-side-table.js?id=5fd9545364b12b742e0d69289f192a87",
     "/js/vendors/tab.js": "/js/vendors/tab.js?id=d6a7067d084b147c574f8a1b857e80af",
     "/js/vendors/input-alter.js": "/js/vendors/input-alter.js?id=f343203c069a14cc34e6d2d1cee98bb7",
     "/js/vendors/purchaser-single-attribute.js": "/js/vendors/purchaser-single-attribute.js?id=b7794bfe7a03337fa05ad36799b484de",
