@@ -5,9 +5,22 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Response extends Model
 {
+    use HasFactory, LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => "Response has been {$eventName}");
+    }
+
     protected $fillable = [
         "content",
         "exact_location",
@@ -42,10 +55,8 @@ class Response extends Model
     const STATUS_ACT_FILLED_FROM_APP = 5;
     const STATUS_CREATED_FROM_APP = 9;
     const STATUS_ARRIVED = 10;
-    
-    protected $appends = ["formatted_name", "job_time"];
 
-    use HasFactory;
+    protected $appends = ["formatted_name", "job_time"];
 
 
     public function user()
