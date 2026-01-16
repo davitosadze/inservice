@@ -5,9 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Repair extends Model
 {
+    use HasFactory, LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => "Repair has been {$eventName}");
+    }
+
     protected $fillable = [
         "content",
         "exact_location",
@@ -34,10 +47,8 @@ class Repair extends Model
         "standby_mode",
         'estimated_arrival_time',
     ];
-    use HasFactory;
 
-
-protected $appends = ['act_note'];
+    protected $appends = ['act_note'];
 
     public function user()
     {

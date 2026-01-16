@@ -5,9 +5,22 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Service extends Model
 {
+    use HasFactory, LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => "Service has been {$eventName}");
+    }
+
     protected $fillable = [
         "content",
         "exact_location",
@@ -30,7 +43,7 @@ class Service extends Model
         'on_repair',
         'estimated_arrival_time'
     ];
-    use HasFactory;
+
     protected $appends = ["formatted_name", "job_time"];
 
     public function act()

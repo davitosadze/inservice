@@ -143,6 +143,7 @@
                                     />
                                     <SignatureModal
                                         :isVisible="showModal"
+                                        :signatureDataUrl="signatureDataUrl"
                                         @close="handleClose"
                                         @saveSignatureEmit="handleSave"
                                     />
@@ -168,8 +169,6 @@
                         </div>
                     </div>
                 </div>
-                <SignatureModal :isVisible="showModal" @close="handleClose" />
-
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <div class="form-group"></div>
 
